@@ -1,18 +1,34 @@
 /* eslint-disable no-debugger */
 import axios from "axios";
 
+const baseURL = "http://localhost:8000/api";
+
 const axi = axios.create({
-  baseURL: "http://localhost:8000/api/",
+  baseURL,
   timeout: 1000,
-  headers: {'X-Requested-With': 'XMLHttpRequest'},
+  headers: { "X-Requested-With": "XMLHttpRequest" },
 });
 
 const getTask = async () => {
-  const { data } = await axi.get(`http://localhost:8000/api/tasks`);
+  const { data } = await axi.get(`${baseURL}/tasks`);
   // await new Promise(resolve => setTimeout(resolve, 20));
   return data;
 };
 
-export {
-  getTask,
-}
+const submitRegisterDetails = async (details) => {
+  console.log(details)
+  const { data, error } = await axi.post(`${baseURL}/register`, details);
+  console.log(data, error);
+  if (error) return error;
+  return data;
+};
+
+const submitLoginDetails = async (details) => {
+  console.log(details)
+  const { data, error } = await axi.post(`${baseURL}/login`, details);
+  console.log(data, error);
+  if (error) return error;
+  return data;
+};
+
+export { getTask, submitRegisterDetails, submitLoginDetails };

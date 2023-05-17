@@ -41,8 +41,6 @@ exports.createTask = async (req, res) => {
 exports.test = async (req, res) => {
   try {
     const count = await Task.countDocuments();
-    console.dir({Task});
-    console.log({count});
     res.send(`Total tracks: ${count}`);
   } catch (error) {
     console.error(error);
