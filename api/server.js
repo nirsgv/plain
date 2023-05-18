@@ -15,15 +15,6 @@ const session = require("express-session");
 const tasksController = require("./controllers/tasksController");
 const usersController = require("./controllers/usersController");
 
-const passport = require("passport");
-const initializePassport = require("./passport-config");
-const User = require("./models/User");
-
-initializePassport(
-  passport,
-  async (email) => await User.findOne({ email }),
-  async (password) => await User.findOne({ password }),
-);
 const app = express();
 app.use(express.static(path.resolve(__dirname + "/../build")));
 app.disable("x-powered-by");
@@ -40,8 +31,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(express.json());
 
 const normalizePort = (port) => parseInt(port, 10);
@@ -74,14 +63,6 @@ app.post("/api/tasks/create", tasksController.createTask);
 
 app.post("/api/register", usersController.register);
 app.post("/api/login", usersController.login);
-// app.post(
-//   "/api/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/login",
-//     failureFlash: true,
-//   })
-// );
 
 app.get("/about", function (req, res) {
   return res.sendFile(path.resolve(__dirname + "/../build/index.html"));
@@ -94,5 +75,3 @@ app.listen(PORT, (err) => {
   if (err) throw err;
   console.log("server started");
 });
-
-module.exports = passport;

@@ -1,29 +1,28 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-    {{ tasks }}
+    <!-- {{ tasks }} -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
-  components: {
-    HelloWorld,
-  },
   mounted() {
+    this.announce({
+      message: "Test message from Vue",
+      type: "success",
+    });
     this.loadTasks();
   },
   computed: {
     ...mapGetters(["tasks"]),
   },
   methods: {
-    ...mapActions(["loadTasks"]),
+    ...mapActions(["loadTasks", "announce"]),
   },
 
 };

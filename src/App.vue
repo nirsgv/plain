@@ -5,8 +5,21 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
+    <LoginBar />
   </div>
 </template>
+
+<script>
+
+import { LoginBar } from './components/index';
+export default {
+  name: "App",
+  components: {
+    LoginBar,
+  },
+};
+</script>
+
 
 <style lang="scss">
 #app {
