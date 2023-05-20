@@ -1,0 +1,2 @@
+1. add tasks route in client side
+2. add tasks view
