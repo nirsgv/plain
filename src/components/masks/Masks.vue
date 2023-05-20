@@ -1,29 +1,35 @@
 <template>
-  <div class="Login-bar">
-    <div v-if="authenticated" class="logout">
-      <button @click="deauthenticate">Sign out</button>
-    </div>
-    <div v-else class="login">
-      <router-link to="/login">Login</router-link>
-    </div>
+  <div class="tasks">
+    <ul>
+      <li v-for="task in tasks" :key="task.uid">
+        <span>{{ task.title }}</span>
+        <span>{{ task.status }}</span>
+        <span>{{ task.uid }}</span>
+      </li>
+    </ul>
+    <form>
+      <Input />
+      <button type="button" @click.prevent="addTask">Add Task</button>
+    </form>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-  name: "LoginBar",
+  name: "masks",
   props: {
     msg: String,
   },
   computed: {
-    ...mapGetters(["authenticated"]),
+    ...mapGetters(["tasks"]),
   },
   methods: {
-    ...mapActions(["deauthenticate"])
-  }
-
+    addTask() {
+      console.log('aasd')
+    },
+  },
 };
 </script>
 

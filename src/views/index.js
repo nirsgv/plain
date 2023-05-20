@@ -1,3 +1,5 @@
-import Login from "./Login.vue";
-import Register from "./Register.vue";
-export { Login, Register };
+import Login from "@/views/Login.vue";
+import Register from "@/views/Register.vue";
+import Home from "@/views/Home.vue";
+
+export { Login, Register, Home };

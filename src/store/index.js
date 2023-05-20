@@ -7,6 +7,13 @@ import {
 } from "@/services/service.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import VueToast from "vue-toast-notification";
+import router from "@/router";
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+  // reducer: (state) => ({ navigation: state.navigation }), //only save navigation module
+});
 
 Vue.use(VueToast, {
   duration: 4000,
@@ -19,6 +26,7 @@ export default new Vuex.Store({
   state: {
     tasks: [],
     authenticated: false,
+    user: null,
   },
   getters: {
     tasks: (state) => state.tasks,
@@ -31,6 +39,13 @@ export default new Vuex.Store({
     SET_AUTHENTICATED: (state) => {
       state.authenticated = true;
     },
+    DEAUTHENTICATE: (state) => {
+      state.authenticated = false;
+    },
+    SET_USER: (state, user) => {
+      state.user = user;
+    },
+
   },
   actions: {
     setTasks: ({ commit }, { tasks }) => {
@@ -40,18 +55,22 @@ export default new Vuex.Store({
       const tasks = await getTask();
       commit("SET_TASKS", { tasks });
     },
-    submitRegisterDetails: async ({ commit }, details) => {
-      const registeredUser = await submitRegisterDetails(details);
-      console.log({ registeredUser });
+    submitRegisterDetails: async ({ commit, dispatch }, details) => {
+      const user = await submitRegisterDetails(details);
+      if (user.announce) {
+        dispatch('announce', { message: user.announce.message, type: user.announce.type })
+      }
       commit("");
     },
-    submitLoginDetails: async ({ commit }, details) => {
-      const registeredUser = await submitLoginDetails(details);
-      if (registeredUser) {
+    submitLoginDetails: async ({ commit, dispatch }, details) => {
+      const response = await submitLoginDetails(details);
+      if (response.announce) {
+        dispatch('announce', { message: response.announce.message, type: response.announce.type })
+      } else if (!response.data.error) {
         commit("SET_AUTHENTICATED");
-        console.log(
-          "iajsdoisjoiupjcdwoijc82ec08jwcdiojwcdpioj wkdcmpoiwcmpoimcwop powcmpomcw"
-        );
+        console.log({response})
+        commit("SET_USER", response);
+        dispatch('routeToHomePage');
       }
     },
     announce: async ({ commit }, { message, type }) => {
@@ -61,6 +80,20 @@ export default new Vuex.Store({
         type,
       });
     },
+    deauthenticate: ({ commit }) => {
+      commit("DEAUTHENTICATE");
+      commit("SET_USER", null);
+    },
+    routeToLoginPage: () => {
+      router.push({ path: '/login' });
+    },
+    routeToHomePage: () => {
+      router.push({ path: '/' });
+    },
+    routeToPath: (path) => {
+      router.push({ path: `'/${path}'` });
+    },
   },
   modules: {},
+  plugins: [vuexLocal.plugin],
 });

@@ -63,6 +63,8 @@ app.post("/api/tasks/create", tasksController.createTask);
 
 app.post("/api/register", usersController.register);
 app.post("/api/login", usersController.login);
+app.get("/api/users/:id", usersController.getUserById);
+app.get("/api/users", usersController.getAllUsers);
 
 app.get("/about", function (req, res) {
   return res.sendFile(path.resolve(__dirname + "/../build/index.html"));

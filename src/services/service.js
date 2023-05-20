@@ -24,9 +24,9 @@ const submitRegisterDetails = async (details) => {
 };
 
 const submitLoginDetails = async (details) => {
-  const { data, error } = await axi.post(`${baseURL}/login`, details);
-  console.log(data, error);
-  return data.allowed;
+  const { data } = await axi.post(`${baseURL}/login`, details);
+  console.log(data);
+  return { data }
 };
 
 export { getTask, submitRegisterDetails, submitLoginDetails };

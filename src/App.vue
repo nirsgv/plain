@@ -10,16 +10,25 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 
-import { LoginBar } from './components/index';
+import { LoginBar } from '@/components/index';
 export default {
   name: "App",
   components: {
     LoginBar,
   },
+  mounted() {
+    !this.authenticated && this.routeToLoginPage();
+  },
+  computed: {
+    ...mapGetters(["authenticated"]),
+  },
+  methods: {
+    ...mapActions(["routeToLoginPage"]),
+  },
 };
 </script>
-
 
 <style lang="scss">
 #app {
@@ -28,6 +37,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: inherit;
 }
 
 #nav {
