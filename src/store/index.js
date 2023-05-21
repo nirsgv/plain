@@ -6,6 +6,7 @@ import {
   submitRegisterDetails,
   submitLoginDetails,
   editTask,
+  addTask,
 } from "@/services/service.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import VueToast from "vue-toast-notification";
@@ -103,7 +104,12 @@ export default new Vuex.Store({
 
       const response = await editTask({ taskUid, value });
       commit("SET_TASK", response);
-    }
+    },
+    addTask: async ({ commit, dispatch }, { userId, title, parentTask }) => {
+      const response = await addTask({ userId, title, parentTask });
+      dispatch('loadTasks', { userId });
+      console.log({response, commit});
+    },
   },
   modules: {},
   // plugins: [vuexLocal.plugin],

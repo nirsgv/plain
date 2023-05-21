@@ -3,3 +3,4 @@
 3. get user tasks
 4. edit task title
 5. create task
+6. task disabled/archived state

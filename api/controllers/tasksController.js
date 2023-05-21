@@ -20,8 +20,7 @@ exports.getUserTasks = async (req, res) => {
   } catch (err) {
     console.error(err);
   }
-}
-
+};
 
 exports.getTasks = async (req, res) => {
   try {
@@ -35,9 +34,7 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-
 exports.getTask = async (req, res) => {
-
   try {
     const task = await Task.findOne({ id: req.params.id });
     console.log({ task });
@@ -52,13 +49,10 @@ exports.getTask = async (req, res) => {
 };
 
 exports.createTask = async (req, res) => {
-  let body = req.body;
-  console.log(body);
-  if (!req.body.user_id) res.status(500).json({ error: "no user specified" });
-  const task = new Task({ ...body, uid: uuidv4(), created_At: new Date() });
-  const stat = await task.save();
-  console.log({stat});
-  res.status(200).json({ status: stat });
+  const { userId, title } = req.body;
+  const task = new Task({ title, uid: uuidv4(), created_At: new Date(), user_id: userId });
+  await task.save();
+  res.status(200).json({ status: "Cool" });
 };
 
 exports.editTask = async (req, res) => {
@@ -66,10 +60,9 @@ exports.editTask = async (req, res) => {
   const t = await Task.findOne({ uid: taskUid });
   t.title = value;
   t.last_updated_at = new Date();
-  t.save();
+  await t.save();
   res.status(204).json({ status: 'sababa' });;
 };
-
 
 exports.test = async (req, res) => {
   try {

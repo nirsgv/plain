@@ -60,8 +60,8 @@ app.get("/api/alltasks", tasksController.getTasks);
 app.get("/api/tasks/:userId", tasksController.getUserTasks);
 app.get("/api/task/:id", tasksController.getTask);
 app.get("/api/test", tasksController.test);
-app.post("/api/tasks/create", tasksController.createTask);
 app.post("/api/tasks/edit", tasksController.editTask);
+app.post("/api/tasks/create", tasksController.createTask);
 
 app.post("/api/register", usersController.register);
 app.post("/api/login", usersController.login);

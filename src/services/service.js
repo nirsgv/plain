@@ -43,4 +43,12 @@ const editTask = async ({ taskUid, value }) => {
   return { data };
 };
 
-export { getTask, getUserTasks, submitRegisterDetails, submitLoginDetails, editTask };
+const addTask = async ({ userId, title, parentTask = null }) => {
+  console.log( { userId, title, parentTask })
+  const { data } = await axi.post(`${baseURL}/tasks/create`, { userId, title, parentTask });
+  console.log(data);
+  return { data };
+};
+
+
+export { getTask, getUserTasks, submitRegisterDetails, submitLoginDetails, editTask, addTask };

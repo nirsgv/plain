@@ -30,8 +30,20 @@ const taskSchema = new mongoose.Schema({
   child_tasks: {
     type: [String],
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  archived: {
+    type: Boolean,
+    default: false,
+  },
+  archived_at: {
+    type: Date,
+  },
   user_id: {
     type: String,
+    default: false,
   },
 });
 
