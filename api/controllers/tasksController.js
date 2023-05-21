@@ -3,14 +3,38 @@ const { v4: uuidv4 } = require('uuid');
 exports.getTasks = async (req, res) => {
   try {
     console.log("Fetching tracks...");
-    const tasks = await Task.find();
-    console.log("Tasks:", tasks);
-    res.json(tasks);
+    const response = await Task.find();
+    console.log("Tasks:", response.data);
+    res.json(response.data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.getUserTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find({ user_id: req.params?.userId });
+    console.log(tasks);
+    res.json(tasks);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+exports.getTasks = async (req, res) => {
+  try {
+    console.log("Fetching tracks...");
+    const response = await Task.find();
+    console.log("Tasks:", response);
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 exports.getTask = async (req, res) => {
 
@@ -35,6 +59,15 @@ exports.createTask = async (req, res) => {
   const stat = await task.save();
   console.log({stat});
   res.status(200).json({ status: stat });
+};
+
+exports.editTask = async (req, res) => {
+  const { taskUid, value } = req.body;
+  const t = await Task.findOne({ uid: taskUid });
+  t.title = value;
+  t.last_updated_at = new Date();
+  t.save();
+  res.status(204).json({ status: 'sababa' });;
 };
 
 

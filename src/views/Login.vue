@@ -50,12 +50,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-dialog {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
 a {
   position: relative;
 }

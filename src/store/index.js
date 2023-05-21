@@ -1,19 +1,21 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {
-  getTask,
+  // getTask,
+  getUserTasks,
   submitRegisterDetails,
   submitLoginDetails,
+  editTask,
 } from "@/services/service.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import VueToast from "vue-toast-notification";
 import router from "@/router";
-import VuexPersistence from 'vuex-persist'
+// import VuexPersistence from 'vuex-persist'
 
-const vuexLocal = new VuexPersistence({
-  storage: window.localStorage,
-  // reducer: (state) => ({ navigation: state.navigation }), //only save navigation module
-});
+// const vuexLocal = new VuexPersistence({
+//   storage: window.localStorage,
+//   reducer: (state) => ({ navigation: state.navigation }), //only save navigation module
+// });
 
 Vue.use(VueToast, {
   duration: 4000,
@@ -31,6 +33,7 @@ export default new Vuex.Store({
   getters: {
     tasks: (state) => state.tasks,
     authenticated: (state) => state.authenticated,
+    user: (state) => state.user,
   },
   mutations: {
     SET_TASKS: (state, { tasks }) => {
@@ -51,8 +54,10 @@ export default new Vuex.Store({
     setTasks: ({ commit }, { tasks }) => {
       commit("SET_TASKS", { tasks });
     },
-    loadTasks: async ({ commit }) => {
-      const tasks = await getTask();
+    loadTasks: async ({ commit }, { userId }) => {
+      console.log({userId})
+      const tasks = await getUserTasks(userId);
+      console.log({tasks})
       commit("SET_TASKS", { tasks });
     },
     submitRegisterDetails: async ({ commit, dispatch }, details) => {
@@ -93,7 +98,13 @@ export default new Vuex.Store({
     routeToPath: (path) => {
       router.push({ path: `'/${path}'` });
     },
+    editTask: async ({ commit }, { taskUid, value }) => {
+      console.log({ taskUid, value });
+
+      const response = await editTask({ taskUid, value });
+      commit("SET_TASK", response);
+    }
   },
   modules: {},
-  plugins: [vuexLocal.plugin],
+  // plugins: [vuexLocal.plugin],
 });

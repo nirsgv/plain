@@ -15,6 +15,13 @@ const getTask = async () => {
   return data;
 };
 
+const getUserTasks = async (userId) => {
+  console.log(userId);
+  const { data } = await axi.get(`${baseURL}/tasks/${userId}`);
+  // await new Promise(resolve => setTimeout(resolve, 20));
+  return data;
+};
+
 const submitRegisterDetails = async (details) => {
   console.log(details)
   const { data, error } = await axi.post(`${baseURL}/register`, details);
@@ -26,7 +33,14 @@ const submitRegisterDetails = async (details) => {
 const submitLoginDetails = async (details) => {
   const { data } = await axi.post(`${baseURL}/login`, details);
   console.log(data);
-  return { data }
+  return { data };
 };
 
-export { getTask, submitRegisterDetails, submitLoginDetails };
+const editTask = async ({ taskUid, value }) => {
+  console.log( { taskUid, value })
+  const { data } = await axi.post(`${baseURL}/tasks/edit`, { taskUid, value });
+  console.log(data);
+  return { data };
+};
+
+export { getTask, getUserTasks, submitRegisterDetails, submitLoginDetails, editTask };

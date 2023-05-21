@@ -1,2 +1,5 @@
 1. add tasks route in client side
 2. add tasks view
+3. get user tasks
+4. edit task title
+5. create task
