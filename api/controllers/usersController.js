@@ -25,7 +25,7 @@ exports.login = async (req, res) => {
       console.log(err);
     }
     const isPasswordAuthenticated = await bcrypt.compare(password, user.password);
-    console.log(isPasswordAuthenticated);
+    console.log(isPasswordAuthenticated)
     if (isPasswordAuthenticated) {
       return res.send(loggedUser);
     } else {

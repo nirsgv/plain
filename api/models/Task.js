@@ -30,7 +30,7 @@ const taskSchema = new mongoose.Schema({
   child_tasks: {
     type: [String],
   },
-  disabled: {
+  resolved: {
     type: Boolean,
     default: false,
   },
@@ -44,6 +44,9 @@ const taskSchema = new mongoose.Schema({
   user_id: {
     type: String,
     default: false,
+  },
+  position: {
+    type: Number,
   },
 });
 

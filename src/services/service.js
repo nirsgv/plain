@@ -23,7 +23,7 @@ const getUserTasks = async (userId) => {
 };
 
 const submitRegisterDetails = async (details) => {
-  console.log(details)
+  console.log(details);
   const { data, error } = await axi.post(`${baseURL}/register`, details);
   console.log(data, error);
   if (error) return error;
@@ -36,19 +36,39 @@ const submitLoginDetails = async (details) => {
   return { data };
 };
 
-const editTask = async ({ taskUid, value }) => {
-  console.log( { taskUid, value })
-  const { data } = await axi.post(`${baseURL}/tasks/edit`, { taskUid, value });
+const editTask = async ({ taskUid, updates }) => {
+  console.log({ taskUid, updates });
+  const { data } = await axi.post(`${baseURL}/tasks/edit`, {
+    taskUid,
+    updates,
+  });
   console.log(data);
   return { data };
 };
 
 const addTask = async ({ userId, title, parentTask = null }) => {
-  console.log( { userId, title, parentTask })
-  const { data } = await axi.post(`${baseURL}/tasks/create`, { userId, title, parentTask });
+  console.log({ userId, title, parentTask });
+  const { data } = await axi.post(`${baseURL}/tasks/create`, {
+    userId,
+    title,
+    parentTask,
+  });
   console.log(data);
   return { data };
 };
 
+const deleteTask = async ({ taskId }) => {
+  const { data } = await axi.delete(`${baseURL}/tasks/delete`, { taskId });
+  console.log(data);
+  return { data };
+};
 
-export { getTask, getUserTasks, submitRegisterDetails, submitLoginDetails, editTask, addTask };
+export {
+  getTask,
+  getUserTasks,
+  submitRegisterDetails,
+  submitLoginDetails,
+  editTask,
+  addTask,
+  deleteTask,
+};

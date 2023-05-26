@@ -6,9 +6,11 @@ import Buefy from "buefy";
 import "@/main.scss";
 import "@/reset.scss";
 import "buefy/dist/buefy.css";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-library.add(fas)
+import Unicon from 'vue-unicons/dist/vue-unicons-vue2.umd'
+import { uniMinus, uniCheck, uniTrash, uniGripHorizontalLine } from 'vue-unicons/dist/icons'
+
+Unicon.add([uniMinus, uniCheck, uniTrash, uniGripHorizontalLine]);
+Vue.use(Unicon);
 
 Vue.use(Buefy, {
   defaultIconPack: "fas",

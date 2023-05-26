@@ -62,11 +62,12 @@ app.get("/api/task/:id", tasksController.getTask);
 app.get("/api/test", tasksController.test);
 app.post("/api/tasks/edit", tasksController.editTask);
 app.post("/api/tasks/create", tasksController.createTask);
+app.delete("/api/tasks/delete", tasksController.deleteTask);
 
-app.post("/api/register", usersController.register);
-app.post("/api/login", usersController.login);
 app.get("/api/users/:id", usersController.getUserById);
 app.get("/api/users", usersController.getAllUsers);
+app.post("/api/register", usersController.register);
+app.post("/api/login", usersController.login);
 
 app.get("/about", function (req, res) {
   return res.sendFile(path.resolve(__dirname + "/../build/index.html"));

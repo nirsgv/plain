@@ -7,6 +7,7 @@ import {
   submitLoginDetails,
   editTask,
   addTask,
+  deleteTask,
 } from "@/services/service.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import VueToast from "vue-toast-notification";
@@ -47,7 +48,8 @@ export default new Vuex.Store({
       state.authenticated = false;
     },
     SET_USER: (state, user) => {
-      state.user = user;
+      console.log({user})
+      state.user = {...user.data};
     },
 
   },
@@ -99,14 +101,22 @@ export default new Vuex.Store({
     routeToPath: (path) => {
       router.push({ path: `'/${path}'` });
     },
-    editTask: async ({ commit }, { taskUid, value }) => {
-      console.log({ taskUid, value });
+    editTask: async ({ commit, dispatch  }, { userId, taskUid, updates }) => {
+      console.log({ taskUid, updates });
 
-      const response = await editTask({ taskUid, value });
+      const response = await editTask({ taskUid, updates });
+      dispatch('loadTasks', { userId });
+
       commit("SET_TASK", response);
     },
     addTask: async ({ commit, dispatch }, { userId, title, parentTask }) => {
       const response = await addTask({ userId, title, parentTask });
+      dispatch('loadTasks', { userId });
+      console.log({response, commit});
+    },
+    deleteTask: async ({ commit, dispatch }, { userId, taskId }) => {
+      console.log({ userId, taskId });
+      const response = await deleteTask({ taskId });
       dispatch('loadTasks', { userId });
       console.log({response, commit});
     },

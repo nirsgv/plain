@@ -1,5 +1,5 @@
 const Task = require("../models/Task");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 exports.getTasks = async (req, res) => {
   try {
     console.log("Fetching tracks...");
@@ -48,20 +48,50 @@ exports.getTask = async (req, res) => {
   }
 };
 
+const getLastPosition = async () => {
+  try {
+    const tasks = await Task.find({}, "position");
+    if (!tasks.length) return 0;
+    return Math.max(...tasks.map(p => p.position));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.createTask = async (req, res) => {
   const { userId, title } = req.body;
-  const task = new Task({ title, uid: uuidv4(), created_At: new Date(), user_id: userId });
+  const lastPosition = await getLastPosition();
+  const task = new Task({
+    title,
+    uid: uuidv4(),
+    created_At: new Date(),
+    user_id: userId,
+    position: lastPosition + 1,
+  });
   await task.save();
   res.status(200).json({ status: "Cool" });
 };
 
+exports.deleteTask = async (req, res) => {
+  const { taskId } = req.body;
+  try {
+    await Task.deleteOne({ id: taskId });
+    res.status(200).json({ status: "Deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(204).json({ status: "Error with deleting item" });
+  }
+};
+
 exports.editTask = async (req, res) => {
-  const { taskUid, value } = req.body;
-  const t = await Task.findOne({ uid: taskUid });
-  t.title = value;
-  t.last_updated_at = new Date();
-  await t.save();
-  res.status(204).json({ status: 'sababa' });;
+  const { taskUid, updates } = req.body;
+  // const t = await Task.findOne({ uid: taskUid });
+  await Task.findOneAndUpdate(
+    { uid: taskUid },
+    { ...updates, last_updated_at: new Date() }
+  );
+
+  res.status(204).json({ status: "sababa" });
 };
 
 exports.test = async (req, res) => {
