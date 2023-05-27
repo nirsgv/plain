@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import Vue from "vue";
 import Vuex from "vuex";
 import {
@@ -33,7 +34,7 @@ export default new Vuex.Store({
     user: null,
   },
   getters: {
-    tasks: (state) => state.tasks,
+    tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
     authenticated: (state) => state.authenticated,
     user: (state) => state.user,
   },
@@ -48,37 +49,46 @@ export default new Vuex.Store({
       state.authenticated = false;
     },
     SET_USER: (state, user) => {
-      console.log({user})
-      state.user = {...user.data};
+      console.log({ user });
+      state.user = { ...user.data };
     },
-
+    UPDATE_TASK_POSITIONS: (state, { updatedTasks }) => {
+      console.log(updatedTasks)
+      state.tasks = updatedTasks;
+    },
   },
   actions: {
     setTasks: ({ commit }, { tasks }) => {
       commit("SET_TASKS", { tasks });
     },
     loadTasks: async ({ commit }, { userId }) => {
-      console.log({userId})
+      console.log({ userId });
       const tasks = await getUserTasks(userId);
-      console.log({tasks})
+      console.log({ tasks });
       commit("SET_TASKS", { tasks });
     },
     submitRegisterDetails: async ({ commit, dispatch }, details) => {
       const user = await submitRegisterDetails(details);
       if (user.announce) {
-        dispatch('announce', { message: user.announce.message, type: user.announce.type })
+        dispatch("announce", {
+          message: user.announce.message,
+          type: user.announce.type,
+        });
       }
       commit("");
     },
     submitLoginDetails: async ({ commit, dispatch }, details) => {
       const response = await submitLoginDetails(details);
       if (response.announce) {
-        dispatch('announce', { message: response.announce.message, type: response.announce.type })
+        dispatch("announce", {
+          message: response.announce.message,
+          type: response.announce.type,
+        });
       } else if (!response.data.error) {
         commit("SET_AUTHENTICATED");
-        console.log({response})
+        console.log({ response });
         commit("SET_USER", response);
-        dispatch('routeToHomePage');
+        dispatch("routeToHomePage");
       }
     },
     announce: async ({ commit }, { message, type }) => {
@@ -93,32 +103,43 @@ export default new Vuex.Store({
       commit("SET_USER", null);
     },
     routeToLoginPage: () => {
-      router.push({ path: '/login' });
+      router.push({ path: "/login" });
     },
     routeToHomePage: () => {
-      router.push({ path: '/' });
+      router.push({ path: "/" });
     },
     routeToPath: (path) => {
       router.push({ path: `'/${path}'` });
     },
-    editTask: async ({ commit, dispatch  }, { userId, taskUid, updates }) => {
+    editTask: async ({ commit, dispatch }, { userId, taskUid, updates }) => {
       console.log({ taskUid, updates });
 
       const response = await editTask({ taskUid, updates });
-      dispatch('loadTasks', { userId });
+      dispatch("loadTasks", { userId });
 
       commit("SET_TASK", response);
     },
     addTask: async ({ commit, dispatch }, { userId, title, parentTask }) => {
       const response = await addTask({ userId, title, parentTask });
-      dispatch('loadTasks', { userId });
-      console.log({response, commit});
+      dispatch("loadTasks", { userId });
+      console.log({ response, commit });
     },
     deleteTask: async ({ commit, dispatch }, { userId, taskId }) => {
       console.log({ userId, taskId });
       const response = await deleteTask({ taskId });
-      dispatch('loadTasks', { userId });
-      console.log({response, commit});
+      dispatch("loadTasks", { userId });
+      console.log({ response, commit });
+    },
+    updateTaskPositions: ({ commit }, updatedTasks) => {
+      console.log(updatedTasks)
+      commit("UPDATE_TASK_POSITIONS", { updatedTasks });
+    },
+    persistTaskPositions: async ({ commit }, { draggedTask, droppedTask }) => {
+      console.log(commit);
+      await Promise.all([
+        editTask({taskUid: draggedTask.uid, updates: { position: droppedTask.position } }),
+        editTask({taskUid: droppedTask.uid, updates: { position: draggedTask.position } })
+      ])
     },
   },
   modules: {},
