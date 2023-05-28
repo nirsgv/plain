@@ -59,14 +59,15 @@ const getLastPosition = async () => {
 };
 
 exports.createTask = async (req, res) => {
-  const { userId, title } = req.body;
+  const { userId, title, parentTask } = req.body;
   const lastPosition = await getLastPosition();
   const task = new Task({
-    title,
+    title: title || "What do you need to do?",
     uid: uuidv4(),
     created_At: new Date(),
     user_id: userId,
     position: Math.ceil(lastPosition + 100),
+    parent_task_uid: parentTask || "",
   });
   await task.save();
   res.status(200).json({ status: "Cool" });

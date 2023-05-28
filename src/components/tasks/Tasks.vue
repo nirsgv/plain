@@ -1,53 +1,56 @@
 <template>
   <div v-if="user">
-    <ul class="tasks">
-      <draggable
-        v-model="sortedTasks"
-        @end="onDragEnd"
-        group="taskGroup"
-        handle=".drag-handle"
+    <draggable
+      tag="ul"
+      class="tasks"
+      v-model="sortedTasks"
+      @end="onDragEnd"
+      group="taskGroup"
+      handle=".drag-handle"
+    >
+      <li
+        v-for="task in sortedTasks"
+        :key="task.uid"
+        class="task container"
+        :class="{ dropped: dropGroup.includes(task.uid) }"
+        :data-task-uid="task.uid"
       >
-        <li
-          v-for="task in sortedTasks"
-          :key="task.uid"
-          class="task container"
-          :class="{ dropped: dropGroup.includes(task.uid) }"
-          :data-task-uid="task.uid"
-        >
-          <input
-            type="text"
-            class="title is-1 task__title"
-            v-model="task.title"
-            @change="
-              editTask({
-                taskUid: task.uid,
-                userId: user.uid,
-                updates: { title: $event.target.value },
-              })
-            "
-          />
-          <div class="actions">
-            <div class="icon-button" @click="drop({ taskUid: task.uid })">
-              <unicon name="check" fill="currentColor"></unicon>
-            </div>
-            <div
-              class="icon-button"
-              @click="deleteTask({ userId: user.uid, taskId: task.uid })"
-            >
-              <unicon name="minus" fill="currentColor"></unicon>
-            </div>
-            <div class="drag-handle">
-              <div class="icon-button">
-                <unicon
-                  name="grip-horizontal-line"
-                  fill="currentColor"
-                ></unicon>
-              </div>
+        <input
+          type="text"
+          class="title is-1 task__title"
+          v-model="task.title"
+          @change="
+            editTask({
+              taskUid: task.uid,
+              userId: user.uid,
+              updates: { title: $event.target.value },
+            })
+          "
+        />
+        <div class="actions">
+          <div class="icon-button" @click="drop({ taskUid: task.uid })">
+            <unicon name="check" fill="currentColor"></unicon>
+          </div>
+          <div
+            class="icon-button"
+            @click="deleteTask({ userId: user.uid, taskId: task.uid })"
+          >
+            <unicon name="minus" fill="currentColor"></unicon>
+          </div>
+          <div
+            class="icon-button"
+            @click="addTask({ userId: user.uid, parentTask: task.uid })"
+          >
+            <unicon name="arrow-down-right" fill="currentColor"></unicon>
+          </div>
+          <div class="drag-handle">
+            <div class="icon-button">
+              <unicon name="grip-horizontal-line" fill="currentColor"></unicon>
             </div>
           </div>
-        </li>
-      </draggable>
-    </ul>
+        </div>
+      </li>
+    </draggable>
 
     <form class="add-task" @submit.prevent="null">
       <b-input type="text" v-model="newTaskTitle" maxlength="30" />
@@ -88,7 +91,6 @@ export default {
         return this.tasks;
       },
       set(updatedTasks) {
-        console.log({ updatedTasks });
         this.updateTaskPositions(updatedTasks);
       },
     },
@@ -103,17 +105,7 @@ export default {
       "persistTaskPosition",
     ]),
     drop({ taskUid }) {
-      console.log(this.dropGroup);
       this.dropGroup.push(taskUid);
-    },
-    startDrag(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      const draggableElement = event.target.closest(".draggable");
-      if (draggableElement) {
-        draggableElement.draggable = true;
-        draggableElement.classList.add("dragging");
-      }
     },
     async onDragEnd(event) {
       const draggedIndex = event.oldIndex;
@@ -172,11 +164,17 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-color: var(--border-color);
+
     &__title {
       margin-bottom: 0 !important;
       border: none;
       text-align: center;
       height: -webkit-fill-available;
+      font-size: 3rem;
+      outline: none !important;
+      width: 100%;
+      caret-color: var(--border-color);
     }
     .actions {
       transition: all 0.1s ease-in-out;
@@ -187,6 +185,7 @@ export default {
       height: 100%;
       top: 0;
       align-items: center;
+      opacity: 0;
     }
     &:hover .actions {
       opacity: 1;

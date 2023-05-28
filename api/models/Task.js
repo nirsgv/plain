@@ -27,8 +27,10 @@ const taskSchema = new mongoose.Schema({
   tags: {
     type: [],
   },
-  child_tasks: {
-    type: [String],
+  parent_task_uid: {
+    type: String,
+    trim: true,
+    default: "",
   },
   resolved: {
     type: Boolean,
