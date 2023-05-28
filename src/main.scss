@@ -26,6 +26,7 @@ form {
   position: relative
 }
 
+
 dialog {
   width: 100vw;
   margin: 0 auto;
@@ -81,5 +82,6 @@ dt, dd {
   --gap: .4rem;
   --big-gap: 1.6rem;
   --vertical-margin: 2rem;
+  --border-color: lightsalmon;
   --highlight: #eee;
 }

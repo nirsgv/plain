@@ -36,6 +36,9 @@
             >
               <unicon name="minus" fill="currentColor"></unicon>
             </div>
+            <div class="icon-button" @click="drop({ taskUid: task.uid })">
+              <unicon name="corner-down-right" fill="currentColor"></unicon>
+            </div>
             <div class="drag-handle">
               <div class="icon-button">
                 <unicon
@@ -88,7 +91,6 @@ export default {
         return this.tasks;
       },
       set(updatedTasks) {
-        console.log({ updatedTasks });
         this.updateTaskPositions(updatedTasks);
       },
     },
@@ -103,17 +105,7 @@ export default {
       "persistTaskPosition",
     ]),
     drop({ taskUid }) {
-      console.log(this.dropGroup);
       this.dropGroup.push(taskUid);
-    },
-    startDrag(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      const draggableElement = event.target.closest(".draggable");
-      if (draggableElement) {
-        draggableElement.draggable = true;
-        draggableElement.classList.add("dragging");
-      }
     },
     async onDragEnd(event) {
       const draggedIndex = event.oldIndex;
@@ -172,11 +164,17 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-color: var(--border-color);
+
     &__title {
       margin-bottom: 0 !important;
       border: none;
       text-align: center;
       height: -webkit-fill-available;
+      font-size: 3rem;
+      outline: none!important;
+      width: 100%;
+      caret-color: var(--border-color);
     }
     .actions {
       transition: all 0.1s ease-in-out;
@@ -187,6 +185,7 @@ export default {
       height: 100%;
       top: 0;
       align-items: center;
+      opacity: 0;
     }
     &:hover .actions {
       opacity: 1;
