@@ -66,7 +66,7 @@ exports.createTask = async (req, res) => {
     uid: uuidv4(),
     created_At: new Date(),
     user_id: userId,
-    position: lastPosition + 1,
+    position: Math.ceil(lastPosition + 100),
   });
   await task.save();
   res.status(200).json({ status: "Cool" });

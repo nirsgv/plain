@@ -1,26 +1,53 @@
 <template>
   <div v-if="user">
     <ul class="tasks">
-      <draggable v-model="sortedTasks" @end="onDragEnd" group="taskGroup" handle=".drag-handle">
-        <li v-for="task in sortedTasks" :key="task.uid" class="task container" :class="{ dropped: dropGroup.includes(task.uid) }">
-          <input type="text" class="title is-1 task__title" v-model="task.title" @change="editTask({ taskUid: task.uid, userId: user.uid, updates: { title: $event.target.value } })" />
+      <draggable
+        v-model="sortedTasks"
+        @end="onDragEnd"
+        group="taskGroup"
+        handle=".drag-handle"
+      >
+        <li
+          v-for="task in sortedTasks"
+          :key="task.uid"
+          class="task container"
+          :class="{ dropped: dropGroup.includes(task.uid) }"
+          :data-task-uid="task.uid"
+        >
+          <input
+            type="text"
+            class="title is-1 task__title"
+            v-model="task.title"
+            @change="
+              editTask({
+                taskUid: task.uid,
+                userId: user.uid,
+                updates: { title: $event.target.value },
+              })
+            "
+          />
           <div class="actions">
             <div class="icon-button" @click="drop({ taskUid: task.uid })">
               <unicon name="check" fill="currentColor"></unicon>
             </div>
-            <div class="icon-button" @click="deleteTask({ userId: user.uid, taskId: task.uid })">
+            <div
+              class="icon-button"
+              @click="deleteTask({ userId: user.uid, taskId: task.uid })"
+            >
               <unicon name="minus" fill="currentColor"></unicon>
             </div>
             <div class="drag-handle">
               <div class="icon-button">
-                <unicon name="grip-horizontal-line" fill="currentColor"></unicon>
+                <unicon
+                  name="grip-horizontal-line"
+                  fill="currentColor"
+                ></unicon>
               </div>
             </div>
           </div>
         </li>
       </draggable>
     </ul>
-
 
     <form class="add-task" @submit.prevent="null">
       <b-input type="text" v-model="newTaskTitle" maxlength="30" />
@@ -61,6 +88,7 @@ export default {
         return this.tasks;
       },
       set(updatedTasks) {
+        console.log({ updatedTasks });
         this.updateTaskPositions(updatedTasks);
       },
     },
@@ -72,7 +100,7 @@ export default {
       "addTask",
       "deleteTask",
       "updateTaskPositions",
-      "persistTaskPositions",
+      "persistTaskPosition",
     ]),
     drop({ taskUid }) {
       console.log(this.dropGroup);
@@ -81,37 +109,55 @@ export default {
     startDrag(event) {
       event.preventDefault();
       event.stopPropagation();
-      const draggableElement = event.target.closest('.draggable');
+      const draggableElement = event.target.closest(".draggable");
       if (draggableElement) {
         draggableElement.draggable = true;
-        draggableElement.classList.add('dragging');
+        draggableElement.classList.add("dragging");
       }
     },
-
     async onDragEnd(event) {
       const draggedIndex = event.oldIndex;
-      const droppedIndex = event.newIndex;
+      const targetIndex = event.newIndex;
+      const draggedTask = this.sortedTasks[draggedIndex];
+      const targetTask = this.sortedTasks[targetIndex];
 
-      const updatedTasks = [...this.sortedTasks];
+      let calcPosition;
 
-      // Switch the positions of dragged and dropped tasks
-      const draggedTask = {
-        uid: updatedTasks[draggedIndex].uid,
-        position: updatedTasks[draggedIndex].position,
-      };
-      const droppedTask = {
-        uid: updatedTasks[droppedIndex].uid,
-        position: updatedTasks[droppedIndex].position,
-      };
-      // Set the updated tasks to trigger the computed property setter
-      this.sortedTasks = updatedTasks.map((item) => {
-        if (item.uid === draggedTask.uid)
-          return { ...item, position: droppedTask.position };
-        else if (item.uid === droppedTask.uid)
-          return { ...item, position: draggedTask.position };
-        else return item;
+      if (targetIndex > draggedIndex) {
+        // Dragging down
+        if (targetIndex === this.sortedTasks.length - 1) {
+          // If dragging to the last position, set the position as a higher value
+          calcPosition = targetTask.position + 1;
+        } else {
+          // Calculate the new position as the average of the target and next task positions
+          const nextTask = this.sortedTasks[targetIndex + 1];
+          calcPosition =
+            targetTask.position + (nextTask.position - targetTask.position) / 2;
+        }
+      } else if (targetIndex < draggedIndex) {
+        // Dragging up
+        if (targetIndex === 0) {
+          // If dragging to the first position, set the position as a fraction of the second task's position
+          const secondTask = this.sortedTasks[1];
+          calcPosition = secondTask.position / 2;
+        } else {
+          // Calculate the new position as the average of the target and previous task positions
+          const prevTask = this.sortedTasks[targetIndex - 1];
+          calcPosition =
+            prevTask.position + (targetTask.position - prevTask.position) / 2;
+        }
+      }
+
+      calcPosition = parseFloat(calcPosition.toFixed(3));
+
+      // Update the position of the dragged task
+      draggedTask.position = calcPosition;
+
+      // Update the position of the dragged task in the database
+      await this.persistTaskPosition({
+        taskUid: draggedTask.uid,
+        updates: { position: calcPosition },
       });
-      this.persistTaskPositions({ draggedTask, droppedTask });
     },
   },
 };
@@ -230,5 +276,4 @@ export default {
 .dragging {
   /* Style the dragging element here */
 }
-
 </style>

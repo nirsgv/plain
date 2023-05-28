@@ -34,7 +34,8 @@ export default new Vuex.Store({
     user: null,
   },
   getters: {
-    tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
+    tasks: (state) =>
+      state.tasks.sort((a, b) => a.position - b.position),
     authenticated: (state) => state.authenticated,
     user: (state) => state.user,
   },
@@ -53,7 +54,7 @@ export default new Vuex.Store({
       state.user = { ...user.data };
     },
     UPDATE_TASK_POSITIONS: (state, { updatedTasks }) => {
-      console.log(updatedTasks)
+      console.log(updatedTasks);
       state.tasks = updatedTasks;
     },
   },
@@ -131,15 +132,15 @@ export default new Vuex.Store({
       console.log({ response, commit });
     },
     updateTaskPositions: ({ commit }, updatedTasks) => {
-      console.log(updatedTasks)
+      console.log(updatedTasks);
       commit("UPDATE_TASK_POSITIONS", { updatedTasks });
     },
-    persistTaskPositions: async ({ commit }, { draggedTask, droppedTask }) => {
-      console.log(commit);
-      await Promise.all([
-        editTask({taskUid: draggedTask.uid, updates: { position: droppedTask.position } }),
-        editTask({taskUid: droppedTask.uid, updates: { position: draggedTask.position } })
-      ])
+    persistTaskPosition: async ({ commit }, { taskUid, updates }) => {
+      console.log({ taskUid, updates, commit });
+      await editTask({
+        taskUid,
+        updates,
+      });
     },
   },
   modules: {},
