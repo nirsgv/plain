@@ -34,8 +34,7 @@ export default new Vuex.Store({
     user: null,
   },
   getters: {
-    tasks: (state) =>
-      state.tasks.sort((a, b) => a.position - b.position),
+    tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
     authenticated: (state) => state.authenticated,
     user: (state) => state.user,
   },
@@ -62,9 +61,9 @@ export default new Vuex.Store({
     setTasks: ({ commit }, { tasks }) => {
       commit("SET_TASKS", { tasks });
     },
-    loadTasks: async ({ commit }, { userId }) => {
+    loadTasks: async ({ commit }, { userId, list }) => {
       console.log({ userId });
-      const tasks = await getUserTasks(userId);
+      const tasks = await getUserTasks(userId, list);
       console.log({ tasks });
       commit("SET_TASKS", { tasks });
     },
@@ -122,6 +121,9 @@ export default new Vuex.Store({
     },
     addTask: async ({ commit, dispatch }, { userId, title, parentTask }) => {
       const response = await addTask({ userId, title, parentTask });
+      // const createdTaskUid = response.uid;
+      // const response2 = await editTask({ userId, parentTask });
+
       dispatch("loadTasks", { userId });
       console.log({ response, commit });
     },

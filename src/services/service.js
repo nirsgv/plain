@@ -15,15 +15,17 @@ const getTask = async () => {
   return data;
 };
 
-const getUserTasks = async (userId) => {
+const getUserTasks = async (userId, list = "") => {
   console.log(userId);
-  const { data } = await axi.get(`${baseURL}/tasks/${userId}`);
-  // await new Promise(resolve => setTimeout(resolve, 20));
+  const params = { userId };
+  if (list) {
+    params.list = list;
+  }
+  const { data } = await axios.get(`${baseURL}/tasks`, { params });
   return data;
 };
 
 const submitRegisterDetails = async (details) => {
-  console.log(details);
   const { data, error } = await axi.post(`${baseURL}/register`, details);
   console.log(data, error);
   if (error) return error;
@@ -37,8 +39,7 @@ const submitLoginDetails = async (details) => {
 };
 
 const editTask = async ({ taskUid, updates }) => {
-  console.log({ taskUid, updates });
-  const { data } = await axi.post(`${baseURL}/tasks/edit`, {
+  const { data } = await axi.patch(`${baseURL}/tasks/edit`, {
     taskUid,
     updates,
   });
@@ -46,20 +47,27 @@ const editTask = async ({ taskUid, updates }) => {
   return { data };
 };
 
-const addTask = async ({ userId, title, parentTask = null }) => {
-  console.log({ userId, title, parentTask });
-  const { data } = await axi.post(`${baseURL}/tasks/create`, {
-    userId,
-    title,
-    parentTask,
+const addRemoveChild = async ({ taskUid, action, childTaskUid }) => {
+  const { data } = await axi.patch(`${baseURL}/tasks/add-remove-child`, {
+    taskUid,
+    action,
+    childTaskUid,
   });
   console.log(data);
   return { data };
 };
 
+const addTask = async ({ userId, title, parentTask = null }) => {
+  const { data } = await axi.post(`${baseURL}/tasks/create`, {
+    userId,
+    title,
+    parentTask,
+  });
+  return { data };
+};
+
 const deleteTask = async ({ taskId }) => {
   const { data } = await axi.delete(`${baseURL}/tasks/delete`, { taskId });
-  console.log(data);
   return { data };
 };
 
@@ -69,6 +77,7 @@ export {
   submitRegisterDetails,
   submitLoginDetails,
   editTask,
+  addRemoveChild,
   addTask,
   deleteTask,
 };

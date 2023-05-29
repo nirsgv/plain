@@ -19,7 +19,7 @@ export default {
     LoginBar,
   },
   mounted() {
-    !this.authenticated && this.routeToLoginPage();
+    // !this.authenticated && this.routeToLoginPage();
   },
   computed: {
     ...mapGetters(["authenticated"]),

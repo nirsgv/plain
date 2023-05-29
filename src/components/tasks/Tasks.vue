@@ -41,7 +41,7 @@
             class="icon-button"
             @click="addTask({ userId: user.uid, parentTask: task.uid })"
           >
-            <unicon name="arrow-down-right" fill="currentColor"></unicon>
+            <unicon name="corner-down-right" fill="currentColor"></unicon>
           </div>
           <div class="drag-handle">
             <div class="icon-button">
@@ -172,7 +172,7 @@ export default {
       text-align: center;
       height: -webkit-fill-available;
       font-size: 3rem;
-      outline: none !important;
+      outline: none!important;
       width: 100%;
       caret-color: var(--border-color);
     }

@@ -1,36 +1,34 @@
 const Task = require("../models/Task");
 const { v4: uuidv4 } = require("uuid");
+
+const { ReasonPhrases, StatusCodes } = require("http-status-codes");
+
 exports.getTasks = async (req, res) => {
   try {
-    console.log("Fetching tracks...");
     const response = await Task.find();
-    console.log("Tasks:", response.data);
-    res.json(response.data);
+    res.status(StatusCodes.OK).json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(StatusCodes.NOT_FOUND).json({ error, message: ReasonPhrases.NOT_FOUND });
   }
 };
 
 exports.getUserTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ user_id: req.params?.userId });
-    console.log(tasks);
-    res.json(tasks);
-  } catch (err) {
-    console.error(err);
+    const tasks = await Task.find({ user_id: req.query?.userId });
+    res.status(StatusCodes.OK).json(tasks);
+  } catch (error) {
+    res.status(StatusCodes.NOT_FOUND).json({ error, message: ReasonPhrases.NOT_FOUND });
   }
 };
 
 exports.getTasks = async (req, res) => {
   try {
-    console.log("Fetching tracks...");
     const response = await Task.find();
-    console.log("Tasks:", response);
     res.json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error, message: ReasonPhrases.NOT_FOUND });
   }
 };
 
@@ -44,7 +42,9 @@ exports.getTask = async (req, res) => {
     return res.json(task);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error, message: ReasonPhrases.NOT_FOUND });
   }
 };
 
@@ -52,9 +52,11 @@ const getLastPosition = async () => {
   try {
     const tasks = await Task.find({}, "position");
     if (!tasks.length) return 0;
-    return Math.max(...tasks.map(p => p.position));
+    return Math.max(...tasks.map((p) => p.position));
   } catch (error) {
-    console.log(error);
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error, message: ReasonPhrases.NOT_FOUND });
   }
 };
 
@@ -70,29 +72,56 @@ exports.createTask = async (req, res) => {
     parent_task_uid: parentTask || "",
   });
   await task.save();
-  res.status(200).json({ status: "Cool" });
+  res.status(StatusCodes.CREATED).json({ message: ReasonPhrases.CREATED });
 };
 
 exports.deleteTask = async (req, res) => {
   const { taskId } = req.body;
   try {
     await Task.deleteOne({ id: taskId });
-    res.status(200).json({ status: "Deleted" });
+    res.status(StatusCodes.OK).json({ message: ReasonPhrases.OK });
   } catch (error) {
     console.error(error);
-    res.status(204).json({ status: "Error with deleting item" });
+    res.status(StatusCodes.NO_CONTENT).json({ error, message: ReasonPhrases.NO_CONTENT });
   }
 };
 
 exports.editTask = async (req, res) => {
   const { taskUid, updates } = req.body;
-  // const t = await Task.findOne({ uid: taskUid });
-  await Task.findOneAndUpdate(
-    { uid: taskUid },
-    { ...updates, last_updated_at: new Date() }
-  );
+  try {
+    await Task.findOneAndUpdate(
+      { uid: taskUid },
+      { ...updates, last_updated_at: new Date() }
+    );
+    res.status(StatusCodes.CREATED).json({ message: ReasonPhrases.CREATED });
+  } catch (error) {
+    res
+      .status(StatusCodes.NOT_MODIFIED)
+      .json({ error, message: ReasonPhrases.NOT_MODIFIED });
+  }
+};
 
-  res.status(204).json({ status: "sababa" });
+exports.addRemoveChild = async (req, res) => {
+  console.log(req.body);
+  const { taskUid, action, childTaskUid } = req.body;
+  try {
+    const task = await Task.findOne({ uid: taskUid });
+    if (action === "add") {
+      if (!task.child_task_uids.includes(childTaskUid)) {
+        task.child_task_uids = [...task.child_task_uids, childTaskUid];
+      }
+    } else if (action === "remove") {
+      task.child_task_uids = task.child_task_uids.filter(
+        (childTask) => childTask !== childTaskUid
+      );
+    }
+    await task.save(); // Save the updated task
+    console.log({ task });
+    return res.json({ task });
+  } catch (error) {
+    console.error(error);
+    return res.status(404).json({ error: "Task not found" });
+  }
 };
 
 exports.test = async (req, res) => {
