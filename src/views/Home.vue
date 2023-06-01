@@ -1,9 +1,11 @@
 <template>
   <div class="home">
+    <h1>{{ uid }}</h1>
     <Breadcrumbs />
     <Tasks v-if="user" />
   </div>
 </template>
+
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Tasks from "../components/tasks/Tasks.vue";
@@ -15,10 +17,17 @@ export default {
     Tasks,
     Breadcrumbs,
   },
-  mounted() {
-    this.authenticated &&
-      this.user &&
-      this.loadTasks({ userId: this.user.uid });
+  props: {
+    uid: {
+      type: String,
+      default: "",
+    },
+  },
+  watch: {
+    uid: {
+      handler: 'fetchTasks', // Call fetchTasks whenever uid prop changes
+      immediate: true // Call fetchTasks immediately on component creation as well
+    },
   },
   data() {
     return {
@@ -30,12 +39,18 @@ export default {
   },
   methods: {
     ...mapActions(["loadTasks"]),
+    fetchTasks() {
+      if (this.authenticated && this.user) {
+        this.loadTasks({ userId: this.user.uid, taskUid: this.uid });
+      }
+    },
     logTasks() {
       console.log(this.tasks);
     },
   },
 };
 </script>
+
 <style lang="scss">
 
 </style>

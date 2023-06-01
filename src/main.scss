@@ -1,5 +1,14 @@
-html { font-size: 62.5%; } 
+@font-face {
+  font-family: "MartianMono";
+  src: local("./assets/fonts//MartianMono-Regular.ttf"),format("truetype");
+}
 
+
+
+html { font-size: 62.5%; } 
+body {
+  font-family: 'Martian Mono', monospace;
+}
 .ellipsis {
   white-space: nowrap;
   overflow: scroll;

@@ -62,6 +62,7 @@ app.get("/api/task/:id", tasksController.getTask);
 app.get("/api/test", tasksController.test);
 app.patch("/api/tasks/edit", tasksController.editTask);
 app.patch("/api/tasks/add-remove-child", tasksController.addRemoveChild);
+app.get("/api/tasks/titles", tasksController.getTitles);
 
 app.post("/api/tasks/create", tasksController.createTask);
 app.delete("/api/tasks/delete", tasksController.deleteTask);

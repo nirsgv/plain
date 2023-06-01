@@ -1,43 +1,57 @@
 const Task = require("../models/Task");
 const { v4: uuidv4 } = require("uuid");
 
-const { ReasonPhrases, StatusCodes } = require("http-status-codes");
+const {
+  ReasonPhrases,
+  StatusCodes,
+  getReasonPhrase,
+} = require("http-status-codes");
+
+const getLastPosition = async () => {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const tasks = await Task.find({}, "position");
+    if (!tasks.length) return 0;
+    else return Math.max(...tasks.map((p) => p.position));
+  } catch (error) {
+    throw error;
+  }
+};
 
 exports.getTasks = async (req, res) => {
   try {
     const response = await Task.find();
-    res.status(StatusCodes.OK).json(response.data);
+    res.status(StatusCodes.OK).json(response);
   } catch (error) {
     console.error(error);
-    res.status(StatusCodes.NOT_FOUND).json({ error, message: ReasonPhrases.NOT_FOUND });
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error, message: ReasonPhrases.NOT_FOUND });
   }
 };
 
 exports.getUserTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ user_id: req.query?.userId });
+    const tasks = await Task.find({
+      user_id: req.query?.userId,
+      parent_task_uid: req.query?.parentTaskUid || "",
+    });
+    console.log({tasks});
     res.status(StatusCodes.OK).json(tasks);
   } catch (error) {
-    res.status(StatusCodes.NOT_FOUND).json({ error, message: ReasonPhrases.NOT_FOUND });
-  }
-};
-
-exports.getTasks = async (req, res) => {
-  try {
-    const response = await Task.find();
-    res.json(response.data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error, message: ReasonPhrases.NOT_FOUND });
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error, message: ReasonPhrases.NOT_FOUND });
   }
 };
 
 exports.getTask = async (req, res) => {
   try {
     const task = await Task.findOne({ id: req.params.id });
-    console.log({ task });
     if (!task) {
-      return res.status(404).json({ error: "Track not found" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Track not found" });
     }
     return res.json(task);
   } catch (error) {
@@ -48,31 +62,29 @@ exports.getTask = async (req, res) => {
   }
 };
 
-const getLastPosition = async () => {
-  try {
-    const tasks = await Task.find({}, "position");
-    if (!tasks.length) return 0;
-    return Math.max(...tasks.map((p) => p.position));
-  } catch (error) {
-    res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error, message: ReasonPhrases.NOT_FOUND });
-  }
-};
-
 exports.createTask = async (req, res) => {
   const { userId, title, parentTask } = req.body;
-  const lastPosition = await getLastPosition();
-  const task = new Task({
-    title: title || "What do you need to do?",
-    uid: uuidv4(),
-    created_At: new Date(),
-    user_id: userId,
-    position: Math.ceil(lastPosition + 100),
-    parent_task_uid: parentTask || "",
-  });
-  await task.save();
-  res.status(StatusCodes.CREATED).json({ message: ReasonPhrases.CREATED });
+  console.log({ userId, title, parentTask });
+  try {
+    const lastPosition = await getLastPosition();
+    const task = new Task({
+      title: title || "What do you need to do?",
+      uid: uuidv4(),
+      created_At: new Date(),
+      user_id: userId,
+      position: Math.ceil(lastPosition + 100),
+      parent_task_uid: parentTask || "",
+    });
+    await task.save();
+    res
+      .status(StatusCodes.CREATED)
+      .json({ taskUid: task.uid, message: ReasonPhrases.CREATED });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error, message: ReasonPhrases.INTERNAL_SERVER_ERROR });
+  }
 };
 
 exports.deleteTask = async (req, res) => {
@@ -82,7 +94,9 @@ exports.deleteTask = async (req, res) => {
     res.status(StatusCodes.OK).json({ message: ReasonPhrases.OK });
   } catch (error) {
     console.error(error);
-    res.status(StatusCodes.NO_CONTENT).json({ error, message: ReasonPhrases.NO_CONTENT });
+    res
+      .status(StatusCodes.NO_CONTENT)
+      .json({ error, message: ReasonPhrases.NO_CONTENT });
   }
 };
 
@@ -102,12 +116,11 @@ exports.editTask = async (req, res) => {
 };
 
 exports.addRemoveChild = async (req, res) => {
-  console.log(req.body);
   const { taskUid, action, childTaskUid } = req.body;
   try {
     const task = await Task.findOne({ uid: taskUid });
     if (action === "add") {
-      if (!task.child_task_uids.includes(childTaskUid)) {
+      if (childTaskUid && !task.child_task_uids.includes(childTaskUid)) {
         task.child_task_uids = [...task.child_task_uids, childTaskUid];
       }
     } else if (action === "remove") {
@@ -115,12 +128,36 @@ exports.addRemoveChild = async (req, res) => {
         (childTask) => childTask !== childTaskUid
       );
     }
-    await task.save(); // Save the updated task
-    console.log({ task });
-    return res.json({ task });
+    await task.save();
+    return res.status(StatusCodes.OK).json({ task });
   } catch (error) {
-    console.error(error);
-    return res.status(404).json({ error: "Task not found" });
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error, message: ReasonPhrases.NOT_FOUND });
+  }
+};
+
+exports.getTitles = async (req, res) => {
+  const result = {};
+  const uids = req.query.uids;
+  if (!uids || !Array.isArray(uids)) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .send({ error: getReasonPhrase(StatusCodes.BAD_REQUEST) });
+  } else {
+    try {
+      const tasks = await Task.find({ uid: { $in: uids } });
+      tasks.forEach((task) => {
+        result[task.uid] = task.title;
+      });
+      console.log({ result });
+
+      res.json(result);
+    } catch (error) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send({ error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+    }
   }
 };
 
@@ -130,6 +167,8 @@ exports.test = async (req, res) => {
     res.send(`Total tracks: ${count}`);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal server error" });
   }
 };

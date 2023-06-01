@@ -5,70 +5,121 @@ const baseURL = "http://localhost:8000/api";
 
 const axi = axios.create({
   baseURL,
-  timeout: 1000,
+  timeout: 5000,
   headers: { "X-Requested-With": "XMLHttpRequest" },
 });
 
 const getTask = async () => {
-  const { data } = await axi.get(`${baseURL}/tasks`);
-  // await new Promise(resolve => setTimeout(resolve, 20));
-  return data;
+  try {
+    const { data } = await axi.get(`${baseURL}/tasks`);
+    return data;
+  } catch (error) {
+    console.error("Error retrieving tasks:", error);
+    throw new Error("Failed to retrieve tasks.");
+  }
 };
 
-const getUserTasks = async (userId, list = "") => {
-  console.log(userId);
-  const params = { userId };
-  if (list) {
-    params.list = list;
+const getUserTasks = async ({ userId, taskUid }) => {
+  if (!userId) {
+    throw new Error("userId is required");
   }
-  const { data } = await axios.get(`${baseURL}/tasks`, { params });
-  return data;
+
+  const params = {
+    userId,
+    parentTaskUid: taskUid,
+  };
+
+  try {
+    const { data } = await axi.get(`${baseURL}/tasks`, { params });
+    return data;
+  } catch (error) {
+    const { status, statusText } = error.response;
+    console.error(`Error retrieving user tasks: ${status} ${statusText}`);
+    throw new Error(`${status} ${statusText}`);
+  }
 };
 
 const submitRegisterDetails = async (details) => {
-  const { data, error } = await axi.post(`${baseURL}/register`, details);
-  console.log(data, error);
-  if (error) return error;
-  return data;
+  try {
+    const { data } = await axi.post(`${baseURL}/register`, details);
+    return data;
+  } catch (error) {
+    console.error("Error submitting register details:", error);
+    throw new Error("Failed to submit register details.");
+  }
 };
 
 const submitLoginDetails = async (details) => {
-  const { data } = await axi.post(`${baseURL}/login`, details);
-  console.log(data);
-  return { data };
+  try {
+    const { data } = await axi.post(`${baseURL}/login`, details);
+    return { data };
+  } catch (error) {
+    console.error("Error submitting login details:", error);
+    throw new Error("Failed to submit login details.");
+  }
 };
 
 const editTask = async ({ taskUid, updates }) => {
-  const { data } = await axi.patch(`${baseURL}/tasks/edit`, {
-    taskUid,
-    updates,
-  });
-  console.log(data);
-  return { data };
+  try {
+    const { data } = await axi.patch(`${baseURL}/tasks/edit`, {
+      taskUid,
+      updates,
+    });
+    return { data };
+  } catch (error) {
+    console.error("Error editing task:", error);
+    throw new Error("Failed to edit task.");
+  }
 };
 
 const addRemoveChild = async ({ taskUid, action, childTaskUid }) => {
-  const { data } = await axi.patch(`${baseURL}/tasks/add-remove-child`, {
-    taskUid,
-    action,
-    childTaskUid,
-  });
-  console.log(data);
-  return { data };
+  try {
+    const { data } = await axi.patch(`${baseURL}/tasks/add-remove-child`, {
+      taskUid,
+      action,
+      childTaskUid,
+    });
+    return { data };
+  } catch (error) {
+    console.error("Error adding/removing child task:", error);
+    throw new Error("Failed to add/remove child task.");
+  }
 };
 
-const addTask = async ({ userId, title, parentTask = null }) => {
-  const { data } = await axi.post(`${baseURL}/tasks/create`, {
-    userId,
-    title,
-    parentTask,
-  });
-  return { data };
+const addTask = async ({ userId, title, parentTask = "" }) => {
+  try {
+    const { data } = await axi.post(`${baseURL}/tasks/create`, {
+      userId,
+      title,
+      parentTask,
+    });
+    return { data };
+  } catch (error) {
+    console.error("Error adding task:", error);
+    throw new Error("Failed to add task.");
+  }
 };
 
 const deleteTask = async ({ taskId }) => {
-  const { data } = await axi.delete(`${baseURL}/tasks/delete`, { taskId });
-  return { data };
+  try {
+    const { data } = await axi.delete(`${baseURL}/tasks/delete`, { taskId });
+    return { data };
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw new Error("Failed to delete task.");
+  }
+};
+
+const getTitles = async ({ uids }) => {
+  try {
+    const { data } = await axi.get(`${baseURL}/tasks/titles/`, {
+      params: { uids },
+    });
+    return { data };
+  } catch (error) {
+    console.error("Error retrieving task titles:", error);
+    throw new Error("Failed to retrieve task titles.");
+  }
 };
 
 export {
@@ -80,4 +131,5 @@ export {
   addRemoveChild,
   addTask,
   deleteTask,
+  getTitles,
 };

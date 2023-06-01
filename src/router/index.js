@@ -9,12 +9,6 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    props: true,
-    component: Home,
-  },
-  {
     path: "/about/:uid/:uid2",
     name: "About",
     props: true,
@@ -33,6 +27,13 @@ const routes = [
     name: "Register",
     component: Register,
   },
+  {
+    path: "/:uid?",
+    name: "Home",
+    props: true,
+    component: Home,
+  },
+
 ];
 
 const router = new VueRouter({

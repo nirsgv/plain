@@ -27,6 +27,7 @@
             })
           "
         />
+        <ChildTasks :uids="task.child_task_uids" v-if="task.child_task_uids" :parentUid="task.uid"/>
         <div class="actions">
           <div class="icon-button" @click="drop({ taskUid: task.uid })">
             <unicon name="check" fill="currentColor"></unicon>
@@ -69,11 +70,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
-
+import ChildTasks from "@/components/childTasks/ChildTasks.vue";
 export default {
   name: "Tasks",
   components: {
     draggable,
+    ChildTasks,
   },
   data() {
     return {
@@ -274,5 +276,20 @@ export default {
 }
 .dragging {
   /* Style the dragging element here */
+}
+
+.child-tasks {
+  position: absolute;
+  bottom: 0;
+  --margin: .5rem;
+  li {
+    display: inline-block;
+    &:not(:first-child) {
+      margin-left: var(--margin);
+    }
+    &:not(:last-child) {
+      margin-right: var(--margin);
+    }
+  }
 }
 </style>

@@ -8,6 +8,7 @@ import {
   submitLoginDetails,
   editTask,
   addTask,
+  addRemoveChild,
   deleteTask,
 } from "@/services/service.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
@@ -61,9 +62,9 @@ export default new Vuex.Store({
     setTasks: ({ commit }, { tasks }) => {
       commit("SET_TASKS", { tasks });
     },
-    loadTasks: async ({ commit }, { userId, list }) => {
-      console.log({ userId });
-      const tasks = await getUserTasks(userId, list);
+    loadTasks: async ({ commit }, { userId, taskUid = "" }) => {
+      console.log('loadTasks', { userId, taskUid });
+      const tasks = await getUserTasks({ userId, taskUid });
       console.log({ tasks });
       commit("SET_TASKS", { tasks });
     },
@@ -119,13 +120,17 @@ export default new Vuex.Store({
 
       commit("SET_TASK", response);
     },
-    addTask: async ({ commit, dispatch }, { userId, title, parentTask }) => {
+    addTask: async ({ dispatch }, { userId, title, parentTask }) => {
       const response = await addTask({ userId, title, parentTask });
+      console.log({response});
+      if (parentTask) {
+        await addRemoveChild({taskUid: parentTask, action: 'add', childTaskUid: response.data.taskUid})
+      }
       // const createdTaskUid = response.uid;
       // const response2 = await editTask({ userId, parentTask });
 
       dispatch("loadTasks", { userId });
-      console.log({ response, commit });
+      console.log({ response });
     },
     deleteTask: async ({ commit, dispatch }, { userId, taskId }) => {
       console.log({ userId, taskId });
