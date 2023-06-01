@@ -122,6 +122,18 @@ const getTitles = async ({ uids }) => {
   }
 };
 
+const getBreadcrumbs = async ({ uid }) => {
+  try {
+    const { data } = await axi.get(`${baseURL}/tasks/breadcrumbs/`, {
+      params: { taskUid: uid },
+    });
+    return { data };
+  } catch (error) {
+    console.error("Error retrieving task titles:", error);
+    throw new Error("Failed to retrieve task titles.");
+  }
+};
+
 export {
   getTask,
   getUserTasks,
@@ -132,4 +144,5 @@ export {
   addTask,
   deleteTask,
   getTitles,
+  getBreadcrumbs,
 };

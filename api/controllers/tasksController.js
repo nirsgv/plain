@@ -161,6 +161,46 @@ exports.getTitles = async (req, res) => {
   }
 };
 
+exports.getBreadcrumbs = async (req, res) => {
+  const taskUid = req.query.taskUid;
+  console.log('getBreadcrumbs');
+  console.log({ taskUid });
+  if (!taskUid) {
+    return res.status(StatusCodes.BAD_REQUEST).send({ error: getReasonPhrase(StatusCodes.BAD_REQUEST) });
+  }
+
+  try {
+    const breadcrumbs = await getParentTasks(taskUid);
+    res.json(breadcrumbs.reverse());
+  } catch (error) {
+    console.error('Error retrieving breadcrumbs:', error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+  }
+};
+
+async function getParentTasks(taskUid, breadcrumbs = [], level = 0) {
+  const task = await Task.findOne({ uid: taskUid });
+
+  if (!task) {
+    return breadcrumbs.reverse();
+  }
+
+  const { uid, parent_task_uid, title } = task;
+  breadcrumbs.push({ uid, parent_task_uid, title, level });
+
+  if (parent_task_uid) {
+    return getParentTasks(parent_task_uid, breadcrumbs, level + 1);
+  } else {
+    return breadcrumbs.map((breadcrumb) => ({
+      ...breadcrumb,
+      level: breadcrumbs.length - 1 - breadcrumb.level,
+    }));
+  }
+}
+
+
+
+
 exports.test = async (req, res) => {
   try {
     const count = await Task.countDocuments();

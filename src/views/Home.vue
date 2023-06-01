@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <h1>{{ uid }}</h1>
-    <Breadcrumbs />
+    <Breadcrumbs :uid="uid"/>
     <Tasks v-if="user" />
   </div>
 </template>
