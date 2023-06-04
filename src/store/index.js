@@ -45,6 +45,9 @@ export default new Vuex.Store({
     SET_TASKS: (state, { tasks }) => {
       state.tasks = tasks;
     },
+    ADD_TASK: (state, { task }) => {
+      state.tasks =  [...state.tasks, task ];
+    },
     SET_TASKS_LOADING: (state, { isLoading }) => {
       console.log(isLoading)
       state.tasksLoading = isLoading;
@@ -128,17 +131,14 @@ export default new Vuex.Store({
 
       commit("SET_TASK", response);
     },
-    addTask: async ({ dispatch }, { userId, title, parentTask }) => {
+    addTask: async ({ commit }, { userId, title, parentTask }) => {
+      console.log(parentTask);
       const response = await addTask({ userId, title, parentTask });
       console.log({response});
       if (parentTask) {
-        await addRemoveChild({taskUid: parentTask, action: 'add', childTaskUid: response.data.taskUid})
+        await addRemoveChild({ taskUid: parentTask, action: 'add', childTaskUid: response.data.task.uid })
       }
-      // const createdTaskUid = response.uid;
-      // const response2 = await editTask({ userId, parentTask });
-
-      dispatch("loadTasks", { userId });
-      console.log({ response });
+      commit("ADD_TASK", { task: response.data.task });
     },
     deleteTask: async ({ commit, dispatch }, { userId, taskId }) => {
       console.log({ userId, taskId });

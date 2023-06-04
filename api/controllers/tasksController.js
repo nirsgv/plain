@@ -64,7 +64,6 @@ exports.getTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   const { userId, title, parentTask } = req.body;
-  console.log({ userId, title, parentTask });
   try {
     const lastPosition = await getLastPosition();
     const task = new Task({
@@ -78,7 +77,7 @@ exports.createTask = async (req, res) => {
     await task.save();
     res
       .status(StatusCodes.CREATED)
-      .json({ taskUid: task.uid, message: ReasonPhrases.CREATED });
+      .json({ task, message: ReasonPhrases.CREATED });
   } catch (error) {
     console.error(error);
     res

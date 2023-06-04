@@ -59,7 +59,7 @@
       <button
         native-type="submit"
         type="button"
-        @click.prevent="addTask({ userId: user.uid, title: newTaskTitle })"
+        @click.prevent="addTask({ userId: user.uid, title: newTaskTitle, parentTask: uid })"
         class="add-task__button"
       >
         Add Task
@@ -78,6 +78,12 @@ export default {
   components: {
     draggable,
     ChildTasks,
+  },
+  props: {
+    uid: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {

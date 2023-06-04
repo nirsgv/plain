@@ -87,6 +87,7 @@ const addRemoveChild = async ({ taskUid, action, childTaskUid }) => {
 };
 
 const addTask = async ({ userId, title, parentTask = "" }) => {
+  console.log({parentTask});
   try {
     const { data } = await axi.post(`${baseURL}/tasks/create`, {
       userId,
