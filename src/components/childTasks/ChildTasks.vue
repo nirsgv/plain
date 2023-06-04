@@ -1,7 +1,10 @@
 <template>
-  <ul v-if="titlesMap" class="child-tasks">
+  <b-skeleton size="is-small" :active="loading" v-if="loading"></b-skeleton>
+  <ul v-else class="child-tasks">
     <li v-for="(title, key) in titlesMap" :key="key">
-      <router-link :to="`/${parentUid}`"><span>{{ title }}</span></router-link>
+      <router-link :to="`/${parentUid}`"
+        ><span>{{ title }}</span></router-link
+      >
     </li>
   </ul>
 </template>
@@ -13,6 +16,7 @@ export default {
   data() {
     return {
       titlesMap: null,
+      loading: false,
     };
   },
   props: {
@@ -23,7 +27,7 @@ export default {
     parentUid: {
       type: String,
       default: "",
-    }
+    },
   },
   watch: {
     uids: {
@@ -34,7 +38,9 @@ export default {
   methods: {
     async fetchTasks() {
       if (this.uids.length) {
+        this.loading = true;
         try {
+          // await new Promise((res) => setTimeout(res, 100000));
           const response = await getTitles({
             uids: this.uids.filter((uid) => !!uid),
           });
@@ -42,8 +48,38 @@ export default {
         } catch (error) {
           console.error(error);
         }
+        this.loading = false;
       }
     },
   },
 };
 </script>
+
+<style lang="scss">
+.b-skeleton,
+.child-tasks {
+  position: absolute;
+  bottom: 0;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.b-skeleton.b-skeleton {
+  width: 10rem;
+  justify-content: center;
+}
+
+.child-tasks {
+  --margin: 0.5rem;
+  li {
+    display: inline-block;
+    &:not(:first-child) {
+      margin-left: var(--margin);
+    }
+    &:not(:last-child) {
+      margin-right: var(--margin);
+    }
+  }
+}
+</style>

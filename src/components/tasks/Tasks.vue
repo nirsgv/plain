@@ -3,6 +3,7 @@
     <draggable
       tag="ul"
       class="tasks"
+      :class="{ 'tasks--loading': tasksLoading }"
       v-model="sortedTasks"
       @end="onDragEnd"
       group="taskGroup"
@@ -27,7 +28,7 @@
             })
           "
         />
-        <ChildTasks :uids="task.child_task_uids" v-if="task.child_task_uids" :parentUid="task.uid"/>
+        <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid"/>
         <div class="actions">
           <div class="icon-button" @click="drop({ taskUid: task.uid })">
             <unicon name="check" fill="currentColor"></unicon>
@@ -68,6 +69,7 @@
 </template>
 
 <script>
+
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import ChildTasks from "@/components/childTasks/ChildTasks.vue";
@@ -84,7 +86,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["tasks", "user"]),
+    ...mapGetters(["tasks", "user", "tasksLoading"]),
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -193,6 +195,14 @@ export default {
       opacity: 1;
     }
   }
+  &--loading {
+    .task {
+      border-color: black;
+      animation: bordercolor;
+      animation-duration: .2s;
+      animation-direction: alternate;
+    }
+  }
 }
 .add-task {
   margin: 2rem 5rem 0;
@@ -271,6 +281,15 @@ export default {
   }
 }
 
+@keyframes bordercolor {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .drag-handle {
   /* Style your drag handle element here */
 }
@@ -278,18 +297,4 @@ export default {
   /* Style the dragging element here */
 }
 
-.child-tasks {
-  position: absolute;
-  bottom: 0;
-  --margin: .5rem;
-  li {
-    display: inline-block;
-    &:not(:first-child) {
-      margin-left: var(--margin);
-    }
-    &:not(:last-child) {
-      margin-right: var(--margin);
-    }
-  }
-}
 </style>

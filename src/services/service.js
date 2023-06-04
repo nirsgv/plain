@@ -123,6 +123,7 @@ const getTitles = async ({ uids }) => {
 };
 
 const getBreadcrumbs = async ({ uid }) => {
+  // await new Promise(r => setTimeout(r, 100000));
   try {
     const { data } = await axi.get(`${baseURL}/tasks/breadcrumbs/`, {
       params: { taskUid: uid },

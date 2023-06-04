@@ -31,17 +31,23 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     tasks: [],
+    tasksLoading: false,
     authenticated: false,
     user: null,
   },
   getters: {
     tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
+    tasksLoading: (state) => state.tasksLoading,
     authenticated: (state) => state.authenticated,
     user: (state) => state.user,
   },
   mutations: {
     SET_TASKS: (state, { tasks }) => {
       state.tasks = tasks;
+    },
+    SET_TASKS_LOADING: (state, { isLoading }) => {
+      console.log(isLoading)
+      state.tasksLoading = isLoading;
     },
     SET_AUTHENTICATED: (state) => {
       state.authenticated = true;
@@ -64,9 +70,11 @@ export default new Vuex.Store({
     },
     loadTasks: async ({ commit }, { userId, taskUid = "" }) => {
       console.log('loadTasks', { userId, taskUid });
+      commit("SET_TASKS_LOADING", { isLoading: true });
       const tasks = await getUserTasks({ userId, taskUid });
       console.log({ tasks });
       commit("SET_TASKS", { tasks });
+      commit("SET_TASKS_LOADING", { isLoading: false });
     },
     submitRegisterDetails: async ({ commit, dispatch }, details) => {
       const user = await submitRegisterDetails(details);

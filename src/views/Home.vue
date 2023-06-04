@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="user">
     <Breadcrumbs :uid="uid"/>
-    <Tasks v-if="user" />
+    <Tasks />
   </div>
 </template>
 
