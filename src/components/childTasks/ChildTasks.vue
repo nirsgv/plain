@@ -1,12 +1,35 @@
 <template>
-  <b-skeleton size="is-small" :active="loading" v-if="loading"></b-skeleton>
-  <ul v-else class="child-tasks">
-    <li v-for="(title, key) in titlesMap" :key="key">
-      <router-link :to="`/${parentUid}`"
-        ><span>{{ title }}</span></router-link
-      >
-    </li>
-  </ul>
+  <div class="child-tasks" :class="{'side-entrance': !titlesMap}">
+    <h6
+      class="subtask-amount"
+      v-if="!!subTaskAmt && !titlesMap && !loading"
+      @click="fetchTasks"
+    >
+      {{ subTaskAmt }} subtasks
+    </h6>
+    <!-- <b-skeleton size="is-small" :active="loading" v-if="loading"></b-skeleton> -->
+    <b-loading
+      size="is-small"
+      :active="loading"
+      v-if="loading"
+      :is-full-page="false"
+      class="child-tasks"
+    >
+    </b-loading>
+    <div v-else-if="titlesMap" class="child-tasks side-entrance">
+      <div class="icon-button" @click="titlesMap = null">
+        <unicon name="arrow-left" fill="currentColor"></unicon>
+      </div>
+
+      <ul>
+        <li v-for="(title, key) in titlesMap" :key="key">
+          <router-link :to="`/${parentUid}`"
+            ><span>{{ title }}</span></router-link
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -29,10 +52,15 @@ export default {
       default: "",
     },
   },
-  watch: {
-    uids: {
-      handler: "fetchTasks", // Call fetchTasks whenever uids prop changes
-      immediate: true, // Call fetchTasks immediately on component creation as well
+  // watch: {
+  //   uids: {
+  //     handler: "fetchTasks", // Call fetchTasks whenever uids prop changes
+  //     immediate: true, // Call fetchTasks immediately on component creation as well
+  //   },
+  // },
+  computed: {
+    subTaskAmt() {
+      return this.uids.length;
     },
   },
   methods: {
@@ -40,7 +68,7 @@ export default {
       if (this.uids.length) {
         this.loading = true;
         try {
-          // await new Promise((res) => setTimeout(res, 100000));
+          // await new Promise((res) => setTimeout(res, 10000));
           const response = await getTitles({
             uids: this.uids.filter((uid) => !!uid),
           });
@@ -57,10 +85,11 @@ export default {
 
 <style lang="scss">
 .b-skeleton,
-.child-tasks {
+.child-tasks,
+.loading-overlay {
   position: absolute;
   bottom: 0;
-  height: 2.4rem;
+  height: 1.8rem;
   display: flex;
   align-items: center;
 }
@@ -72,6 +101,8 @@ export default {
 
 .child-tasks {
   --margin: 0.5rem;
+  width: 100%;
+  font-size: 1.2rem;
   li {
     display: inline-block;
     &:not(:first-child) {
@@ -81,5 +112,32 @@ export default {
       margin-right: var(--margin);
     }
   }
+}
+.subtask-amount,
+.spinner {
+  left: 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.side-entrance {
+  animation: entrance;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes entrance {
+  from {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.loading-overlay.is-active {
+  justify-content: flex-start;
 }
 </style>

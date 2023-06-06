@@ -58,7 +58,7 @@ mongoose.connection.on("error", (err) => {
 
 app.get("/api/alltasks", tasksController.getTasks);
 app.get("/api/tasks", tasksController.getUserTasks);
-app.get("/api/task/:id", tasksController.getTask);
+app.get("/api/task", tasksController.getTask);
 app.get("/api/test", tasksController.test);
 app.patch("/api/tasks/edit", tasksController.editTask);
 app.patch("/api/tasks/add-remove-child", tasksController.addRemoveChild);

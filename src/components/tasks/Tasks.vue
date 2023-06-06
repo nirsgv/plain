@@ -28,22 +28,35 @@
             })
           "
         />
-        <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid"/>
+        <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
         <div class="actions">
           <div class="icon-button" @click="drop({ taskUid: task.uid })">
             <unicon name="check" fill="currentColor"></unicon>
           </div>
-          <div
-            class="icon-button"
-            @click="deleteTask({ userId: user.uid, taskId: task.uid })"
-          >
+          <div class="icon-button" @click="dropDelete({ taskUid: task.uid })">
             <unicon name="minus" fill="currentColor"></unicon>
           </div>
           <div
             class="icon-button"
-            @click="addTask({ userId: user.uid, parentTask: task.uid })"
+            @click="
+              routeToPath({
+                path: parentLevel,
+              })
+            "
           >
-            <unicon name="corner-down-right" fill="currentColor"></unicon>
+            <unicon name="angle-left" fill="currentColor"></unicon>
+          </div>
+          <div
+            class="icon-button"
+            @click="
+              addTask({
+                userId: user.uid,
+                parentTask: task.uid,
+                addToCurrent: false,
+              })
+            "
+          >
+            <unicon name="angle-right" fill="currentColor"></unicon>
           </div>
           <div class="drag-handle">
             <div class="icon-button">
@@ -59,7 +72,14 @@
       <button
         native-type="submit"
         type="button"
-        @click.prevent="addTask({ userId: user.uid, title: newTaskTitle, parentTask: uid })"
+        @click.prevent="
+          addTask({
+            userId: user.uid,
+            title: newTaskTitle,
+            parentTask: uid,
+            addToCurrent: true,
+          })
+        "
         class="add-task__button"
       >
         Add Task
@@ -69,7 +89,6 @@
 </template>
 
 <script>
-
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import ChildTasks from "@/components/childTasks/ChildTasks.vue";
@@ -92,7 +111,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["tasks", "user", "tasksLoading"]),
+    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel"]),
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -113,9 +132,14 @@ export default {
       "deleteTask",
       "updateTaskPositions",
       "persistTaskPosition",
+      "routeToPath",
     ]),
     drop({ taskUid }) {
       this.dropGroup.push(taskUid);
+    },
+    dropDelete({ taskUid }) {
+      this.drop({ taskUid });
+      this.deleteTask({ userId: this.user.uid, taskId: taskUid });
     },
     async onDragEnd(event) {
       const draggedIndex = event.oldIndex;
@@ -182,7 +206,7 @@ export default {
       text-align: center;
       height: -webkit-fill-available;
       font-size: 3rem;
-      outline: none!important;
+      outline: none !important;
       width: 100%;
       caret-color: var(--border-color);
     }
@@ -205,7 +229,7 @@ export default {
     .task {
       border-color: black;
       animation: bordercolor;
-      animation-duration: .2s;
+      animation-duration: 0.2s;
       animation-direction: alternate;
     }
   }
@@ -302,5 +326,4 @@ export default {
 .dragging {
   /* Style the dragging element here */
 }
-
 </style>

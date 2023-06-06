@@ -47,12 +47,11 @@ exports.getUserTasks = async (req, res) => {
 
 exports.getTask = async (req, res) => {
   try {
-    const task = await Task.findOne({ id: req.params.id });
-    if (!task) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ error: "Track not found" });
-    }
+    const task = await Task.findOne({
+      user_id: req.query?.userId,
+      uid: req.query?.taskUid || "",
+    });
+    console.log(task);
     return res.json(task);
   } catch (error) {
     console.error(error);
@@ -87,16 +86,46 @@ exports.createTask = async (req, res) => {
 };
 
 exports.deleteTask = async (req, res) => {
-  const { taskId } = req.body;
+  const { taskId } = req.query;
+  console.log({ taskId });
+
   try {
-    await Task.deleteOne({ id: taskId });
+    await recursivelyDeleteTask(taskId);
+
     res.status(StatusCodes.OK).json({ message: ReasonPhrases.OK });
   } catch (error) {
     console.error(error);
     res
-      .status(StatusCodes.NO_CONTENT)
-      .json({ error, message: ReasonPhrases.NO_CONTENT });
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error, message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
+};
+
+const recursivelyDeleteTask = async (taskId) => {
+  // Find the task by its ID and delete it
+  const deletedTask = await Task.findOne({ uid: taskId });
+  if (!deletedTask) {
+    throw new Error('Task not found');
+  }
+
+  // Recursively delete child tasks
+  const childTaskIds = deletedTask.child_task_uids;
+  if (childTaskIds && childTaskIds.length > 0) {
+    await Promise.all(
+      childTaskIds.map(async (childTaskId) => {
+        await recursivelyDeleteTask(childTaskId);
+      })
+    );
+  }
+
+  // Remove the deleted task from other tasks' child_task_uids
+  await Task.updateMany(
+    { child_task_uids: taskId },
+    { $pull: { child_task_uids: taskId } }
+  );
+
+  // Delete the task itself
+  await Task.deleteOne({ uid: taskId });
 };
 
 exports.editTask = async (req, res) => {

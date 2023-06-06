@@ -7,8 +7,11 @@
 7. add loader animation
 8. add a route controller to add and remove child tasks (edit child tasks array)
 9. bread crumb component will traverse parent task uids and generate the breadcrumb with matching titles with each list load (tasks load)
+10. update add item - fix correct parent - implement going deeper and shallower
+11. update delete item and include removing parent and child values 
+12. update edit to not reload tasks 
 
 todo: 
 * make a task component
-* update add item - fix correct parent - implemeent going deeper and shallower
-* update delete item and include removing parent and child values 
+* implement going deeper and shallower (actions)
+* fix breadcrumbs

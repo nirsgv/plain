@@ -10,6 +10,7 @@ import {
   addTask,
   addRemoveChild,
   deleteTask,
+  getTask,
 } from "@/services/service.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import VueToast from "vue-toast-notification";
@@ -34,12 +35,14 @@ export default new Vuex.Store({
     tasksLoading: false,
     authenticated: false,
     user: null,
+    parentLevel: "",
   },
   getters: {
     tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
     tasksLoading: (state) => state.tasksLoading,
     authenticated: (state) => state.authenticated,
     user: (state) => state.user,
+    parentLevel: (state) => state.parentLevel,
   },
   mutations: {
     SET_TASKS: (state, { tasks }) => {
@@ -47,6 +50,9 @@ export default new Vuex.Store({
     },
     ADD_TASK: (state, { task }) => {
       state.tasks =  [...state.tasks, task ];
+    },
+    REMOVE_TASK: (state, { taskUid }) => {
+      state.tasks =  state.tasks.filter(task => task.uid !== taskUid);
     },
     SET_TASKS_LOADING: (state, { isLoading }) => {
       console.log(isLoading)
@@ -66,6 +72,9 @@ export default new Vuex.Store({
       console.log(updatedTasks);
       state.tasks = updatedTasks;
     },
+    SET_PARENT_LEVEL: (state, { parentLevel }) => {
+      state.parentLevel = parentLevel || "";
+    },
   },
   actions: {
     setTasks: ({ commit }, { tasks }) => {
@@ -75,7 +84,9 @@ export default new Vuex.Store({
       console.log('loadTasks', { userId, taskUid });
       commit("SET_TASKS_LOADING", { isLoading: true });
       const tasks = await getUserTasks({ userId, taskUid });
-      console.log({ tasks });
+      const level = await getTask({ userId, taskUid });
+      const parentLevel = level?.parent_task_uid;
+      commit("SET_PARENT_LEVEL", { parentLevel });
       commit("SET_TASKS", { tasks });
       commit("SET_TASKS_LOADING", { isLoading: false });
     },
@@ -120,31 +131,32 @@ export default new Vuex.Store({
     routeToHomePage: () => {
       router.push({ path: "/" });
     },
-    routeToPath: (path) => {
-      router.push({ path: `'/${path}'` });
+    routeToPath: ({ commit }, { path }) => {
+      console.log(commit, path);
+      router.push({ path: `/${path}` });
     },
-    editTask: async ({ commit, dispatch }, { userId, taskUid, updates }) => {
+    editTask: async ({ commit }, { taskUid, updates }) => {
       console.log({ taskUid, updates });
 
       const response = await editTask({ taskUid, updates });
-      dispatch("loadTasks", { userId });
+      // dispatch("loadTasks", { userId });
 
       commit("SET_TASK", response);
     },
-    addTask: async ({ commit }, { userId, title, parentTask }) => {
+    addTask: async ({ commit, dispatch }, { userId, title, parentTask, addToCurrent = false }) => {
       console.log(parentTask);
       const response = await addTask({ userId, title, parentTask });
       console.log({response});
+      const { uid } = response.data.task;
       if (parentTask) {
-        await addRemoveChild({ taskUid: parentTask, action: 'add', childTaskUid: response.data.task.uid })
+        await addRemoveChild({ taskUid: parentTask, action: 'add', childTaskUid: uid })
       }
-      commit("ADD_TASK", { task: response.data.task });
+      addToCurrent ? commit("ADD_TASK", { task: response.data.task }) : dispatch("routeToPath", { path: parentTask });
     },
-    deleteTask: async ({ commit, dispatch }, { userId, taskId }) => {
+    deleteTask: async ({ commit }, { userId, taskId }) => {
       console.log({ userId, taskId });
-      const response = await deleteTask({ taskId });
-      dispatch("loadTasks", { userId });
-      console.log({ response, commit });
+      await deleteTask({ taskId });
+      commit("REMOVE_TASK", { taskUid: taskId });
     },
     updateTaskPositions: ({ commit }, updatedTasks) => {
       console.log(updatedTasks);

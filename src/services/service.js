@@ -9,9 +9,10 @@ const axi = axios.create({
   headers: { "X-Requested-With": "XMLHttpRequest" },
 });
 
-const getTask = async () => {
+const getTask = async ({ userId, taskUid }) => {
   try {
-    const { data } = await axi.get(`${baseURL}/tasks`);
+    const { data } = await axi.get(`${baseURL}/task`, { params: { userId, taskUid } });
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error retrieving tasks:", error);
@@ -102,8 +103,9 @@ const addTask = async ({ userId, title, parentTask = "" }) => {
 };
 
 const deleteTask = async ({ taskId }) => {
+  console.log({ taskId })
   try {
-    const { data } = await axi.delete(`${baseURL}/tasks/delete`, { taskId });
+    const { data } = await axi.delete(`${baseURL}/tasks/delete`, { params: { taskId } });
     return { data };
   } catch (error) {
     console.error("Error deleting task:", error);

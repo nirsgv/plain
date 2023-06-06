@@ -9,6 +9,11 @@ html { font-size: 62.5%; }
 body {
   font-family: 'Martian Mono', monospace;
 }
+
+h6 {
+  font-size: 1rem;
+}
+
 .ellipsis {
   white-space: nowrap;
   overflow: scroll;
@@ -93,4 +98,13 @@ dt, dd {
   --vertical-margin: 2rem;
   --border-color: lightsalmon;
   --highlight: #eee;
+}
+
+.loading-overlay .loading-icon {
+  &:after {
+    width: 1rem !important;
+    height: 1rem !important;
+    top: -0.5rem!important;
+    left: 0!important;
+  }
 }

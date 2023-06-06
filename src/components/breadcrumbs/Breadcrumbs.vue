@@ -68,11 +68,6 @@ export default {
 .breadcrumb-wrap {
   height: 4rem;
   position: relative;
-  .loading-overlay .loading-icon {
-    &:after {
-      width: 1rem !important;
-      height: 1rem !important;
-    }
-  }
+
 }
 </style>
