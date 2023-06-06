@@ -10,8 +10,11 @@
 10. update add item - fix correct parent - implement going deeper and shallower
 11. update delete item and include removing parent and child values 
 12. update edit to not reload tasks 
+13. implement going deeper and shallower (actions)
+14. toggle between creating a list action and going deeper when list is available
 
 todo: 
 * make a task component
-* implement going deeper and shallower (actions)
 * fix breadcrumbs
+* create seporate module for icon loading (clear from main.js)
+* allow pressing enter on input

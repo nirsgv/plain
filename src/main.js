@@ -23,6 +23,7 @@ import {
   uniArrowLeft,
   uniCornerDownRight,
   uniExpandFromCorner,
+  uniPlus,
 } from "vue-unicons/dist/icons";
 Unicon.add([
   uniMinus,
@@ -40,6 +41,7 @@ Unicon.add([
   uniArrowLeft,
   uniCornerDownRight,
   uniExpandFromCorner,
+  uniPlus,
 ]);
 Vue.use(Unicon);
 

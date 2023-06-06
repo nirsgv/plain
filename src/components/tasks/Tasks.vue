@@ -48,6 +48,18 @@
           </div>
           <div
             class="icon-button"
+            v-if="task.child_task_uids.length"
+            @click="
+              routeToPath({
+                path: task.uid,
+              })
+            "
+          >
+            <unicon name="angle-right" fill="currentColor"></unicon>
+          </div>
+          <div
+            class="icon-button"
+            v-else
             @click="
               addTask({
                 userId: user.uid,
@@ -56,7 +68,7 @@
               })
             "
           >
-            <unicon name="angle-right" fill="currentColor"></unicon>
+            <unicon name="plus" fill="currentColor"></unicon>
           </div>
           <div class="drag-handle">
             <div class="icon-button">
