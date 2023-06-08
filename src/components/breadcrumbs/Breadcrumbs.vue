@@ -1,21 +1,27 @@
 <template>
   <section class="breadcrumb-wrap">
     <b-breadcrumb align="is-centered" v-if="!loading">
-      <b-breadcrumb-item
-        class="breadcrumb"
-        tag="router-link"
-        :to="`/${breadcrumb.parent_task_uid}`"
-        v-for="(breadcrumb, index) in breadcrumbs"
-        :key="breadcrumb.uid"
-        >{{ index ? breadcrumb.title : "Home" }}</b-breadcrumb-item
-      >
+      <b-breadcrumb-item class="breadcrumb" tag="router-link" :to="`/`">
+        Hello {{ user.name }}
+      </b-breadcrumb-item>
+      <template v-for="(breadcrumb, index) in breadcrumbs">
+        <b-breadcrumb-item
+          class="breadcrumb"
+          :tag="index === breadcrumbs.length - 1 ? 'span' : 'router-link'"
+          :to="index !== breadcrumbs.length - 1 ? `/${breadcrumb.parent_task_uid}` : null"
+          :key="breadcrumb.uid"
+        >
+          {{ breadcrumb.title }}
+        </b-breadcrumb-item>
+      </template>
     </b-breadcrumb>
-    <b-loading v-else :is-full-page="false" :active="loading"> </b-loading>
+    <b-loading v-else :is-full-page="false" :active="loading"></b-loading>
   </section>
 </template>
 
+
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { getBreadcrumbs } from "@/services/service.js";
 export default {
   name: "Breadcrumbs",
@@ -34,7 +40,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["persistTaskPosition"]),
     async populateBreadcrumbs(to) {
       if (to) {
         try {
@@ -68,6 +73,9 @@ export default {
 .breadcrumb-wrap {
   height: 4rem;
   position: relative;
+}
 
+span {
+  padding: 0 0.75em;
 }
 </style>

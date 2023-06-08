@@ -1,5 +1,6 @@
 <template>
   <div v-if="user">
+    <!-- {{ $refs }} -->
     <draggable
       tag="ul"
       class="tasks"
@@ -20,6 +21,7 @@
           type="text"
           class="title is-1 task__title"
           v-model="task.title"
+          :ref="task.uid"
           @change="
             editTask({
               taskUid: task.uid,
@@ -61,7 +63,7 @@
             class="icon-button"
             v-else
             @click="
-              addTask({
+              addToCurrent({
                 userId: user.uid,
                 parentTask: task.uid,
                 addToCurrent: false,
@@ -85,7 +87,7 @@
         native-type="submit"
         type="button"
         @click.prevent="
-          addTask({
+          addToCurrent({
             userId: user.uid,
             title: newTaskTitle,
             parentTask: uid,
@@ -104,6 +106,8 @@
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import ChildTasks from "@/components/childTasks/ChildTasks.vue";
+// import { ref, $nextTick } from 'vue';
+import { calculateDraggedPosition } from "@/helpers.js"
 export default {
   name: "Tasks",
   components: {
@@ -122,8 +126,11 @@ export default {
       dropGroup: [],
     };
   },
+  updated: function () {
+    this.taskToFocus && this.$refs[this.taskToFocus] && this.focusTask({ ref: this.$refs[this.taskToFocus][0] });
+  },
   computed: {
-    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel"]),
+    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel", "taskToFocus"]),
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -145,7 +152,11 @@ export default {
       "updateTaskPositions",
       "persistTaskPosition",
       "routeToPath",
+      "focusTask",
     ]),
+    async addToCurrent({ userId, title, parentTask, addToCurrent }) {
+      await this.addTask({ userId, title, parentTask, addToCurrent });
+    },
     drop({ taskUid }) {
       this.dropGroup.push(taskUid);
     },
@@ -154,43 +165,7 @@ export default {
       this.deleteTask({ userId: this.user.uid, taskId: taskUid });
     },
     async onDragEnd(event) {
-      const draggedIndex = event.oldIndex;
-      const targetIndex = event.newIndex;
-      const draggedTask = this.sortedTasks[draggedIndex];
-      const targetTask = this.sortedTasks[targetIndex];
-
-      let calcPosition;
-
-      if (targetIndex > draggedIndex) {
-        // Dragging down
-        if (targetIndex === this.sortedTasks.length - 1) {
-          // If dragging to the last position, set the position as a higher value
-          calcPosition = targetTask.position + 1;
-        } else {
-          // Calculate the new position as the average of the target and next task positions
-          const nextTask = this.sortedTasks[targetIndex + 1];
-          calcPosition =
-            targetTask.position + (nextTask.position - targetTask.position) / 2;
-        }
-      } else if (targetIndex < draggedIndex) {
-        // Dragging up
-        if (targetIndex === 0) {
-          // If dragging to the first position, set the position as a fraction of the second task's position
-          const secondTask = this.sortedTasks[1];
-          calcPosition = secondTask.position / 2;
-        } else {
-          // Calculate the new position as the average of the target and previous task positions
-          const prevTask = this.sortedTasks[targetIndex - 1];
-          calcPosition =
-            prevTask.position + (targetTask.position - prevTask.position) / 2;
-        }
-      }
-
-      calcPosition = parseFloat(calcPosition.toFixed(3));
-
-      // Update the position of the dragged task
-      draggedTask.position = calcPosition;
-
+      const [draggedTask, calcPosition] = calculateDraggedPosition({event, tasks: this.sortedTasks});
       // Update the position of the dragged task in the database
       await this.persistTaskPosition({
         taskUid: draggedTask.uid,
@@ -337,5 +312,11 @@ export default {
 }
 .dragging {
   /* Style the dragging element here */
+}
+
+.resolved {
+  text-decoration: line-through;
+  text-decoration-color: red;
+  color: #ccc !important;
 }
 </style>

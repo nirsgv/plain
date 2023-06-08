@@ -43,9 +43,6 @@ export default {
         this.loadTasks({ userId: this.user.uid, taskUid: this.uid });
       }
     },
-    logTasks() {
-      console.log(this.tasks);
-    },
   },
 };
 </script>

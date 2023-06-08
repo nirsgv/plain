@@ -210,7 +210,10 @@ async function getParentTasks(taskUid, breadcrumbs = [], level = 0) {
   const task = await Task.findOne({ uid: taskUid });
 
   if (!task) {
-    return breadcrumbs.reverse();
+    return breadcrumbs.map((breadcrumb) => ({
+      ...breadcrumb,
+      level: breadcrumbs.length - 1 - breadcrumb.level,
+    }));
   }
 
   const { uid, parent_task_uid, title } = task;
@@ -225,8 +228,6 @@ async function getParentTasks(taskUid, breadcrumbs = [], level = 0) {
     }));
   }
 }
-
-
 
 
 exports.test = async (req, res) => {

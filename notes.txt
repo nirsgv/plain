@@ -12,9 +12,12 @@
 12. update edit to not reload tasks 
 13. implement going deeper and shallower (actions)
 14. toggle between creating a list action and going deeper when list is available
+15. create seporate module for icon loading (clear from main.js)
+16. focus input on creation
 
 todo: 
 * make a task component
 * fix breadcrumbs
-* create seporate module for icon loading (clear from main.js)
 * allow pressing enter on input
+* add new client interface
+* cut breadcrumbs where needed

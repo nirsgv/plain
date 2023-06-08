@@ -36,6 +36,7 @@ export default new Vuex.Store({
     authenticated: false,
     user: null,
     parentLevel: "",
+    taskToFocus: null,
   },
   getters: {
     tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
@@ -43,6 +44,7 @@ export default new Vuex.Store({
     authenticated: (state) => state.authenticated,
     user: (state) => state.user,
     parentLevel: (state) => state.parentLevel,
+    taskToFocus: (state) => state.taskToFocus,
   },
   mutations: {
     SET_TASKS: (state, { tasks }) => {
@@ -74,6 +76,9 @@ export default new Vuex.Store({
     },
     SET_PARENT_LEVEL: (state, { parentLevel }) => {
       state.parentLevel = parentLevel || "";
+    },
+    NEXT_TO_FOCUS: (state, { uid }) => {
+      state.taskToFocus = uid || "";
     },
   },
   actions: {
@@ -144,14 +149,15 @@ export default new Vuex.Store({
       commit("SET_TASK", response);
     },
     addTask: async ({ commit, dispatch }, { userId, title, parentTask, addToCurrent = false }) => {
-      console.log(parentTask);
       const response = await addTask({ userId, title, parentTask });
-      console.log({response});
       const { uid } = response.data.task;
       if (parentTask) {
         await addRemoveChild({ taskUid: parentTask, action: 'add', childTaskUid: uid })
       }
       addToCurrent ? commit("ADD_TASK", { task: response.data.task }) : dispatch("routeToPath", { path: parentTask });
+      commit("NEXT_TO_FOCUS", { uid });
+
+      return response.data.task;
     },
     deleteTask: async ({ commit }, { userId, taskId }) => {
       console.log({ userId, taskId });
@@ -168,6 +174,10 @@ export default new Vuex.Store({
         taskUid,
         updates,
       });
+    },
+    focusTask({ commit }, { ref }) {
+      commit("NEXT_TO_FOCUS", { uid: null });
+      ref && ref.focus();
     },
   },
   modules: {},
