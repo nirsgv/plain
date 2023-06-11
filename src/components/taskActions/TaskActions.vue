@@ -8,7 +8,7 @@
       position="is-bottom"
       :active="!!action.tooltip.length"
     >
-      <div class="icon-button" @click="action.method" :class="action.className">
+      <div class="icon-button" @click="action.method" :class="{ 'drag-handle': action.name === 'drag', disabled: action.disabled }">
         <unicon :name="action.icon" fill="currentColor"></unicon>
       </div>
     </b-tooltip>
@@ -39,6 +39,7 @@ export default {
           name: "Check",
           icon: "check",
           tooltip: "Resolve",
+          disabled: false,
           method: () => {
             this.toggleResolved({
               taskUid: this.task.uid,
@@ -51,6 +52,7 @@ export default {
           name: "Uncheck",
           icon: "history",
           tooltip: "Unresolve",
+          disabled: false,
           method: () => {
             this.toggleResolved({
               taskUid: this.task.uid,
@@ -63,7 +65,9 @@ export default {
           name: "archive",
           icon: "minus",
           tooltip: "",
+          disabled: false,
           method: () => {
+            this.$emit('drop', { taskUid: this.task.uid });
             this.dropDelete({ taskUid: this.task.uid });
           },
         },
@@ -71,6 +75,7 @@ export default {
           name: "visitParent",
           icon: "angle-left",
           tooltip: "visitParent",
+          disabled: this.task.resolved,
           method: () => {
             this.routeToPath({
               path: this.parentLevel,
@@ -81,6 +86,7 @@ export default {
           name: "visitChildren",
           icon: "angle-right",
           tooltip: "visitChildren",
+          disabled: this.task.resolved,
           method: () => {
             this.routeToPath({
               path: this.task.uid,
@@ -91,6 +97,7 @@ export default {
           name: "addChild",
           icon: "plus",
           tooltip: "",
+          disabled: this.task.resolved,
           method: () => {
             this.addToCurrent({
               userId: this.user.uid,
@@ -103,6 +110,7 @@ export default {
           name: "drag",
           icon: "grip-horizontal-line",
           tooltip: "",
+          disabled: false,
           className: "drag-handle",
           method: () => {},
         },
@@ -159,7 +167,7 @@ export default {
   height: 100%;
   top: 0;
   align-items: center;
-  opacity: 0;
+  opacity: 1;
 
   .task:hovered & {
     opacity: 1;

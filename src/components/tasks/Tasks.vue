@@ -15,7 +15,6 @@
         :key="task.uid"
         class="task container"
         :class="{ dropped: dropGroup.includes(task.uid) }"
-        :data-task-uid="task.uid"
       >
         <input
           type="text"
@@ -32,7 +31,7 @@
           "
         />
         <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
-        <TaskActions :task="task" />
+        <TaskActions :task="task" @drop="drop"/>
       </li>
     </draggable>
   </div>

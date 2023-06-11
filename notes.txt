@@ -15,10 +15,14 @@
 15. create seporate module for icon loading (clear from main.js)
 16. focus input on creation
 17. fix breadcrumbs
+18. make a task component
+19. refactor actions to map over data
 
 todo: 
-* make a task component
 * allow pressing enter on input
 * add new client interface
 * cut breadcrumbs where needed
 * spinner on main
+* soft delete
+* header
+* use buefy login component
