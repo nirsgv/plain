@@ -31,7 +31,8 @@ export default {
 <style scoped lang="scss">
 .Login-bar {
   width: 100vw;
-  background-color: #eee;
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color);
   position: fixed;
   top: 0;
   height: 3rem;

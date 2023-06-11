@@ -14,10 +14,10 @@
 14. toggle between creating a list action and going deeper when list is available
 15. create seporate module for icon loading (clear from main.js)
 16. focus input on creation
+17. fix breadcrumbs
 
 todo: 
 * make a task component
-* fix breadcrumbs
 * allow pressing enter on input
 * add new client interface
 * cut breadcrumbs where needed

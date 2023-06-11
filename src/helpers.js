@@ -1,3 +1,14 @@
+import { TASK_TITLES } from "./constants";
+
+export const getRandomItem = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+export const getRandomTaskTitle = () => {
+  console.log(getRandomItem(TASK_TITLES));
+  return getRandomItem(TASK_TITLES);
+};
+
 export async function waitForRef(ref, maxRetries = 10, interval = 100) {
   if (ref.value && typeof ref.value === "object" && ref.value.$el) {
     // Ref is available, focus on the underlying DOM element
@@ -48,3 +59,4 @@ export const calculateDraggedPosition = ({event, tasks}) => {
   draggedTask.position = calcPosition;
   return [draggedTask, calcPosition];
 };
+

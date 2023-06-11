@@ -130,12 +130,13 @@ const recursivelyDeleteTask = async (taskId) => {
 
 exports.editTask = async (req, res) => {
   const { taskUid, updates } = req.body;
+  console.log({taskUid, updates});
   try {
-    await Task.findOneAndUpdate(
+    const response = await Task.findOneAndUpdate(
       { uid: taskUid },
       { ...updates, last_updated_at: new Date() }
     );
-    res.status(StatusCodes.CREATED).json({ message: ReasonPhrases.CREATED });
+    res.status(StatusCodes.CREATED).json({ message: ReasonPhrases.OK, data: response });
   } catch (error) {
     res
       .status(StatusCodes.NOT_MODIFIED)

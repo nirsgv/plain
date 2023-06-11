@@ -12,6 +12,7 @@ import {
   deleteTask,
   getTask,
 } from "@/services/service.js";
+import { getRandomTaskTitle } from "@/helpers.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import VueToast from "vue-toast-notification";
 import router from "@/router";
@@ -50,14 +51,17 @@ export default new Vuex.Store({
     SET_TASKS: (state, { tasks }) => {
       state.tasks = tasks;
     },
+    UPDATE_TASK: (state, { task }) => {
+      state.tasks = state.tasks.map((t) => (t.uid === task.uid ? task : t));
+    },
     ADD_TASK: (state, { task }) => {
-      state.tasks =  [...state.tasks, task ];
+      state.tasks = [...state.tasks, task];
     },
     REMOVE_TASK: (state, { taskUid }) => {
-      state.tasks =  state.tasks.filter(task => task.uid !== taskUid);
+      state.tasks = state.tasks.filter((task) => task.uid !== taskUid);
     },
     SET_TASKS_LOADING: (state, { isLoading }) => {
-      console.log(isLoading)
+      console.log(isLoading);
       state.tasksLoading = isLoading;
     },
     SET_AUTHENTICATED: (state) => {
@@ -86,7 +90,7 @@ export default new Vuex.Store({
       commit("SET_TASKS", { tasks });
     },
     loadTasks: async ({ commit }, { userId, taskUid = "" }) => {
-      console.log('loadTasks', { userId, taskUid });
+      console.log("loadTasks", { userId, taskUid });
       commit("SET_TASKS_LOADING", { isLoading: true });
       const tasks = await getUserTasks({ userId, taskUid });
       const level = await getTask({ userId, taskUid });
@@ -142,19 +146,29 @@ export default new Vuex.Store({
     },
     editTask: async ({ commit }, { taskUid, updates }) => {
       console.log({ taskUid, updates });
-
-      const response = await editTask({ taskUid, updates });
+      const { data } = await editTask({ taskUid, updates });
       // dispatch("loadTasks", { userId });
-
-      commit("SET_TASK", response);
+      console.log(commit, data)
+      // commit("UPDATE_TASK", { task: data.data });
     },
-    addTask: async ({ commit, dispatch }, { userId, title, parentTask, addToCurrent = false }) => {
-      const response = await addTask({ userId, title, parentTask });
+    addTask: async (
+      { commit, dispatch },
+      { userId, title, parentTask, addToCurrent = false }
+    ) => {
+      console.log({ title });
+      const t = getRandomTaskTitle();
+      const response = await addTask({ userId, title: title || t, parentTask });
       const { uid } = response.data.task;
       if (parentTask) {
-        await addRemoveChild({ taskUid: parentTask, action: 'add', childTaskUid: uid })
+        await addRemoveChild({
+          taskUid: parentTask,
+          action: "add",
+          childTaskUid: uid,
+        });
       }
-      addToCurrent ? commit("ADD_TASK", { task: response.data.task }) : dispatch("routeToPath", { path: parentTask });
+      addToCurrent
+        ? commit("ADD_TASK", { task: { ...response.data.task, title: t } })
+        : dispatch("routeToPath", { path: parentTask });
       commit("NEXT_TO_FOCUS", { uid });
 
       return response.data.task;
@@ -178,6 +192,7 @@ export default new Vuex.Store({
     focusTask({ commit }, { ref }) {
       commit("NEXT_TO_FOCUS", { uid: null });
       ref && ref.focus();
+      // ref && ref.select();
     },
   },
   modules: {},

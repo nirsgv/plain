@@ -16,10 +16,11 @@
         class="task container"
         :class="{ dropped: dropGroup.includes(task.uid) }"
         :data-task-uid="task.uid"
-      >
+      >{{ task.resolved }}
         <input
           type="text"
           class="title is-1 task__title"
+          :class="{ resolved: dropGroup.includes(task.uid) }"
           v-model="task.title"
           :ref="task.uid"
           @change="
@@ -32,7 +33,16 @@
         />
         <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
         <div class="actions">
-          <div class="icon-button" @click="drop({ taskUid: task.uid })">
+          <div
+            class="icon-button"
+            @click="
+              editTask({
+                taskUid: task.uid,
+                userId: user.uid,
+                updates: { resolved: !task.resolved },
+              })
+            "
+          >
             <unicon name="check" fill="currentColor"></unicon>
           </div>
           <div class="icon-button" @click="dropDelete({ taskUid: task.uid })">
@@ -107,7 +117,7 @@ import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import ChildTasks from "@/components/childTasks/ChildTasks.vue";
 // import { ref, $nextTick } from 'vue';
-import { calculateDraggedPosition } from "@/helpers.js"
+import { calculateDraggedPosition } from "@/helpers.js";
 export default {
   name: "Tasks",
   components: {
@@ -127,10 +137,18 @@ export default {
     };
   },
   updated: function () {
-    this.taskToFocus && this.$refs[this.taskToFocus] && this.focusTask({ ref: this.$refs[this.taskToFocus][0] });
+    this.taskToFocus &&
+      this.$refs[this.taskToFocus] &&
+      this.focusTask({ ref: this.$refs[this.taskToFocus][0] });
   },
   computed: {
-    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel", "taskToFocus"]),
+    ...mapGetters([
+      "tasks",
+      "user",
+      "tasksLoading",
+      "parentLevel",
+      "taskToFocus",
+    ]),
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -165,7 +183,10 @@ export default {
       this.deleteTask({ userId: this.user.uid, taskId: taskUid });
     },
     async onDragEnd(event) {
-      const [draggedTask, calcPosition] = calculateDraggedPosition({event, tasks: this.sortedTasks});
+      const [draggedTask, calcPosition] = calculateDraggedPosition({
+        event,
+        tasks: this.sortedTasks,
+      });
       // Update the position of the dragged task in the database
       await this.persistTaskPosition({
         taskUid: draggedTask.uid,

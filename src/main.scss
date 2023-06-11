@@ -108,3 +108,9 @@ dt, dd {
     left: 0!important;
   }
 }
+
+.title::selection {
+  // color: red;
+  background-color: #eee;
+  border: 1px solid #000;
+}
