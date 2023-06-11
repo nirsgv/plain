@@ -17,6 +17,7 @@
     </div>
     <div
       class="icon-button"
+      :class="{ disabled: !isBackActive }"
       @click="
         routeToPath({
           path: parentLevel,
@@ -59,7 +60,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { calculateDraggedPosition } from "@/helpers.js";
 export default {
   name: "TaskActions",
   props: {
@@ -75,13 +75,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      "tasks",
-      "user",
-      "tasksLoading",
-      "parentLevel",
-      "taskToFocus",
-    ]),
+    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel"]),
+    isBackActive() {
+      return this.$router.currentRoute.length > 1;
+    },
+  },
+  created() {
+    console.log(this.$router.currentRoute);
   },
   methods: {
     ...mapActions([
@@ -92,7 +92,6 @@ export default {
       "updateTaskPositions",
       "persistTaskPosition",
       "routeToPath",
-      "focusTask",
       "toggleResolved",
     ]),
     async addToCurrent({ userId, title, parentTask, addToCurrent }) {
@@ -105,20 +104,28 @@ export default {
       this.drop({ taskUid });
       this.deleteTask({ userId: this.user.uid, taskId: taskUid });
     },
-    async onDragEnd(event) {
-      const [draggedTask, calcPosition] = calculateDraggedPosition({
-        event,
-        tasks: this.sortedTasks,
-      });
-      // Update the position of the dragged task in the database
-      await this.persistTaskPosition({
-        taskUid: draggedTask.uid,
-        updates: { position: calcPosition },
-      });
-    },
   },
 };
 </script>
 
 <style lang="scss">
+.icon-button {
+  padding: 0;
+  background-color: transparent;
+  border-radius: 50%;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  width: 2rem;
+  justify-content: center;
+  color: var(--border-color);
+  height: 100%;
+  cursor: pointer;
+  &:hover {
+  }
+  &.disabled {
+    pointer-events: none;
+    color: #ddd;
+  }
+}
 </style>

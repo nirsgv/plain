@@ -168,17 +168,6 @@ export default {
     }
   }
 }
-.add-task {
-  margin: 2rem 5rem 0;
-  .control {
-    flex-grow: 1;
-    input {
-      height: 100%;
-    }
-  }
-  &__button {
-  }
-}
 
 .container {
   max-width: 34em;
@@ -187,23 +176,6 @@ export default {
   font-size: 24px;
   font-family: Baskerville, Georgia, serif;
   line-height: 1.6em;
-}
-
-.icon-button {
-  padding: 0;
-  background-color: transparent;
-  border-radius: 50%;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  width: 2rem;
-  justify-content: center;
-  color: #ccc;
-  height: 100%;
-  cursor: pointer;
-  &:hover {
-    color: #888;
-  }
 }
 
 .dropped {
@@ -266,5 +238,6 @@ export default {
   text-decoration-color: var(--border-color)!important;;
   color: #ccc !important;
   caret-color: var(--border-color);
+  pointer-events: none;
 }
 </style>

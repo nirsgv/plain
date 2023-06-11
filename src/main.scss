@@ -113,4 +113,14 @@ dt, dd {
   // color: red;
   background-color: #eee;
   border: 1px solid #000;
+  animation: selection;
+  animation-duration: 1s;
+}
+@keyframes selection {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: red;
+  }
 }
