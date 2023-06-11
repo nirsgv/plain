@@ -144,17 +144,6 @@ export default {
       text-decoration-color: transparent;
       transition: color 0.6s ease-in, text-decoration-color 0.3s ease-in 0.5s;
     }
-    .actions {
-      transition: all 0.1s ease-in-out;
-      position: absolute;
-      right: 0;
-      display: flex !important;
-      gap: 1rem;
-      height: 100%;
-      top: 0;
-      align-items: center;
-      opacity: 0;
-    }
     &:hover .actions {
       opacity: 1;
     }

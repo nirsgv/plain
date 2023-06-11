@@ -1,60 +1,17 @@
 <template>
   <div class="actions">
-    <div
-      class="icon-button"
-      @click="
-        toggleResolved({
-          taskUid: task.uid,
-          userId: user.uid,
-          updates: { resolved: !task.resolved },
-        })
-      "
+    <b-tooltip
+      v-for="action in activeActions"
+      :key="action.name"
+      :label="action.tooltip"
+      type="is-primary is-light"
+      position="is-bottom"
+      :active="!!action.tooltip.length"
     >
-      <unicon name="check" fill="currentColor"></unicon>
-    </div>
-    <div class="icon-button" @click="dropDelete({ taskUid: task.uid })">
-      <unicon name="minus" fill="currentColor"></unicon>
-    </div>
-    <div
-      class="icon-button"
-      :class="{ disabled: !isBackActive }"
-      @click="
-        routeToPath({
-          path: parentLevel,
-        })
-      "
-    >
-      <unicon name="angle-left" fill="currentColor"></unicon>
-    </div>
-    <div
-      class="icon-button"
-      v-if="task.child_task_uids.length"
-      @click="
-        routeToPath({
-          path: task.uid,
-        })
-      "
-    >
-      <unicon name="angle-right" fill="currentColor"></unicon>
-    </div>
-    <div
-      class="icon-button"
-      v-else
-      @click="
-        addToCurrent({
-          userId: user.uid,
-          parentTask: task.uid,
-          addToCurrent: false,
-        })
-      "
-    >
-      <unicon name="plus" fill="currentColor"></unicon>
-    </div>
-    <div class="drag-handle">
-      <div class="icon-button">
-        <unicon name="grip-horizontal-line" fill="currentColor"></unicon>
+      <div class="icon-button" @click="action.method" :class="action.className">
+        <unicon :name="action.icon" fill="currentColor"></unicon>
       </div>
-    </div>
+    </b-tooltip>
   </div>
 </template>
 
@@ -76,8 +33,92 @@ export default {
   },
   computed: {
     ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel"]),
+    actions() {
+      return {
+        resolve: {
+          name: "Check",
+          icon: "check",
+          tooltip: "Resolve",
+          method: () => {
+            this.toggleResolved({
+              taskUid: this.task.uid,
+              userId: this.user.uid,
+              updates: { resolved: !this.task.resolved },
+            });
+          },
+        },
+        unresolve: {
+          name: "Uncheck",
+          icon: "history",
+          tooltip: "Unresolve",
+          method: () => {
+            this.toggleResolved({
+              taskUid: this.task.uid,
+              userId: this.user.uid,
+              updates: { resolved: !this.task.resolved },
+            });
+          },
+        },
+        archive: {
+          name: "archive",
+          icon: "minus",
+          tooltip: "",
+          method: () => {
+            this.dropDelete({ taskUid: this.task.uid });
+          },
+        },
+        visitParent: {
+          name: "visitParent",
+          icon: "angle-left",
+          tooltip: "visitParent",
+          method: () => {
+            this.routeToPath({
+              path: this.parentLevel,
+            });
+          },
+        },
+        visitChildren: {
+          name: "visitChildren",
+          icon: "angle-right",
+          tooltip: "visitChildren",
+          method: () => {
+            this.routeToPath({
+              path: this.task.uid,
+            });
+          },
+        },
+        addChild: {
+          name: "addChild",
+          icon: "plus",
+          tooltip: "",
+          method: () => {
+            this.addToCurrent({
+              userId: this.user.uid,
+              parentTask: this.task.uid,
+              addToCurrent: false,
+            });
+          },
+        },
+        drag: {
+          name: "drag",
+          icon: "grip-horizontal-line",
+          tooltip: "",
+          className: "drag-handle",
+          method: () => {},
+        },
+      };
+    },
+    activeActions() {
+      return [
+        this.task.resolved ? this.actions.unresolve : this.actions.resolve,
+        this.actions.archive,
+        this.actions.visitParent,
+        this.task.child_task_uids.length ? this.actions.visitChildren : this.actions.addChild,
+        this.actions.drag,
+      ]
+    },
     isBackActive() {
-      return this.$router.currentRoute.length > 1;
+      return this.$router.currentRoute.path !== "/";
     },
   },
   created() {
@@ -109,6 +150,22 @@ export default {
 </script>
 
 <style lang="scss">
+.actions {
+  transition: all 0.1s ease-in-out;
+  position: absolute;
+  right: 0;
+  display: flex !important;
+  gap: 1rem;
+  height: 100%;
+  top: 0;
+  align-items: center;
+  opacity: 0;
+
+  .task:hovered & {
+    opacity: 1;
+  }
+}
+
 .icon-button {
   padding: 0;
   background-color: transparent;
