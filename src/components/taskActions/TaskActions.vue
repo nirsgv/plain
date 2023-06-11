@@ -3,7 +3,7 @@
     <div
       class="icon-button"
       @click="
-        editTask({
+        toggleResolved({
           taskUid: task.uid,
           userId: user.uid,
           updates: { resolved: !task.resolved },
@@ -93,6 +93,7 @@ export default {
       "persistTaskPosition",
       "routeToPath",
       "focusTask",
+      "toggleResolved",
     ]),
     async addToCurrent({ userId, title, parentTask, addToCurrent }) {
       await this.addTask({ userId, title, parentTask, addToCurrent });

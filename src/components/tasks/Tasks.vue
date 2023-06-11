@@ -17,12 +17,11 @@
         :class="{ dropped: dropGroup.includes(task.uid) }"
         :data-task-uid="task.uid"
       >
-        {{ task.resolved }}
         <input
           type="text"
           v-model="task.title"
           class="title is-1 task__title"
-          :class="{ resolved: dropGroup.includes(task.uid) }"
+          :class="{ resolved: task.resolved }"
           :ref="task.uid"
           @change="
             editTask({
@@ -142,7 +141,8 @@ export default {
       font-size: 3rem;
       outline: none !important;
       width: 100%;
-      caret-color: var(--border-color);
+      text-decoration-color: transparent;
+      transition: color 0.6s ease-in, text-decoration-color 0.3s ease-in 0.5s;
     }
     .actions {
       transition: all 0.1s ease-in-out;
@@ -263,7 +263,8 @@ export default {
 
 .resolved {
   text-decoration: line-through;
-  text-decoration-color: red;
+  text-decoration-color: var(--border-color)!important;;
   color: #ccc !important;
+  caret-color: var(--border-color);
 }
 </style>

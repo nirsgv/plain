@@ -54,6 +54,9 @@ export default new Vuex.Store({
     UPDATE_TASK: (state, { task }) => {
       state.tasks = state.tasks.map((t) => (t.uid === task.uid ? task : t));
     },
+    TOGGLE_RESOLVED: (state, { taskUid }) => {
+      state.tasks = state.tasks.map((t) => (t.uid === taskUid ? { ...t, resolved: !t.resolved } : t));
+    },
     ADD_TASK: (state, { task }) => {
       state.tasks = [...state.tasks, task];
     },
@@ -193,6 +196,15 @@ export default new Vuex.Store({
       commit("NEXT_TO_FOCUS", { uid: null });
       ref && ref.focus();
       // ref && ref.select();
+    },
+    toggleResolved: async ({ commit }, { taskUid, updates }) => {
+      commit("TOGGLE_RESOLVED", { taskUid });
+
+      console.log({ taskUid, updates, commit });
+      await editTask({
+        taskUid,
+        updates,
+      });
     },
   },
   modules: {},
