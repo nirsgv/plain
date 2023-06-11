@@ -1,7 +1,8 @@
 <template>
   <div class="home" v-if="user">
-    <Breadcrumbs :uid="uid"/>
+    <Breadcrumbs :uid="uid" />
     <Tasks :uid="uid" />
+    <CreateTask :uid="uid" />
   </div>
 </template>
 
@@ -9,12 +10,14 @@
 import { mapGetters, mapActions } from "vuex";
 import Tasks from "../components/tasks/Tasks.vue";
 import Breadcrumbs from "../components/breadcrumbs/Breadcrumbs.vue";
+import CreateTask from "../components/createTask/CreateTask.vue";
 
 export default {
   name: "Home",
   components: {
     Tasks,
     Breadcrumbs,
+    CreateTask,
   },
   props: {
     uid: {

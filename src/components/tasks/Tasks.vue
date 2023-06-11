@@ -16,12 +16,13 @@
         class="task container"
         :class="{ dropped: dropGroup.includes(task.uid) }"
         :data-task-uid="task.uid"
-      >{{ task.resolved }}
+      >
+        {{ task.resolved }}
         <input
           type="text"
+          v-model="task.title"
           class="title is-1 task__title"
           :class="{ resolved: dropGroup.includes(task.uid) }"
-          v-model="task.title"
           :ref="task.uid"
           @change="
             editTask({
@@ -32,83 +33,9 @@
           "
         />
         <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
-        <div class="actions">
-          <div
-            class="icon-button"
-            @click="
-              editTask({
-                taskUid: task.uid,
-                userId: user.uid,
-                updates: { resolved: !task.resolved },
-              })
-            "
-          >
-            <unicon name="check" fill="currentColor"></unicon>
-          </div>
-          <div class="icon-button" @click="dropDelete({ taskUid: task.uid })">
-            <unicon name="minus" fill="currentColor"></unicon>
-          </div>
-          <div
-            class="icon-button"
-            @click="
-              routeToPath({
-                path: parentLevel,
-              })
-            "
-          >
-            <unicon name="angle-left" fill="currentColor"></unicon>
-          </div>
-          <div
-            class="icon-button"
-            v-if="task.child_task_uids.length"
-            @click="
-              routeToPath({
-                path: task.uid,
-              })
-            "
-          >
-            <unicon name="angle-right" fill="currentColor"></unicon>
-          </div>
-          <div
-            class="icon-button"
-            v-else
-            @click="
-              addToCurrent({
-                userId: user.uid,
-                parentTask: task.uid,
-                addToCurrent: false,
-              })
-            "
-          >
-            <unicon name="plus" fill="currentColor"></unicon>
-          </div>
-          <div class="drag-handle">
-            <div class="icon-button">
-              <unicon name="grip-horizontal-line" fill="currentColor"></unicon>
-            </div>
-          </div>
-        </div>
+        <TaskActions :task="task" />
       </li>
     </draggable>
-
-    <form class="add-task" @submit.prevent="null">
-      <b-input type="text" v-model="newTaskTitle" maxlength="30" />
-      <button
-        native-type="submit"
-        type="button"
-        @click.prevent="
-          addToCurrent({
-            userId: user.uid,
-            title: newTaskTitle,
-            parentTask: uid,
-            addToCurrent: true,
-          })
-        "
-        class="add-task__button"
-      >
-        Add Task
-      </button>
-    </form>
   </div>
 </template>
 
@@ -116,13 +43,14 @@
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import ChildTasks from "@/components/childTasks/ChildTasks.vue";
-// import { ref, $nextTick } from 'vue';
+import TaskActions from "@/components/taskActions/TaskActions.vue";
 import { calculateDraggedPosition } from "@/helpers.js";
 export default {
   name: "Tasks",
   components: {
     draggable,
     ChildTasks,
+    TaskActions,
   },
   props: {
     uid: {
@@ -172,9 +100,7 @@ export default {
       "routeToPath",
       "focusTask",
     ]),
-    async addToCurrent({ userId, title, parentTask, addToCurrent }) {
-      await this.addTask({ userId, title, parentTask, addToCurrent });
-    },
+
     drop({ taskUid }) {
       this.dropGroup.push(taskUid);
     },

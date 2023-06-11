@@ -21,3 +21,4 @@ todo:
 * allow pressing enter on input
 * add new client interface
 * cut breadcrumbs where needed
+* spinner on main
