@@ -1,4 +1,4 @@
-import router from "@/router";
+// import router from "@/router";
 import {
   getUserTasks,
   editTask,
@@ -85,9 +85,13 @@ export default {
       const { data } = await editTask({ taskUid, updates });
       commit("UPDATE_TASK", { task: data.data });
     },
-    addTask: async ({ commit }, { userId, parentTaskUid = null }) => {
+    addTask: async ({ commit }, { userId, parentTask = null, addToCurrent }) => {
       const title = getRandomTaskTitle();
-      const { data } = await addTask({ userId, title, parentTaskUid });
+      const { data } = await addTask({ userId, title, parentTask });
+      console.log({data})
+      console.log(data.task)
+      console.log({addToCurrent})
+
       commit("ADD_TASK", { task: data.task });
       commit("NEXT_TO_FOCUS", { uid: data.task.uid });
     },
@@ -97,7 +101,8 @@ export default {
       commit("ADD_TASK", { task: data.data });
     },
     deleteTask: async ({ commit }, { taskUid }) => {
-      await deleteTask({ taskUid });
+      console.log(taskUid);
+      await deleteTask({ taskId: taskUid });
       commit("REMOVE_TASK", { taskUid });
     },
     toggleResolved: async ({ commit }, { taskUid }) => {
@@ -127,9 +132,9 @@ export default {
       ref && ref.focus();
       // ref && ref.select();
     },
-    routeToPath: ({ commit }, { path }) => {
-      console.log(commit, path);
-      router.push({ path: `/${path}` });
-    },
+    // routeToPath: ({ commit }, { path }) => {
+    //   console.log(commit, path);
+    //   router.push({ path: `/${path}` });
+    // },
   },
 };

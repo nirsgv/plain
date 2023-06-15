@@ -22,7 +22,7 @@ export default {
     // !this.authenticated && this.routeToLoginPage();
   },
   computed: {
-    ...mapGetters("user" ,["authenticated"]),
+    ...mapGetters("user", ["authenticated"]),
   },
   methods: {
     ...mapActions(["routeToLoginPage"]),

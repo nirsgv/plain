@@ -32,7 +32,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["tasks", "tasksLoading", "parentLevel"]),
+    ...mapGetters("tasks", ["tasks", "tasksLoading", "parentLevel"]),
     ...mapGetters("user", ["user"]),
 
     actions() {
@@ -139,18 +139,21 @@ export default {
       "deleteTask",
       "updateTaskPositions",
       "persistTaskPosition",
-      "routeToPath",
       "toggleResolved",
+      "routeToPath",
     ]),
     async addToCurrent({ userId, title, parentTask, addToCurrent }) {
+      console.log({ userId, title, parentTask, addToCurrent });
       await this.addTask({ userId, title, parentTask, addToCurrent });
     },
     drop({ taskUid }) {
       this.dropGroup.push(taskUid);
     },
     dropDelete({ taskUid }) {
+      console.log('-----');
+      console.log({taskUid})
       this.drop({ taskUid });
-      this.deleteTask({ userId: this.user.uid, taskId: taskUid });
+      this.deleteTask({ userId: this.user.uid, taskUid });
     },
   },
 };

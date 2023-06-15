@@ -105,14 +105,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions("tasks",[
+    ...mapActions([ "routeToPath" ]),
+    ...mapActions("tasks", [
       "announce",
       "editTask",
       "addTask",
-      "deleteTask",
       "updateTaskPositions",
       "persistTaskPosition",
-      "routeToPath",
       "focusTask",
     ]),
     drop({ taskUid }) {
