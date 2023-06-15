@@ -1,40 +1,53 @@
 <template>
-  <div v-if="user">
-    <!-- {{ $refs }} -->
-    <draggable
-      tag="ul"
-      class="tasks"
-      :class="{ 'tasks--loading': tasksLoading }"
-      v-model="sortedTasks"
-      @end="onDragEnd"
-      group="taskGroup"
-      handle=".drag-handle"
+  <draggable
+    tag="ul"
+    v-if="user"
+    class="tasks"
+    :class="{ 'tasks--loading': tasksLoading }"
+    v-model="sortedTasks"
+    @end="onDragEnd"
+    group="taskGroup"
+    handle=".drag-handle"
+  >
+    <li
+      v-for="task in sortedTasks"
+      :key="task.uid"
+      class="task container"
+      :class="{ dropped: dropGroup.includes(task.uid) }"
     >
-      <li
-        v-for="task in sortedTasks"
-        :key="task.uid"
-        class="task container"
-        :class="{ dropped: dropGroup.includes(task.uid) }"
-      >
-        <input
-          type="text"
-          v-model="task.title"
-          class="title is-1 task__title"
-          :class="{ resolved: task.resolved }"
-          :ref="task.uid"
-          @change="
-            editTask({
-              taskUid: task.uid,
-              userId: user.uid,
-              updates: { title: $event.target.value },
-            })
-          "
-        />
-        <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
-        <TaskActions :task="task" @drop="drop"/>
-      </li>
-    </draggable>
-  </div>
+      <input
+        type="text"
+        v-model="task.title"
+        :ref="task.uid"
+        class="title is-1 task__title"
+        :class="{ resolved: task.resolved }"
+        @keyup.enter="
+          editTask({
+            taskUid: task.uid,
+            userId: user.uid,
+            updates: { title: $event.target.value },
+          })
+        "
+        @change="
+          editTask({
+            taskUid: task.uid,
+            userId: user.uid,
+            updates: { title: $event.target.value },
+          })
+        "
+      />
+      <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
+      <TaskActions :task="task" @drop="drop" />
+    </li>
+    <li class="task container created" v-if="adding">
+      <b-skeleton
+        :animated="true"
+        size="is-large"
+        width="50%"
+        position="is-centered"
+      ></b-skeleton>
+    </li>
+  </draggable>
 </template>
 
 <script>
@@ -74,6 +87,7 @@ export default {
       "tasksLoading",
       "parentLevel",
       "taskToFocus",
+      "adding",
     ]),
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
@@ -102,10 +116,6 @@ export default {
     drop({ taskUid }) {
       this.dropGroup.push(taskUid);
     },
-    dropDelete({ taskUid }) {
-      this.drop({ taskUid });
-      this.deleteTask({ userId: this.user.uid, taskId: taskUid });
-    },
     async onDragEnd(event) {
       const [draggedTask, calcPosition] = calculateDraggedPosition({
         event,
@@ -123,6 +133,8 @@ export default {
 
 <style lang="scss">
 .tasks {
+  max-height: calc(100vh - 0rem);
+  overflow-y: auto;
   .task {
     border-bottom: 1px solid #00000022;
     display: block;
@@ -131,7 +143,7 @@ export default {
     align-items: center;
     justify-content: center;
     border-color: var(--border-color);
-
+    background-color: var(--white);
     &__title {
       margin-bottom: 0 !important;
       border: none;
@@ -160,23 +172,32 @@ export default {
 .container {
   max-width: 34em;
   margin: 0 auto;
-  padding: 2em;
   font-size: 24px;
   font-family: Baskerville, Georgia, serif;
   line-height: 1.6em;
+  flex-grow: 0;
+}
+
+.dropped,
+.created {
+  animation: drop-animation cubic-bezier(0, 0.55, 0.45, 1);
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  animation-delay: 0;
 }
 
 .dropped {
-  animation: drop-animation cubic-bezier(0, 0.55, 0.45, 1);
-  animation-fill-mode: forwards;
-  animation-duration: 0.55s;
-  animation-delay: 0;
   & > * {
     animation: blank-animation ease-out;
     animation-fill-mode: forwards;
     animation-duration: 0.05s;
     animation-delay: 0;
   }
+}
+
+.created {
+  animation-direction: reverse;
+  animation-duration: 0.25s;
 }
 
 .blank {
@@ -223,7 +244,7 @@ export default {
 
 .resolved {
   text-decoration: line-through;
-  text-decoration-color: var(--border-color)!important;;
+  text-decoration-color: var(--border-color) !important;
   color: #ccc !important;
   caret-color: var(--border-color);
   pointer-events: none;

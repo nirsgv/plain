@@ -17,12 +17,17 @@
 17. fix breadcrumbs
 18. make a task component
 19. refactor actions to map over data
+20. allow pressing enter on input
+21. cut breadcrumbs where needed
+22. add item animated
+23. add item loader
+24. add new client interface
 
 todo: 
-* allow pressing enter on input
-* add new client interface
-* cut breadcrumbs where needed
 * spinner on main
-* soft delete
 * header
 * use buefy login component
+* main ease function specify
+* tooltip values
+* soft delete
+* fix registration ("Failed to submit register details")

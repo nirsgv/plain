@@ -82,9 +82,22 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.b-skeleton {
+  position: absolute;
+  bottom: 0;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+}
+.b-skeleton.b-skeleton {
+  width: 10rem;
+  justify-content: center;
+}
+
+</style>
 
 <style lang="scss">
-.b-skeleton,
 .child-tasks,
 .loading-overlay {
   position: absolute;
@@ -92,11 +105,6 @@ export default {
   height: 1.8rem;
   display: flex;
   align-items: center;
-}
-
-.b-skeleton.b-skeleton {
-  width: 10rem;
-  justify-content: center;
 }
 
 .child-tasks {

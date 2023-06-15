@@ -2,7 +2,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {
-  // getTask,
   getUserTasks,
   submitRegisterDetails,
   submitLoginDetails,
@@ -38,6 +37,7 @@ export default new Vuex.Store({
     user: null,
     parentLevel: "",
     taskToFocus: null,
+    adding: false,
   },
   getters: {
     tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
@@ -46,6 +46,7 @@ export default new Vuex.Store({
     user: (state) => state.user,
     parentLevel: (state) => state.parentLevel,
     taskToFocus: (state) => state.taskToFocus,
+    adding: (state) => state.adding,
   },
   mutations: {
     SET_TASKS: (state, { tasks }) => {
@@ -86,6 +87,10 @@ export default new Vuex.Store({
     },
     NEXT_TO_FOCUS: (state, { uid }) => {
       state.taskToFocus = uid || "";
+    },
+    SET_ADDING: (state, { isAdding }) => {
+      console.log(isAdding);
+      state.adding = isAdding;
     },
   },
   actions: {
@@ -158,7 +163,7 @@ export default new Vuex.Store({
       { commit, dispatch },
       { userId, title, parentTask, addToCurrent = false }
     ) => {
-      console.log({ title });
+      addToCurrent && commit("SET_ADDING", { isAdding: true });
       const t = getRandomTaskTitle();
       const response = await addTask({ userId, title: title || t, parentTask });
       const { uid } = response.data.task;
@@ -169,11 +174,13 @@ export default new Vuex.Store({
           childTaskUid: uid,
         });
       }
-      addToCurrent
-        ? commit("ADD_TASK", { task: { ...response.data.task, title: t } })
-        : dispatch("routeToPath", { path: parentTask });
+      if (addToCurrent){
+        commit("ADD_TASK", { task: { ...response.data.task, title: t } });
+        commit("SET_ADDING", { isAdding: false });
+      } else {
+        dispatch("routeToPath", { path: parentTask });
+      }
       commit("NEXT_TO_FOCUS", { uid });
-
       return response.data.task;
     },
     deleteTask: async ({ commit }, { userId, taskId }) => {

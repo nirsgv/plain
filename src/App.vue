@@ -5,18 +5,18 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
-    <LoginBar />
+    <Header />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import { LoginBar } from '@/components/index';
+import { Header } from '@/components/index';
 export default {
   name: "App",
   components: {
-    LoginBar,
+    Header,
   },
   mounted() {
     // !this.authenticated && this.routeToLoginPage();
@@ -38,6 +38,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   height: inherit;
+  display: flex;
+  flex-direction: column;
 }
 
 #nav {

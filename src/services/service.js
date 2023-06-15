@@ -11,7 +11,9 @@ const axi = axios.create({
 
 const getTask = async ({ userId, taskUid }) => {
   try {
-    const { data } = await axi.get(`${baseURL}/task`, { params: { userId, taskUid } });
+    const { data } = await axi.get(`${baseURL}/task`, {
+      params: { userId, taskUid },
+    });
     console.log(data);
     return data;
   } catch (error) {
@@ -88,7 +90,6 @@ const addRemoveChild = async ({ taskUid, action, childTaskUid }) => {
 };
 
 const addTask = async ({ userId, title, parentTask = "" }) => {
-  console.log({parentTask});
   try {
     const { data } = await axi.post(`${baseURL}/tasks/create`, {
       userId,
@@ -103,9 +104,10 @@ const addTask = async ({ userId, title, parentTask = "" }) => {
 };
 
 const deleteTask = async ({ taskId }) => {
-  console.log({ taskId })
   try {
-    const { data } = await axi.delete(`${baseURL}/tasks/delete`, { params: { taskId } });
+    const { data } = await axi.delete(`${baseURL}/tasks/delete`, {
+      params: { taskId },
+    });
     return { data };
   } catch (error) {
     console.error("Error deleting task:", error);

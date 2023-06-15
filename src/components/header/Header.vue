@@ -1,5 +1,5 @@
 <template>
-  <div class="Login-bar">
+  <header class="Login-bar">
     <div class="container">
       <h1 class="logo-type">TODO</h1>
       <div v-if="authenticated" class="logout">
@@ -10,14 +10,14 @@
         <router-link to="/login">Login</router-link>
       </div>
     </div>
-  </div>
+  </header>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "LoginBar",
+  name: "Header",
   props: {
     msg: String,
   },

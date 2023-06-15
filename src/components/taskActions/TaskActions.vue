@@ -75,7 +75,7 @@ export default {
           name: "visitParent",
           icon: "angle-left",
           tooltip: "visitParent",
-          disabled: this.task.resolved,
+          disabled: !this.task.parent_task_uid.length,
           method: () => {
             this.routeToPath({
               path: this.parentLevel,
@@ -129,9 +129,6 @@ export default {
       return this.$router.currentRoute.path !== "/";
     },
   },
-  created() {
-    console.log(this.$router.currentRoute);
-  },
   methods: {
     ...mapActions([
       "announce",
@@ -167,7 +164,7 @@ export default {
   height: 100%;
   top: 0;
   align-items: center;
-  opacity: 1;
+  opacity: 0;
 
   .task:hovered & {
     opacity: 1;

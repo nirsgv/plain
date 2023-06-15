@@ -1,6 +1,7 @@
 <template>
-  <section class="breadcrumb-wrap">
-    <b-breadcrumb align="is-centered" v-if="!loading">
+  <section class="breadcrumb-wrap container">
+    {{  }}
+    <b-breadcrumb align="is-left" v-if="!loading">
       <b-breadcrumb-item class="breadcrumb" tag="router-link" :to="`/`">
         Hello {{ user.name }}
       </b-breadcrumb-item>
@@ -41,7 +42,8 @@ export default {
   },
   methods: {
     async populateBreadcrumbs(to) {
-      if (to) {
+      if (!to) return this.breadcrumbs = [];
+      else {
         try {
           this.loading = true;
           const response = await getBreadcrumbs({
@@ -70,9 +72,11 @@ export default {
   font-size: 1rem;
 }
 
-.breadcrumb-wrap {
-  height: 4rem;
+.breadcrumb-wrap.container {
   position: relative;
+  height: 4rem;
+  width: 100%;
+  flex-grow: 0;
 }
 
 span {

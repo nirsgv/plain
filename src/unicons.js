@@ -17,7 +17,9 @@ import {
   uniExpandFromCorner,
   uniPlus,
   uniHistory,
+  uniFocusAdd,
 } from "vue-unicons/dist/icons";
+
 Unicon.add([
   uniMinus,
   uniCheck,
@@ -36,6 +38,7 @@ Unicon.add([
   uniExpandFromCorner,
   uniPlus,
   uniHistory,
+  uniFocusAdd,
 ]);
 
 export default Unicon;
