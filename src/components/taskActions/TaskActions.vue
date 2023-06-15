@@ -132,7 +132,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
+    ...mapActions("tasks", [
       "announce",
       "editTask",
       "addTask",

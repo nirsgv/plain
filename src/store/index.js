@@ -22,7 +22,7 @@ import router from "@/router";
 //   reducer: (state) => ({ navigation: state.navigation }), //only save navigation module
 // });
 import userStore from "./user";
-// import tasksStore from "./tasks";
+import tasksStore from "./tasks";
 
 
 Vue.use(VueToast, {
@@ -219,7 +219,7 @@ export default new Vuex.Store({
   },
   modules: {
     user: userStore,
-    // tasks: tasksStore,
+    tasks: tasksStore,
   },
   // plugins: [vuexLocal.plugin],
 });

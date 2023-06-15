@@ -31,7 +31,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["tasks"]),
+    ...mapGetters("tasks", ["tasks"]),
     ...mapGetters("user", ["user"]),
   },
   data() {

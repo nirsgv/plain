@@ -81,7 +81,7 @@ export default {
       this.focusTask({ ref: this.$refs[this.taskToFocus][0] });
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters("tasks", [
       "tasks",
       "tasksLoading",
       "parentLevel",
@@ -105,7 +105,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
+    ...mapActions("tasks",[
       "announce",
       "editTask",
       "addTask",
@@ -114,9 +114,6 @@ export default {
       "persistTaskPosition",
       "routeToPath",
       "focusTask",
-    ]),
-    ...mapActions("user", [
-      "user",
     ]),
     drop({ taskUid }) {
       this.dropGroup.push(taskUid);

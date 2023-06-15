@@ -25,7 +25,7 @@ export default {
     ...mapGetters("user", ["authenticated", "user"]),
   },
   methods: {
-    ...mapActions("user", ["loadTasks"]),
+    ...mapActions("tasks", ["loadTasks"]),
     logTasks() {
       console.log(this.tasks);
     },
