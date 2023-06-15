@@ -32,3 +32,5 @@ todo:
 * tooltip values
 * soft delete
 * fix registration ("Failed to submit register details")
+* persist user on store
+* seporate store modules

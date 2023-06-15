@@ -32,7 +32,8 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel"]),
+    ...mapGetters("user", [ "user" ]),
+    ...mapGetters("tasks", ["tasks", "tasksLoading", "parentLevel"]),
     actions() {
       return {
         resolve: {
@@ -125,12 +126,9 @@ export default {
         this.actions.drag,
       ]
     },
-    isBackActive() {
-      return this.$router.currentRoute.path !== "/";
-    },
   },
   methods: {
-    ...mapActions([
+    ...mapActions("tasks", [
       "announce",
       "editTask",
       "addTask",

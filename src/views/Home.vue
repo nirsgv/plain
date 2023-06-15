@@ -37,10 +37,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["authenticated", "user"]),
+    ...mapGetters("user", ["authenticated", "user"]),
   },
   methods: {
-    ...mapActions(["loadTasks"]),
+    ...mapActions("tasks", ["loadTasks"]),
     fetchTasks() {
       if (this.authenticated && this.user) {
         this.loadTasks({ userId: this.user.uid, taskUid: this.uid });

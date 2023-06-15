@@ -43,14 +43,15 @@ export default {
     this.updateButtonHeight();
   },
   computed: {
-    ...mapGetters(["tasks", "user"]),
+    ...mapGetters("user", ["user"]),
+    ...mapGetters("tasks", ["tasks"]),
     sticky() {
       console.log(this.height);
       return this.height < 150;
     },
   },
   methods: {
-    ...mapActions(["addTask"]),
+    ...mapActions("tasks", ["addTask"]),
     async addToCurrent({ userId, title, parentTask, addToCurrent }) {
       await this.addTask({ userId, title, parentTask, addToCurrent });
     },
@@ -70,7 +71,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" r54>
 .add-task {
   flex-grow: 1;
   min-height: 0.1rem;

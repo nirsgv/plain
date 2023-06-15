@@ -22,10 +22,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["authenticated", "user"]),
+    ...mapGetters("user", ["authenticated", "user"]),
   },
   methods: {
-    ...mapActions(["loadTasks"]),
+    ...mapActions("tasks", ["loadTasks"]),
     logTasks() {
       console.log(this.tasks);
     },

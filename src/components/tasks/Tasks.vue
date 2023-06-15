@@ -81,14 +81,17 @@ export default {
       this.focusTask({ ref: this.$refs[this.taskToFocus][0] });
   },
   computed: {
-    ...mapGetters([
-      "tasks",
+    ...mapGetters("user", [
       "user",
+    ]),
+    ...mapGetters("tasks", [
+      "tasks",
       "tasksLoading",
       "parentLevel",
       "taskToFocus",
       "adding",
     ]),
+
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -102,7 +105,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
+    ...mapActions("tasks", [
       "announce",
       "editTask",
       "addTask",

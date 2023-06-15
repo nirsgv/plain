@@ -3,7 +3,7 @@
     <form
       action="/register"
       method="POST"
-      @submit.prevent="submitRegisterDetails({ name, email, password })"
+      @submit.prevent="register({ name, email, password })"
     >
       <b-field label="Email" horizontal>
         <b-input
@@ -54,7 +54,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["submitRegisterDetails"]),
+    ...mapActions("user", ["register"]),
   },
 };
 </script>
