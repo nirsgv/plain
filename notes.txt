@@ -22,6 +22,7 @@
 22. add item animated
 23. add item loader
 24. add new client interface
+25. b-title for headings
 
 todo: 
 * spinner on main

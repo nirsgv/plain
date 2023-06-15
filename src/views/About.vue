@@ -1,9 +1,9 @@
 <template>
   <div class="about">
-    <h2>about page</h2>
+    <b-title size="is-2">>about page</b-title>
     <br />
-    <h1>{{ uid }}</h1>
-    <h1>{{ uid2 }}</h1>
+    <b-title size="is-1">{{ uid }}</b-title>
+    <b-title size="is-1">{{ uid2 }}</b-title>
   </div>
 </template>
 

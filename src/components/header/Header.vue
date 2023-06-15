@@ -1,13 +1,15 @@
 <template>
   <header class="Login-bar">
     <div class="container">
-      <h1 class="logo-type">TODO</h1>
-      <div v-if="authenticated" class="logout">
-        Hello {{ user.name }}
-        <button @click="deauthenticate">Sign out</button>
-      </div>
-      <div v-else class="login">
-        <router-link to="/login">Login</router-link>
+      <b-title size="is-1" class="logo-type">TODO</b-title>
+      <div class="user-status">
+        <div v-if="authenticated" class="logout">
+          Hello {{ user.name }}
+          <span @click="deauthenticate">Sign out</span>
+        </div>
+        <div v-else class="login">
+          <router-link to="/login">Login</router-link>
+        </div>
       </div>
     </div>
   </header>
@@ -18,9 +20,6 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Header",
-  props: {
-    msg: String,
-  },
   computed: {
     ...mapGetters(["authenticated", "user"]),
   },
@@ -52,5 +51,8 @@ export default {
   font-weight: normal;
   font-weight: 900;
   color: var(--border-color);
+}
+.user-status {
+  font-size: 1rem;
 }
 </style>

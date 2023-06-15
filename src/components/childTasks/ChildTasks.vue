@@ -1,12 +1,12 @@
 <template>
   <div class="child-tasks" :class="{'side-entrance': !titlesMap}">
-    <h6
+    <b-title size="is-6"
       class="subtask-amount"
       v-if="!!subTaskAmt && !titlesMap && !loading"
       @click="fetchTasks"
     >
       {{ subTaskAmt }} subtasks
-    </h6>
+    </b-title>
     <!-- <b-skeleton size="is-small" :active="loading" v-if="loading"></b-skeleton> -->
     <b-loading
       size="is-small"
