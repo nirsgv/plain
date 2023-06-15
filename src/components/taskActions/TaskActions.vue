@@ -32,7 +32,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel"]),
+    ...mapGetters(["tasks", "tasksLoading", "parentLevel"]),
+    ...mapGetters("user", ["user"]),
+
     actions() {
       return {
         resolve: {

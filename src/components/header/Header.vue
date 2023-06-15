@@ -21,10 +21,10 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Header",
   computed: {
-    ...mapGetters(["authenticated", "user"]),
+    ...mapGetters("user", ["authenticated", "user"]),
   },
   methods: {
-    ...mapActions(["deauthenticate"]),
+    ...mapActions("user", ["deauthenticate"]),
   },
 };
 </script>

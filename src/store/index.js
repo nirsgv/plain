@@ -21,6 +21,9 @@ import router from "@/router";
 //   storage: window.localStorage,
 //   reducer: (state) => ({ navigation: state.navigation }), //only save navigation module
 // });
+import userStore from "./user";
+// import tasksStore from "./tasks";
+
 
 Vue.use(VueToast, {
   duration: 4000,
@@ -214,6 +217,9 @@ export default new Vuex.Store({
       });
     },
   },
-  modules: {},
+  modules: {
+    user: userStore,
+    // tasks: tasksStore,
+  },
   // plugins: [vuexLocal.plugin],
 });

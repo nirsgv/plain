@@ -83,12 +83,15 @@ export default {
   computed: {
     ...mapGetters([
       "tasks",
-      "user",
       "tasksLoading",
       "parentLevel",
       "taskToFocus",
       "adding",
     ]),
+    ...mapGetters("user", [
+      "user",
+    ]),
+
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -112,7 +115,9 @@ export default {
       "routeToPath",
       "focusTask",
     ]),
-
+    ...mapActions("user", [
+      "user",
+    ]),
     drop({ taskUid }) {
       this.dropGroup.push(taskUid);
     },

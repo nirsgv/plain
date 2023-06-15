@@ -1,6 +1,5 @@
 <template>
-  <section class="breadcrumb-wrap container">
-    {{  }}
+  <section class="breadcrumb-wrap container" v-if="user">
     <b-breadcrumb align="is-left" v-if="!loading">
       <b-breadcrumb-item class="breadcrumb" tag="router-link" :to="`/`">
         Hello {{ user.name }}
@@ -32,7 +31,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["tasks", "user"]),
+    ...mapGetters(["tasks"]),
+    ...mapGetters("user", ["user"]),
   },
   data() {
     return {

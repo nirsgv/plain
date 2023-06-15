@@ -37,7 +37,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["authenticated", "user"]),
+    ...mapGetters("user", ["authenticated", "user"]),
   },
   methods: {
     ...mapActions(["loadTasks"]),

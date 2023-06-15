@@ -45,7 +45,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["submitLoginDetails"]),
+    ...mapActions("user", ["submitLoginDetails"]),
   },
 };
 </script>
