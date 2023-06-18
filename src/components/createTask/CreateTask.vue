@@ -46,14 +46,14 @@ export default {
     ...mapGetters({
       user: "userStore/user",
     }),
-    ...mapGetters(["tasks"]),
+    ...mapGetters("tasksStore", ["tasks"]),
     sticky() {
       console.log(this.height);
       return this.height < 150;
     },
   },
   methods: {
-    ...mapActions(["addTask"]),
+    ...mapActions("tasksStore", ["addTask"]),
     async addToCurrent({ userId, title, parentTask, addToCurrent }) {
       await this.addTask({ userId, title, parentTask, addToCurrent });
     },

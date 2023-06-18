@@ -39,7 +39,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["tasks", "tasksLoading", "parentLevel"]),
+    ...mapGetters("tasksStore", ["tasks", "tasksLoading", "parentLevel"]),
     ...mapGetters({
       user: "userStore/user",
     }),
@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     ...mapActions("routerStore", ["routeToPath"]),
-    ...mapActions([
+    ...mapActions("tasksStore", [
       "announce",
       "editTask",
       "addTask",

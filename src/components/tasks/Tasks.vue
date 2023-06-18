@@ -81,7 +81,7 @@ export default {
       this.focusTask({ ref: this.$refs[this.taskToFocus][0] });
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters("tasksStore", [
       "tasks",
       "tasksLoading",
       "parentLevel",
@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     ...mapActions("routerStore", ["routeToPath"]),
-    ...mapActions([
+    ...mapActions("tasksStore", [
       "announce",
       "editTask",
       "addTask",

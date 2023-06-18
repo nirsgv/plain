@@ -36,7 +36,7 @@ export default {
       authenticated: "userStore/authenticated",
       user: "userStore/user",
     }),
-    ...mapGetters(["tasks"]),
+    ...mapGetters("tasksStore", ["tasks"]),
   },
   data() {
     return {
