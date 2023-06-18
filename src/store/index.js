@@ -1,10 +1,10 @@
 /* eslint-disable no-debugger */
 import Vue from "vue";
 import Vuex from "vuex";
+import userStoreModule from "./userStore.js";
+import routerStoreModule from "./routerStore.js";
 import {
   getUserTasks,
-  submitRegisterDetails,
-  submitLoginDetails,
   editTask,
   addTask,
   addRemoveChild,
@@ -14,7 +14,6 @@ import {
 import { getRandomTaskTitle } from "@/helpers.js";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import VueToast from "vue-toast-notification";
-import router from "@/router";
 // import VuexPersistence from 'vuex-persist'
 
 // const vuexLocal = new VuexPersistence({
@@ -30,11 +29,10 @@ Vue.use(VueToast, {
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  namespaced: true,
   state: {
     tasks: [],
     tasksLoading: false,
-    authenticated: false,
-    user: null,
     parentLevel: "",
     taskToFocus: null,
     adding: false,
@@ -42,8 +40,6 @@ export default new Vuex.Store({
   getters: {
     tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
     tasksLoading: (state) => state.tasksLoading,
-    authenticated: (state) => state.authenticated,
-    user: (state) => state.user,
     parentLevel: (state) => state.parentLevel,
     taskToFocus: (state) => state.taskToFocus,
     adding: (state) => state.adding,
@@ -67,16 +63,6 @@ export default new Vuex.Store({
     SET_TASKS_LOADING: (state, { isLoading }) => {
       console.log(isLoading);
       state.tasksLoading = isLoading;
-    },
-    SET_AUTHENTICATED: (state) => {
-      state.authenticated = true;
-    },
-    DEAUTHENTICATE: (state) => {
-      state.authenticated = false;
-    },
-    SET_USER: (state, user) => {
-      console.log({ user });
-      state.user = { ...user.data };
     },
     UPDATE_TASK_POSITIONS: (state, { updatedTasks }) => {
       console.log(updatedTasks);
@@ -107,30 +93,6 @@ export default new Vuex.Store({
       commit("SET_TASKS", { tasks });
       commit("SET_TASKS_LOADING", { isLoading: false });
     },
-    submitRegisterDetails: async ({ commit, dispatch }, details) => {
-      const user = await submitRegisterDetails(details);
-      if (user.announce) {
-        dispatch("announce", {
-          message: user.announce.message,
-          type: user.announce.type,
-        });
-      }
-      commit("");
-    },
-    submitLoginDetails: async ({ commit, dispatch }, details) => {
-      const response = await submitLoginDetails(details);
-      if (response.announce) {
-        dispatch("announce", {
-          message: response.announce.message,
-          type: response.announce.type,
-        });
-      } else if (!response.data.error) {
-        commit("SET_AUTHENTICATED");
-        console.log({ response });
-        commit("SET_USER", response);
-        dispatch("routeToHomePage");
-      }
-    },
     announce: async ({ commit }, { message, type }) => {
       console.log({ message, type, commit });
       Vue.$toast.open({
@@ -138,26 +100,9 @@ export default new Vuex.Store({
         type,
       });
     },
-    deauthenticate: ({ commit }) => {
-      commit("DEAUTHENTICATE");
-      commit("SET_USER", null);
-    },
-    routeToLoginPage: () => {
-      router.push({ path: "/login" });
-    },
-    routeToHomePage: () => {
-      router.push({ path: "/" });
-    },
-    routeToPath: ({ commit }, { path }) => {
-      console.log(commit, path);
-      router.push({ path: `/${path}` });
-    },
     editTask: async ({ commit }, { taskUid, updates }) => {
-      console.log({ taskUid, updates });
       const { data } = await editTask({ taskUid, updates });
-      // dispatch("loadTasks", { userId });
-      console.log(commit, data)
-      // commit("UPDATE_TASK", { task: data.data });
+      console.log(commit, data);
     },
     addTask: async (
       { commit, dispatch },
@@ -178,7 +123,7 @@ export default new Vuex.Store({
         commit("ADD_TASK", { task: { ...response.data.task, title: t } });
         commit("SET_ADDING", { isAdding: false });
       } else {
-        dispatch("routeToPath", { path: parentTask });
+        dispatch("routerStore/routeToPath", { path: parentTask }, { root: true });
       }
       commit("NEXT_TO_FOCUS", { uid });
       return response.data.task;
@@ -189,7 +134,6 @@ export default new Vuex.Store({
       commit("REMOVE_TASK", { taskUid: taskId });
     },
     updateTaskPositions: ({ commit }, updatedTasks) => {
-      console.log(updatedTasks);
       commit("UPDATE_TASK_POSITIONS", { updatedTasks });
     },
     persistTaskPosition: async ({ commit }, { taskUid, updates }) => {
@@ -214,6 +158,9 @@ export default new Vuex.Store({
       });
     },
   },
-  modules: {},
+  modules: {
+    userStore: userStoreModule,
+    routerStore: routerStoreModule,
+  },
   // plugins: [vuexLocal.plugin],
 });

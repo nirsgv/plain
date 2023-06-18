@@ -22,7 +22,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["authenticated", "user"]),
+    ...mapGetters("userStore", ["authenticated", "user"]),
   },
   methods: {
     ...mapActions(["loadTasks"]),

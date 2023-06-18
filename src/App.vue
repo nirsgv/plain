@@ -10,22 +10,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 
 import { Header } from '@/components/index';
 export default {
   name: "App",
   components: {
     Header,
-  },
-  mounted() {
-    // !this.authenticated && this.routeToLoginPage();
-  },
-  computed: {
-    ...mapGetters(["authenticated"]),
-  },
-  methods: {
-    ...mapActions(["routeToLoginPage"]),
   },
 };
 </script>

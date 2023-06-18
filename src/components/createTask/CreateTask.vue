@@ -43,7 +43,10 @@ export default {
     this.updateButtonHeight();
   },
   computed: {
-    ...mapGetters(["tasks", "user"]),
+    ...mapGetters({
+      user: "userStore/user",
+    }),
+    ...mapGetters(["tasks"]),
     sticky() {
       console.log(this.height);
       return this.height < 150;

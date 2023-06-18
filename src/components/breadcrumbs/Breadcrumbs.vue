@@ -32,7 +32,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["tasks", "user"]),
+    ...mapGetters({
+      authenticated: "userStore/authenticated",
+      user: "userStore/user",
+    }),
+    ...mapGetters(["tasks"]),
   },
   data() {
     return {

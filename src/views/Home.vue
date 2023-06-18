@@ -37,7 +37,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["authenticated", "user"]),
+    ...mapGetters({
+      authenticated: "userStore/authenticated",
+      user: "userStore/user",
+    }),
   },
   methods: {
     ...mapActions(["loadTasks"]),

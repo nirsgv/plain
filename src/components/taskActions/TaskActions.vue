@@ -8,7 +8,14 @@
       position="is-bottom"
       :active="!!action.tooltip.length"
     >
-      <div class="icon-button" @click="action.method" :class="{ 'drag-handle': action.name === 'drag', disabled: action.disabled }">
+      <div
+        class="icon-button"
+        @click="action.method"
+        :class="{
+          'drag-handle': action.name === 'drag',
+          disabled: action.disabled,
+        }"
+      >
         <unicon :name="action.icon" fill="currentColor"></unicon>
       </div>
     </b-tooltip>
@@ -32,7 +39,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["tasks", "user", "tasksLoading", "parentLevel"]),
+    ...mapGetters(["tasks", "tasksLoading", "parentLevel"]),
+    ...mapGetters({
+      user: "userStore/user",
+    }),
     actions() {
       return {
         resolve: {
@@ -67,7 +77,7 @@ export default {
           tooltip: "",
           disabled: false,
           method: () => {
-            this.$emit('drop', { taskUid: this.task.uid });
+            this.$emit("drop", { taskUid: this.task.uid });
             this.dropDelete({ taskUid: this.task.uid });
           },
         },
@@ -121,15 +131,15 @@ export default {
         this.task.resolved ? this.actions.unresolve : this.actions.resolve,
         this.actions.archive,
         this.actions.visitParent,
-        this.task.child_task_uids.length ? this.actions.visitChildren : this.actions.addChild,
+        this.task.child_task_uids.length
+          ? this.actions.visitChildren
+          : this.actions.addChild,
         this.actions.drag,
-      ]
-    },
-    isBackActive() {
-      return this.$router.currentRoute.path !== "/";
+      ];
     },
   },
   methods: {
+    ...mapActions("routerStore", ["routeToPath"]),
     ...mapActions([
       "announce",
       "editTask",
@@ -137,10 +147,10 @@ export default {
       "deleteTask",
       "updateTaskPositions",
       "persistTaskPosition",
-      "routeToPath",
       "toggleResolved",
     ]),
     async addToCurrent({ userId, title, parentTask, addToCurrent }) {
+      console.log({ userId, title, parentTask, addToCurrent });
       await this.addTask({ userId, title, parentTask, addToCurrent });
     },
     drop({ taskUid }) {

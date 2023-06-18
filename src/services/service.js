@@ -96,6 +96,7 @@ const addTask = async ({ userId, title, parentTask = "" }) => {
       title,
       parentTask,
     });
+    console.log({data})
     return { data };
   } catch (error) {
     console.error("Error adding task:", error);

@@ -83,12 +83,14 @@ export default {
   computed: {
     ...mapGetters([
       "tasks",
-      "user",
       "tasksLoading",
       "parentLevel",
       "taskToFocus",
       "adding",
     ]),
+    ...mapGetters({
+      user: "userStore/user",
+    }),
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -102,6 +104,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("routerStore", ["routeToPath"]),
     ...mapActions([
       "announce",
       "editTask",
@@ -109,7 +112,6 @@ export default {
       "deleteTask",
       "updateTaskPositions",
       "persistTaskPosition",
-      "routeToPath",
       "focusTask",
     ]),
 
