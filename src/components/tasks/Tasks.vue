@@ -19,7 +19,7 @@
         type="text"
         v-model="task.title"
         :ref="task.uid"
-        class="title is-1 task__title"
+        class="title task__title ellipsis"
         :class="{ resolved: task.resolved }"
         @keyup.enter="
           editTask({
@@ -135,7 +135,7 @@ export default {
 
 <style lang="scss">
 .tasks {
-  max-height: calc(100vh - 0rem);
+  max-height: 100vh;
   overflow-y: auto;
   .task {
     border-bottom: 1px solid #00000022;
@@ -144,14 +144,15 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-color: var(--border-color);
+    border-color: var(--lightsalmon);
     background-color: var(--white);
+    padding: var(--content-padding);
     &__title {
       margin-bottom: 0 !important;
       border: none;
       text-align: center;
       height: -webkit-fill-available;
-      font-size: 3rem;
+      font-size: var(--task-title-font-size);
       outline: none !important;
       width: 100%;
       text-decoration-color: transparent;
@@ -246,9 +247,9 @@ export default {
 
 .resolved {
   text-decoration: line-through;
-  text-decoration-color: var(--border-color) !important;
+  text-decoration-color: var(--lightsalmon) !important;
   color: #ccc !important;
-  caret-color: var(--border-color);
+  caret-color: var(--lightsalmon);
   pointer-events: none;
 }
 </style>

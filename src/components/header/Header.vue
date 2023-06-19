@@ -37,10 +37,11 @@ export default {
 .Login-bar {
   width: 100vw;
   background-color: #fff;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--lightsalmon);
   position: fixed;
   top: 0;
   height: 3rem;
+  padding: var(--header-padding);
   .container {
     display: flex;
     justify-content: space-between;
@@ -54,6 +55,6 @@ export default {
   font-size: 100%;
   font-weight: normal;
   font-weight: 900;
-  color: var(--border-color);
+  color: var(--lightsalmon);
 }
 </style>

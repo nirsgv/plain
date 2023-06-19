@@ -48,7 +48,7 @@ export default {
         resolve: {
           name: "Check",
           icon: "check",
-          tooltip: "Resolve",
+          tooltip: "Check",
           disabled: false,
           method: () => {
             this.toggleResolved({
@@ -61,7 +61,7 @@ export default {
         unresolve: {
           name: "Uncheck",
           icon: "history",
-          tooltip: "Unresolve",
+          tooltip: "Uncheck",
           disabled: false,
           method: () => {
             this.toggleResolved({
@@ -74,7 +74,7 @@ export default {
         archive: {
           name: "archive",
           icon: "minus",
-          tooltip: "",
+          tooltip: "Remove",
           disabled: false,
           method: () => {
             this.$emit("drop", { taskUid: this.task.uid });
@@ -84,7 +84,7 @@ export default {
         visitParent: {
           name: "visitParent",
           icon: "angle-left",
-          tooltip: "visitParent",
+          tooltip: "View Parent Task",
           disabled: !this.task.parent_task_uid.length,
           method: () => {
             this.routeToPath({
@@ -95,7 +95,7 @@ export default {
         visitChildren: {
           name: "visitChildren",
           icon: "angle-right",
-          tooltip: "visitChildren",
+          tooltip: "View Subtasks",
           disabled: this.task.resolved,
           method: () => {
             this.routeToPath({
@@ -106,7 +106,7 @@ export default {
         addChild: {
           name: "addChild",
           icon: "plus",
-          tooltip: "",
+          tooltip: "Create Subtask",
           disabled: this.task.resolved,
           method: () => {
             this.addToCurrent({
@@ -170,10 +170,12 @@ export default {
   position: absolute;
   right: 0;
   display: flex !important;
-  gap: 1rem;
+  gap: 0.2rem;
   height: 100%;
   top: 0;
-  align-items: center;
+  align-items: flex-end;
+  opacity: 1;
+  padding-bottom: 0.5rem;
   opacity: 0;
 
   .task:hovered & {
@@ -190,7 +192,7 @@ export default {
   align-items: center;
   width: 2rem;
   justify-content: center;
-  color: var(--border-color);
+  color: var(--lightsalmon);
   height: 100%;
   cursor: pointer;
   &:hover {

@@ -5,16 +5,15 @@
       <b-breadcrumb-item class="breadcrumb" tag="router-link" :to="`/`">
         Hello {{ user.name }}
       </b-breadcrumb-item>
-      <template v-for="(breadcrumb, index) in breadcrumbs">
-        <b-breadcrumb-item
-          class="breadcrumb"
-          :tag="index === breadcrumbs.length - 1 ? 'span' : 'router-link'"
-          :to="index !== breadcrumbs.length - 1 ? `/${breadcrumb.parent_task_uid}` : null"
-          :key="breadcrumb.uid"
-        >
-          {{ breadcrumb.title }}
-        </b-breadcrumb-item>
-      </template>
+      <b-breadcrumb-item
+        v-for="(breadcrumb, index) in breadcrumbs"
+        class="breadcrumb"
+        :tag="index === breadcrumbs.length - 1 ? 'span' : 'router-link'"
+        :to="index !== breadcrumbs.length - 1 ? `/${breadcrumb.uid}` : null"
+        :key="breadcrumb.uid"
+      >
+        {{ breadcrumb.title }}
+      </b-breadcrumb-item>
     </b-breadcrumb>
     <b-loading v-else :is-full-page="false" :active="loading"></b-loading>
   </section>

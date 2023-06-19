@@ -22,12 +22,17 @@
 22. add item animated
 23. add item loader
 24. add new client interface
+25. implement store modules
+26. truncate input text with ellipsis
+27. css breakpoints using css variables (:root)
+28. tooltip values
+29. fix breadcrumbs (should point to uid and not parent_uid)
 
 todo: 
+* create task component
 * spinner on main
 * header
-* use buefy login component
 * main ease function specify
-* tooltip values
 * soft delete
 * fix registration ("Failed to submit register details")
+* remove redundant scrolls
