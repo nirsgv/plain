@@ -27,6 +27,7 @@
 27. css breakpoints using css variables (:root)
 28. tooltip values
 29. fix breadcrumbs (should point to uid and not parent_uid)
+30. tooltip style
 
 todo: 
 * create task component

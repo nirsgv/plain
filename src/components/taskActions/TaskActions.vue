@@ -4,7 +4,7 @@
       v-for="action in activeActions"
       :key="action.name"
       :label="action.tooltip"
-      type="is-primary is-light"
+      type="is-primary"
       position="is-bottom"
       :active="!!action.tooltip.length"
     >
@@ -180,6 +180,18 @@ export default {
 
   .task:hovered & {
     opacity: 1;
+  }
+
+  .b-tooltip.is-primary .tooltip-content {
+    background: var(--white) !important;
+    color: var(--black) !important;
+    border-width: 0.1rem;
+    border-color: var(--lightsalmon);
+    border-style: solid;
+    box-shadow: none;
+    &:before {
+      border-bottom-color: var(--lightsalmon)!important;
+    }
   }
 }
 
