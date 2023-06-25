@@ -4,8 +4,9 @@ if (process.env.NODE_ENV !== "production") {
     path: path.resolve(__dirname + "/../variables.env"),
   });
 }
+require("./db-connect.js");
+
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const compression = require("compression");
 const morgan = require("morgan");
@@ -22,8 +23,8 @@ app.use(compression());
 app.use(morgan("common"));
 app.use(morgan("dev"));
 app.use(cors());
-app.use(express.urlencoded({ extended: false }));
 app.use(flash());
+app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -35,26 +36,6 @@ app.use(express.json());
 
 const normalizePort = (port) => parseInt(port, 10);
 const PORT = normalizePort(process.env.PORT || 8000);
-const DATABASE = process.env.DATABASE;
-console.log(DATABASE);
-
-mongoose.connect(DATABASE, {
-  useNewUrlParser: true,
-});
-
-const connection = mongoose.connection;
-connection.once("open", () =>
-  console.log(
-    "Connection with MongoDB was successful",
-    "Database connection string:",
-    DATABASE
-  )
-);
-
-mongoose.Promise = global.Promise; // Tells Mongoose to use ES6 promises
-mongoose.connection.on("error", (err) => {
-  console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
-});
 
 app.get("/api/alltasks", tasksController.getTasks);
 app.get("/api/tasks", tasksController.getUserTasks);
@@ -82,5 +63,5 @@ app.get("/track/*", function (req, res) {
 
 app.listen(PORT, (err) => {
   if (err) throw err;
-  console.log("server started");
+  console.log(`The server is listening on port ${PORT}`);
 });
