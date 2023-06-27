@@ -1,5 +1,7 @@
 const path = require("path");
-if (process.env.NODE_ENV !== "production") {
+
+const { NODE_ENV } = process.env;
+if (NODE_ENV !== "production") {
   require("dotenv").config({
     path: path.resolve(__dirname + "/../variables.env"),
   });
@@ -17,7 +19,7 @@ const tasksController = require("./controllers/tasksController");
 const usersController = require("./controllers/usersController");
 
 const app = express();
-app.use(express.static(path.resolve(__dirname + "/../build")));
+// app.use(express.static(path.resolve(__dirname + "/../build")));
 app.disable("x-powered-by");
 app.use(compression());
 app.use(morgan("common"));
@@ -54,12 +56,12 @@ app.get("/api/users", usersController.getAllUsers);
 app.post("/api/register", usersController.register);
 app.post("/api/login", usersController.login);
 
-app.get("/about", function (req, res) {
-  return res.sendFile(path.resolve(__dirname + "/../build/index.html"));
-});
-app.get("/track/*", function (req, res) {
-  return res.sendFile(path.resolve(__dirname + "/../build/index.html"));
-});
+console.log({ NODE_ENV });
+
+if (NODE_ENV === "production") {
+  app.use(express.static(`${__dirname}/public/`));
+  app.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname + "/../public/index.html")));
+}
 
 app.listen(PORT, (err) => {
   if (err) throw err;

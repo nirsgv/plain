@@ -1,8 +1,10 @@
 /* eslint-disable no-debugger */
 import axios from "axios";
 
-const baseURL = "http://localhost:8000/api";
-
+const baseURL = process.env.VUE_APP_API_BASE_URL;
+// const baseURL = "http://localhost:8000/api";
+// const baseURL = "/";
+console.log({ baseURL });
 const axi = axios.create({
   baseURL,
   timeout: 5000,
@@ -96,7 +98,7 @@ const addTask = async ({ userId, title, parentTask = "" }) => {
       title,
       parentTask,
     });
-    console.log({data})
+    console.log({ data });
     return { data };
   } catch (error) {
     console.error("Error adding task:", error);
