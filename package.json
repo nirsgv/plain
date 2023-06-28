@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node server/server.js --trace-warnings",
-    "heroku-postbuild": "cross-env NODE_ENV=production npm install && vue-cli-service build",
+    "heroku-postbuild": "cross-env NODE_ENV=production npm run build",
     "start:server": "NODE_ENV=development nodemon server/index.js --trace-warnings",
-    "start:client": "NODE_ENV=development vue-cli-service serve",
+    "start:client": "NODE_ENV=development npm install && vue-cli-service serve",
     "build": "cross-env NODE_ENV=production npm install",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
