@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 const DATABASE = process.env.DATABASE;
+console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE 
 
+
+-------- -------------- ------ ${DATABASE} -------- ---------- --------
+
+
+DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE`);
 mongoose.connect(DATABASE, {
   useNewUrlParser: true,
 });
