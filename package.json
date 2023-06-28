@@ -15,6 +15,7 @@
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "buefy": "^0.9.23",
+    "compression": "^1.7.4",
     "connect-mongo": "^3.2.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
