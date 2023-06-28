@@ -13,7 +13,6 @@ const cors = require("cors");
 const compression = require("compression");
 const morgan = require("morgan");
 const flash = require("express-flash");
-const session = require("express-session");
 
 const tasksController = require("./controllers/tasksController");
 const usersController = require("./controllers/usersController");
@@ -27,17 +26,25 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(flash());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 app.use(express.json());
 
 const normalizePort = (port) => parseInt(port, 10);
 const PORT = normalizePort(process.env.PORT || 8000);
+
+console.log(`PORT PORT PORT PORT PORT PORT PORT 
+
+
+-------- -------------- ------ ${PORT} -------- ---------- --------
+
+
+PORT PORT PORT PORT PORT PORT PORT`);
 
 app.get("/api/alltasks", tasksController.getTasks);
 app.get("/api/tasks", tasksController.getUserTasks);
