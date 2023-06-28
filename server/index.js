@@ -36,12 +36,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 const normalizePort = (port) => parseInt(port, 10);
-const PORT = normalizePort(process.env.PORT || 8000);
+const PORT2 = normalizePort(process.env.PORT || 8000);
 
 console.log(`PORT PORT PORT PORT PORT PORT PORT 
 
 
--------- -------------- ------ ${PORT} -------- ---------- --------
+-------- -------------- ------ ${PORT2} -------- ---------- --------
 
 
 PORT PORT PORT PORT PORT PORT PORT`);
@@ -70,7 +70,7 @@ if (NODE_ENV === "production") {
   app.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname + "/../public/index.html")));
 }
 
-app.listen(PORT, (err) => {
+app.listen(PORT2, (err) => {
   if (err) throw err;
-  console.log(`The server is listening on port ${PORT}`);
+  console.log(`The server is listening on port ${PORT2}`);
 });
