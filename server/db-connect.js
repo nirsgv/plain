@@ -9,7 +9,9 @@ console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE
 DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE`);
 mongoose.connect(DATABASE, {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
+
 const connection = mongoose.connection;
 connection.once("open", () =>
   console.log(
