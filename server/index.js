@@ -35,9 +35,8 @@ app.use(express.urlencoded({ extended: false }));
 // );
 app.use(express.json());
 
-// const normalizePort = (port) => parseInt(port, 10);
-// const PORT = normalizePort(process.env.PORT || 8000);
-const PORT2 = 8000;
+const normalizePort = (port) => parseInt(port, 10);
+const PORT2 = normalizePort(process.env.PORT || 8000);
 
 console.log(`PORT PORT PORT PORT PORT PORT PORT 
 
