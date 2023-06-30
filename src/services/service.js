@@ -1,10 +1,8 @@
 /* eslint-disable no-debugger */
 import axios from "axios";
 
-const baseURL = process.env.VUE_APP_API_BASE_URL;
-// const baseURL = "http://localhost:8000/api";
-// const baseURL = "/";
-console.log({ baseURL });
+const baseURL = process.env.VUE_APP_VUE_API_BASE;
+console.log({ VUE_APP_VUE_API_BASE: baseURL });
 const axi = axios.create({
   baseURL,
   timeout: 5000,
