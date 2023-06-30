@@ -33,13 +33,12 @@ const routes = [
     props: true,
     component: Home,
   },
-
 ];
 
 const router = new VueRouter({
   mode: "history",
-  base: '/',
+  base: process.env.VUE_APP_VUE_ROUTER_BASE,
   routes,
 });
-console.log({ VUE_APP_BASE_URL: '/' });
+console.log({ VUE_APP_VUE_ROUTER_BASE: process.env.VUE_APP_VUE_ROUTER_BASE });
 export default router;
