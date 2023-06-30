@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
 const getUserByEmail = async ({ email }) => {
+  console.log({email})
   return await User.findOne({ email });
 };
 
