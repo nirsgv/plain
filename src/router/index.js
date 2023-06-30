@@ -38,8 +38,8 @@ const routes = [
 
 const router = new VueRouter({
   mode: "history",
-  base: process.env.VUE_APP_BASE_URL,
+  base: '/',
   routes,
 });
-console.log({ VUE_APP_BASE_URL: process.env.VUE_APP_BASE_URL });
+console.log({ VUE_APP_BASE_URL: '/' });
 export default router;
