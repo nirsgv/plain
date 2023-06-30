@@ -68,6 +68,7 @@ exports.register = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   const { id } = req.params;
+  console.log('getUserById: ', { id });
   if (!id) return;
   try {
     const user = await User.findOne({ uid: id });
