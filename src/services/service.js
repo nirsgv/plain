@@ -4,14 +4,14 @@ import axios from "axios";
 const baseURL = process.env.VUE_APP_VUE_API_BASE;
 console.log({ VUE_APP_VUE_API_BASE: baseURL });
 const axi = axios.create({
-  baseURL,
+  baseURL: "",
   timeout: 5000,
   headers: { "X-Requested-With": "XMLHttpRequest" },
 });
 
 const getTask = async ({ userId, taskUid }) => {
   try {
-    const { data } = await axi.get(`/task`, {
+    const { data } = await axi.get(`${baseURL}/task`, {
       params: { userId, taskUid },
     });
     console.log(data);
@@ -33,7 +33,7 @@ const getUserTasks = async ({ userId, taskUid }) => {
   };
 
   try {
-    const { data } = await axi.get(`/tasks`, { params });
+    const { data } = await axi.get(`${baseURL}/tasks`, { params });
     return data;
   } catch (error) {
     const { status, statusText } = error.response;
@@ -44,7 +44,7 @@ const getUserTasks = async ({ userId, taskUid }) => {
 
 const submitRegisterDetails = async (details) => {
   try {
-    const { data } = await axi.post(`/register`, details);
+    const { data } = await axi.post(`${baseURL}/register`, details);
     return data;
   } catch (error) {
     console.error("Error submitting register details:", error);
@@ -54,7 +54,7 @@ const submitRegisterDetails = async (details) => {
 
 const submitLoginDetails = async (details) => {
   try {
-    const { data } = await axi.post(`/login`, details);
+    const { data } = await axi.post(`${baseURL}/login`, details);
     return { data };
   } catch (error) {
     console.error("Error submitting login details:", error);
@@ -64,7 +64,7 @@ const submitLoginDetails = async (details) => {
 
 const editTask = async ({ taskUid, updates }) => {
   try {
-    const { data } = await axi.patch(`/tasks/edit`, {
+    const { data } = await axi.patch(`${baseURL}/tasks/edit`, {
       taskUid,
       updates,
     });
@@ -77,7 +77,7 @@ const editTask = async ({ taskUid, updates }) => {
 
 const addRemoveChild = async ({ taskUid, action, childTaskUid }) => {
   try {
-    const { data } = await axi.patch(`/tasks/add-remove-child`, {
+    const { data } = await axi.patch(`${baseURL}/tasks/add-remove-child`, {
       taskUid,
       action,
       childTaskUid,
@@ -91,7 +91,7 @@ const addRemoveChild = async ({ taskUid, action, childTaskUid }) => {
 
 const addTask = async ({ userId, title, parentTask = "" }) => {
   try {
-    const { data } = await axi.post(`/tasks/create`, {
+    const { data } = await axi.post(`${baseURL}/tasks/create`, {
       userId,
       title,
       parentTask,
@@ -106,7 +106,7 @@ const addTask = async ({ userId, title, parentTask = "" }) => {
 
 const deleteTask = async ({ taskId }) => {
   try {
-    const { data } = await axi.delete(`/tasks/delete`, {
+    const { data } = await axi.delete(`${baseURL}/tasks/delete`, {
       params: { taskId },
     });
     return { data };
@@ -118,7 +118,7 @@ const deleteTask = async ({ taskId }) => {
 
 const getTitles = async ({ uids }) => {
   try {
-    const { data } = await axi.get(`/tasks/titles/`, {
+    const { data } = await axi.get(`${baseURL}/tasks/titles/`, {
       params: { uids },
     });
     return { data };
@@ -131,7 +131,7 @@ const getTitles = async ({ uids }) => {
 const getBreadcrumbs = async ({ uid }) => {
   // await new Promise(r => setTimeout(r, 100000));
   try {
-    const { data } = await axi.get(`/tasks/breadcrumbs/`, {
+    const { data } = await axi.get(`${baseURL}/tasks/breadcrumbs/`, {
       params: { taskUid: uid },
     });
     return { data };
