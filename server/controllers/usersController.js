@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 const getUserByEmail = async ({ email }) => {
   console.log({email})
-  return await User.findOne();
+  return await User.find();
 };
 
 exports.login = async (req, res) => {
