@@ -10,8 +10,7 @@
 </template>
 
 <script>
-
-import { Header } from '@/components/index';
+import { Header } from "@/components/index";
 export default {
   name: "App",
   components: {

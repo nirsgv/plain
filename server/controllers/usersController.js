@@ -1,20 +1,20 @@
-const User = require("../models/User");
+const User = require("../models/User.js");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
 const getUserByEmail = async ({ email }) => {
-  console.log({email})
   return await User.findOne({ email });
 };
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return;
-  console.log({password})
+  console.log({ email, password })
 
   try {
     const user = await getUserByEmail({ email });
-    const loggedUser = { name: user.name, email: user.email, uid: user.uid };
+    console.log({ user });
+    const loggedUser = { name: user?.name, email: user?.email, uid: user?.uid };
 
     if (!user) {
       res.send({ announce: {message: 'No user with this email', type: 'error'} })
@@ -69,7 +69,6 @@ exports.register = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   const { id } = req.params;
-  console.log('getUserById: ', { id });
   if (!id) return;
   try {
     const user = await User.findOne({ uid: id });
@@ -83,7 +82,9 @@ exports.getUserById = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    console.log('----------------------');
+    console.log({ User });
+    const users = await User.find();
     if (users) {
       return res.send(users)
     }

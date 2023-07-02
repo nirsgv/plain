@@ -1,4 +1,4 @@
-const Task = require("../models/Task");
+const Task = require("../models/Task.js");
 const { v4: uuidv4 } = require("uuid");
 
 const {
