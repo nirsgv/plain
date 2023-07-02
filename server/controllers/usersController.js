@@ -4,13 +4,14 @@ const bcrypt = require("bcrypt");
 
 const getUserByEmail = async ({ email }) => {
   console.log({email})
-  return await User.find();
+  return await User.findOne({ email });
 };
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return;
   console.log({password})
+
   try {
     const user = await getUserByEmail({ email });
     const loggedUser = { name: user.name, email: user.email, uid: user.uid };
