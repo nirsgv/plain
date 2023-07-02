@@ -21,7 +21,8 @@ connection.once("open", () =>
   )
 );
 mongoose.Promise = global.Promise; // Tells Mongoose to use ES6 promises
-mongoose.connection.on("error", (err) => {
+connection.on("error", (err) => {
   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
+  console.error("MongoDB connection error:");
+  console.error(err);
 });
-

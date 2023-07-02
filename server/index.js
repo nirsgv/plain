@@ -18,7 +18,6 @@ const tasksController = require("./controllers/tasksController");
 const usersController = require("./controllers/usersController");
 
 const app = express();
-// app.use(express.static(path.resolve(__dirname + "/../build")));
 app.disable("x-powered-by");
 app.use(compression());
 app.use(morgan("common"));
