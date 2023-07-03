@@ -1,6 +1,15 @@
 const mongoose = require("mongoose");
 const DATABASE = process.env.DATABASE;
 mongoose.Promise = global.Promise; // Tells Mongoose to use ES6 promises
+
+const fixieData = process.env.PROXY_URL.split(new RegExp('[/(:\\/@/]+'));
+console.log({
+  proxyUsername: fixieData[0],
+  proxyPassword: fixieData[1],
+  proxyHost: fixieData[2],
+  proxyPort: fixieData[3],
+
+})
 console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE 
 
 
@@ -9,6 +18,10 @@ console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE
 
 DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE`);
 mongoose.connect(DATABASE, {
+  proxyUsername: fixieData[0],
+  proxyPassword: fixieData[1],
+  proxyHost: fixieData[2],
+  proxyPort: fixieData[3],
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
