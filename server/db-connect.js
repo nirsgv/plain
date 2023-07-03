@@ -8,11 +8,12 @@ const CONNECTION_STRING = `mongodb+srv://${DB_USER}:${DB_PSWD}@${CLUSTER_ADDRESS
 console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE 
 
 
+-------- -------------- ------ ${DATABASE} -------- ---------- --------
 -------- -------------- ------ ${CONNECTION_STRING} -------- ---------- --------
 
 
 DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE`);
-mongoose.connect(CONNECTION_STRING, {
+mongoose.connect(DATABASE, {
   proxyUsername: fixieData[0],
   proxyPassword: fixieData[1],
   proxyHost: fixieData[2],
