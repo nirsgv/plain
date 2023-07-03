@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "local": "npm run start:server && npm run start:client",
     "start": "node server/index.js --trace-warnings && vue-cli-service serve",
     "heroku-postbuild": "cross-env NODE_ENV=production vue-cli-service build",
     "start:client": "NODE_ENV=development npm install && vue-cli-service serve",
     "start:server": "NODE_ENV=development nodemon server/index.js --trace-warnings",
+    "local": "npm run start:server && npm run start:client",
     "build": "cross-env NODE_ENV=production npm install",
     "build:client": "cross-env NODE_ENV=development vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
