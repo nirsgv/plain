@@ -80,15 +80,17 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = async () => {
   try {
-    console.log('----------------------');
-    console.log({ User });
-    const users = await User.find();
-    if (users) {
-      return res.send(users)
+    // Query the User collection to check if any documents exist
+    const count = await User.countDocuments();
+
+    if (count > 0) {
+      console.log('Documents are available in the production environment.');
+    } else {
+      console.log('No documents found in the production environment.');
     }
   } catch (error) {
-    console.error(error);
+    console.error('Error occurred while checking document availability:', error);
   }
 };
