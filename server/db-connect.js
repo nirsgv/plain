@@ -11,7 +11,6 @@ console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE
 -------- -------------- ------ ${DATABASE} -------- ---------- --------
 -------- -------------- ------ ${CONNECTION_STRING} -------- ---------- --------
 
-
 DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE`);
 mongoose.connect(DATABASE, {
   proxyUsername: fixieData[0],
