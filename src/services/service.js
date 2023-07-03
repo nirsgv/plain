@@ -54,8 +54,8 @@ const submitRegisterDetails = async (details) => {
 
 const submitLoginDetails = async (details) => {
   try {
-    const { data } = await axi.get(`${baseURL}/users`, details);
-    // const { data } = await axi.post(`${baseURL}/login`, details);
+    // const { data } = await axi.get(`${baseURL}/users`, details);
+    const { data } = await axi.post(`${baseURL}/login`, details);
     console.log({data})
     return { data };
   } catch (error) {
