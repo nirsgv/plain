@@ -1,23 +1,18 @@
 const mongoose = require("mongoose");
 const DATABASE = process.env.DATABASE;
+const { DB_USER, DB_PSWD, CLUSTER_ADDRESS, DB } = process.env;
 mongoose.Promise = global.Promise; // Tells Mongoose to use ES6 promises
-console.log({proxy: process.env.FIXIE_SOCKS_HOST});
 const fixieData = process.env.FIXIE_SOCKS_HOST.split(new RegExp('[/(:\\/@/]+'));
-console.log({
-  proxyUsername: fixieData[0],
-  proxyPassword: fixieData[1],
-  proxyHost: fixieData[2],
-  proxyPort: fixieData[3],
+const CONNECTION_STRING = `mongodb+srv://${DB_USER}:${DB_PSWD}@${CLUSTER_ADDRESS}/${DB}`;
 
-})
 console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE 
 
 
--------- -------------- ------ ${DATABASE} -------- ---------- --------
+-------- -------------- ------ ${CONNECTION_STRING} -------- ---------- --------
 
 
 DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE`);
-mongoose.connect(DATABASE, {
+mongoose.connect(CONNECTION_STRING, {
   proxyUsername: fixieData[0],
   proxyPassword: fixieData[1],
   proxyHost: fixieData[2],
