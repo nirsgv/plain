@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const DATABASE = process.env.DATABASE;
 mongoose.Promise = global.Promise; // Tells Mongoose to use ES6 promises
 
-const fixieData = process.env.PROXY_URL.split(new RegExp('[/(:\\/@/]+'));
+const fixieData = process.env.FIXIE_URL.split(new RegExp('[/(:\\/@/]+'));
 console.log({
   proxyUsername: fixieData[0],
   proxyPassword: fixieData[1],
