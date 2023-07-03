@@ -6,7 +6,6 @@ if (NODE_ENV !== "production") {
     path: path.resolve(__dirname + "/../variables.env"),
   });
 }
-require("./db-connect.js");
 
 const express = require("express");
 const cors = require("cors");
@@ -16,6 +15,7 @@ const flash = require("express-flash");
 
 const tasksController = require("./controllers/tasksController");
 const usersController = require("./controllers/usersController");
+require("./db-connect.js");
 
 const app = express();
 app.disable("x-powered-by");
