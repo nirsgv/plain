@@ -6,7 +6,6 @@ const fixieData = process.env.FIXIE_SOCKS_HOST.split(new RegExp('[/(:\\/@/]+'));
 const CONNECTION_STRING = `mongodb+srv://${DB_USER}:${DB_PSWD}@${CLUSTER_ADDRESS}/${DB}`;
 
 console.log(`DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE DATABASE 
-DATABASE=mongodb+srv://nirsegevmail:ux11pxmNxXgTo2Wj@plain-cluster.ecewtol.mongodb.net/plain-db
 
 
 -------- -------------- ------ ${DATABASE} -------- ---------- --------
