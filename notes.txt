@@ -4,3 +4,36 @@
 4. edit task title
 5. create task
 6. task disabled/archived state
+7. add loader animation
+8. add a route controller to add and remove child tasks (edit child tasks array)
+9. bread crumb component will traverse parent task uids and generate the breadcrumb with matching titles with each list load (tasks load)
+10. update add item - fix correct parent - implement going deeper and shallower
+11. update delete item and include removing parent and child values 
+12. update edit to not reload tasks 
+13. implement going deeper and shallower (actions)
+14. toggle between creating a list action and going deeper when list is available
+15. create seporate module for icon loading (clear from main.js)
+16. focus input on creation
+17. fix breadcrumbs
+18. make a task component
+19. refactor actions to map over data
+20. allow pressing enter on input
+21. cut breadcrumbs where needed
+22. add item animated
+23. add item loader
+24. add new client interface
+25. implement store modules
+26. truncate input text with ellipsis
+27. css breakpoints using css variables (:root)
+28. tooltip values
+29. fix breadcrumbs (should point to uid and not parent_uid)
+30. tooltip style
+
+todo: 
+* create task component
+* spinner on main
+* header
+* main ease function specify
+* soft delete
+* fix registration ("Failed to submit register details")
+* remove redundant scrolls

@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/User.js");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
@@ -9,11 +9,12 @@ const getUserByEmail = async ({ email }) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return;
-  console.log({password})
+  console.log({ email, password })
 
   try {
     const user = await getUserByEmail({ email });
-    const loggedUser = { name: user.name, email: user.email, uid: user.uid };
+    console.log({ user });
+    const loggedUser = { name: user?.name, email: user?.email, uid: user?.uid };
 
     if (!user) {
       res.send({ announce: {message: 'No user with this email', type: 'error'} })
@@ -81,7 +82,9 @@ exports.getUserById = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    console.log('----------------------');
+    console.log({ User });
+    const users = await User.find();
     if (users) {
       return res.send(users)
     }
@@ -89,3 +92,14 @@ exports.getAllUsers = async (req, res) => {
     console.error(error);
   }
 };
+
+// const count = await User.countDocuments();
+
+// if (count > 0) {
+//   console.log('Documents are available in the production environment.');
+// } else {
+//   console.log('No documents found in the production environment.');
+// }
+// } catch (error) {
+// console.error('Error occurred while checking document availability:', error);
+// }

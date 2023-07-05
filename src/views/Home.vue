@@ -1,21 +1,35 @@
 <template>
-  <div class="home">
-    <Tasks v-if="user" />
+  <div class="home" v-if="user">
+    <Breadcrumbs :uid="uid" />
+    <Tasks :uid="uid" />
+    <CreateTask :uid="uid" />
   </div>
 </template>
+
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Tasks from "../components/tasks/Tasks.vue";
+import Tasks from "@/components/tasks/Tasks.vue";
+import CreateTask from "@/components/createTask/CreateTask.vue";
+import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs.vue";
 
 export default {
   name: "Home",
   components: {
     Tasks,
+    Breadcrumbs,
+    CreateTask,
   },
-  mounted() {
-    this.authenticated &&
-      this.user &&
-      this.loadTasks({ userId: this.user.uid });
+  props: {
+    uid: {
+      type: String,
+      default: "",
+    },
+  },
+  watch: {
+    uid: {
+      handler: 'fetchTasks', // Call fetchTasks whenever uid prop changes
+      immediate: true // Call fetchTasks immediately on component creation as well
+    },
   },
   data() {
     return {
@@ -23,16 +37,26 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["authenticated", "user"]),
+    ...mapGetters({
+      authenticated: "userStore/authenticated",
+      user: "userStore/user",
+    }),
   },
   methods: {
-    ...mapActions(["loadTasks"]),
-    logTasks() {
-      console.log(this.tasks);
+    ...mapActions("tasksStore", ["loadTasks"]),
+    fetchTasks() {
+      if (this.authenticated && this.user) {
+        this.loadTasks({ userId: this.user.uid, taskUid: this.uid });
+      }
     },
   },
 };
 </script>
-<style lang="scss">
 
+<style lang="scss">
+.home {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
 </style>

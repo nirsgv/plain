@@ -1,4 +1,39 @@
+@font-face {
+  font-family: "MartianMono";
+  src: local("./assets/fonts//MartianMono-Regular.ttf"),format("truetype");
+}
+:root {
+  --white: #fff;
+  --black: #000;
+  --bkg1: #00bbb4;
+  --gap: .4rem;
+  --big-gap: 1.6rem;
+  --vertical-margin: 2rem;
+  --highlight: #eee;
+  --task-title-font-size: 2rem;
+  --content-padding: 0 2rem;
+  --header-padding: 0 1rem;
+  --lightsalmon: oklch(79.38% 0.12483287411660951 42.42478683674435);
+  --border-color: oklch(45% 0.26 264);
+}
+
+@media (min-width: 600px) {
+  :root {
+    --task-title-font-size: 3rem;
+    --content-padding: 0;
+    --header-padding: 0;
+    
+  }
+}
+
 html { font-size: 62.5%; } 
+body {
+  font-family: 'Martian Mono', monospace;
+}
+
+h6 {
+  font-size: 1rem;
+}
 
 .ellipsis {
   white-space: nowrap;
@@ -25,6 +60,7 @@ html { font-size: 62.5%; }
 form {
   position: relative
 }
+
 
 dialog {
   width: 100vw;
@@ -74,12 +110,22 @@ dt, dd {
   display: inline-block;
 }
 
-:root {
-  --white: #fff;
-  --black: #000;
-  --bkg1: #00bbb4;
-  --gap: .4rem;
-  --big-gap: 1.6rem;
-  --vertical-margin: 2rem;
-  --highlight: #eee;
+.loading-overlay .loading-icon {
+  &:after {
+    width: 1rem !important;
+    height: 1rem !important;
+    top: -0.5rem!important;
+    left: 0!important;
+  }
+}
+
+.title::selection {
+  background-color: #eee;
+  border: 1px solid #000;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  white-space: nowrap;
 }

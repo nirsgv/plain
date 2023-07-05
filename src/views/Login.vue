@@ -3,7 +3,7 @@
     <form
       action="/login"
       method="POST"
-      @submit.prevent="submitLoginDetails({ email, password })"
+      @submit.prevent="login({ email, password })"
       class="form"
     >
       <b-field label="Email" horizontal>
@@ -45,7 +45,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["submitLoginDetails"]),
+    ...mapActions("userStore", ["login"]),
   },
 };
 </script>

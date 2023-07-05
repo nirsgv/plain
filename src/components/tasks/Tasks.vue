@@ -1,76 +1,73 @@
 <template>
-  <div v-if="user">
-    <ul class="tasks">
-      <draggable
-        v-model="sortedTasks"
-        @end="onDragEnd"
-        group="taskGroup"
-        handle=".drag-handle"
-      >
-        <li
-          v-for="task in sortedTasks"
-          :key="task.uid"
-          class="task container"
-          :class="{ dropped: dropGroup.includes(task.uid) }"
-          :data-task-uid="task.uid"
-        >
-          <input
-            type="text"
-            class="title is-1 task__title"
-            v-model="task.title"
-            @change="
-              editTask({
-                taskUid: task.uid,
-                userId: user.uid,
-                updates: { title: $event.target.value },
-              })
-            "
-          />
-          <div class="actions">
-            <div class="icon-button" @click="drop({ taskUid: task.uid })">
-              <unicon name="check" fill="currentColor"></unicon>
-            </div>
-            <div
-              class="icon-button"
-              @click="deleteTask({ userId: user.uid, taskId: task.uid })"
-            >
-              <unicon name="minus" fill="currentColor"></unicon>
-            </div>
-            <div class="drag-handle">
-              <div class="icon-button">
-                <unicon
-                  name="grip-horizontal-line"
-                  fill="currentColor"
-                ></unicon>
-              </div>
-            </div>
-          </div>
-        </li>
-      </draggable>
-    </ul>
-
-    <form class="add-task" @submit.prevent="null">
-      <b-input type="text" v-model="newTaskTitle" maxlength="30" />
-      <button
-        native-type="submit"
-        type="button"
-        @click.prevent="addTask({ userId: user.uid, title: newTaskTitle })"
-        class="add-task__button"
-      >
-        Add Task
-      </button>
-    </form>
-  </div>
+  <draggable
+    tag="ul"
+    v-if="user"
+    class="tasks"
+    :class="{ 'tasks--loading': tasksLoading }"
+    v-model="sortedTasks"
+    @end="onDragEnd"
+    group="taskGroup"
+    handle=".drag-handle"
+  >
+    <li
+      v-for="task in sortedTasks"
+      :key="task.uid"
+      class="task container"
+      :class="{ dropped: dropGroup.includes(task.uid) }"
+    >
+      <input
+        type="text"
+        v-model="task.title"
+        :ref="task.uid"
+        class="title task__title ellipsis"
+        :class="{ resolved: task.resolved }"
+        @keyup.enter="
+          editTask({
+            taskUid: task.uid,
+            userId: user.uid,
+            updates: { title: $event.target.value },
+          })
+        "
+        @change="
+          editTask({
+            taskUid: task.uid,
+            userId: user.uid,
+            updates: { title: $event.target.value },
+          })
+        "
+      />
+      <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
+      <TaskActions :task="task" @drop="drop" />
+    </li>
+    <li class="task container created" v-if="adding">
+      <b-skeleton
+        :animated="true"
+        size="is-large"
+        width="50%"
+        position="is-centered"
+      ></b-skeleton>
+    </li>
+  </draggable>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
-
+import ChildTasks from "@/components/childTasks/ChildTasks.vue";
+import TaskActions from "@/components/taskActions/TaskActions.vue";
+import { calculateDraggedPosition } from "@/helpers.js";
 export default {
   name: "Tasks",
   components: {
     draggable,
+    ChildTasks,
+    TaskActions,
+  },
+  props: {
+    uid: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -78,8 +75,22 @@ export default {
       dropGroup: [],
     };
   },
+  updated: function () {
+    this.taskToFocus &&
+      this.$refs[this.taskToFocus] &&
+      this.focusTask({ ref: this.$refs[this.taskToFocus][0] });
+  },
   computed: {
-    ...mapGetters(["tasks", "user"]),
+    ...mapGetters("tasksStore", [
+      "tasks",
+      "tasksLoading",
+      "parentLevel",
+      "taskToFocus",
+      "adding",
+    ]),
+    ...mapGetters({
+      user: "userStore/user",
+    }),
     unresolved() {
       return this.tasks.filter((task) => !task.resolved);
     },
@@ -88,71 +99,30 @@ export default {
         return this.tasks;
       },
       set(updatedTasks) {
-        console.log({ updatedTasks });
         this.updateTaskPositions(updatedTasks);
       },
     },
   },
   methods: {
-    ...mapActions([
+    ...mapActions("routerStore", ["routeToPath"]),
+    ...mapActions("tasksStore", [
       "announce",
       "editTask",
       "addTask",
       "deleteTask",
       "updateTaskPositions",
       "persistTaskPosition",
+      "focusTask",
     ]),
+
     drop({ taskUid }) {
-      console.log(this.dropGroup);
       this.dropGroup.push(taskUid);
     },
-    startDrag(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      const draggableElement = event.target.closest(".draggable");
-      if (draggableElement) {
-        draggableElement.draggable = true;
-        draggableElement.classList.add("dragging");
-      }
-    },
     async onDragEnd(event) {
-      const draggedIndex = event.oldIndex;
-      const targetIndex = event.newIndex;
-      const draggedTask = this.sortedTasks[draggedIndex];
-      const targetTask = this.sortedTasks[targetIndex];
-
-      let calcPosition;
-
-      if (targetIndex > draggedIndex) {
-        // Dragging down
-        if (targetIndex === this.sortedTasks.length - 1) {
-          // If dragging to the last position, set the position as a higher value
-          calcPosition = targetTask.position + 1;
-        } else {
-          // Calculate the new position as the average of the target and next task positions
-          const nextTask = this.sortedTasks[targetIndex + 1];
-          calcPosition =
-            targetTask.position + (nextTask.position - targetTask.position) / 2;
-        }
-      } else if (targetIndex < draggedIndex) {
-        // Dragging up
-        if (targetIndex === 0) {
-          // If dragging to the first position, set the position as a fraction of the second task's position
-          const secondTask = this.sortedTasks[1];
-          calcPosition = secondTask.position / 2;
-        } else {
-          // Calculate the new position as the average of the target and previous task positions
-          const prevTask = this.sortedTasks[targetIndex - 1];
-          calcPosition =
-            prevTask.position + (targetTask.position - prevTask.position) / 2;
-        }
-      }
-
-      calcPosition = parseFloat(calcPosition.toFixed(3));
-
-      // Update the position of the dragged task
-      draggedTask.position = calcPosition;
-
+      const [draggedTask, calcPosition] = calculateDraggedPosition({
+        event,
+        tasks: this.sortedTasks,
+      });
       // Update the position of the dragged task in the database
       await this.persistTaskPosition({
         taskUid: draggedTask.uid,
@@ -165,6 +135,8 @@ export default {
 
 <style lang="scss">
 .tasks {
+  max-height: 100vh;
+  overflow-y: auto;
   .task {
     border-bottom: 1px solid #00000022;
     display: block;
@@ -172,76 +144,63 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-color: var(--lightsalmon);
+    background-color: var(--white);
+    padding: var(--content-padding);
     &__title {
       margin-bottom: 0 !important;
       border: none;
       text-align: center;
       height: -webkit-fill-available;
-    }
-    .actions {
-      transition: all 0.1s ease-in-out;
-      position: absolute;
-      right: 0;
-      display: flex !important;
-      gap: 1rem;
-      height: 100%;
-      top: 0;
-      align-items: center;
+      font-size: var(--task-title-font-size);
+      outline: none !important;
+      width: 100%;
+      text-decoration-color: transparent;
+      transition: color 0.6s ease-in, text-decoration-color 0.3s ease-in 0.5s;
     }
     &:hover .actions {
       opacity: 1;
     }
   }
-}
-.add-task {
-  margin: 2rem 5rem 0;
-  .control {
-    flex-grow: 1;
-    input {
-      height: 100%;
+  &--loading {
+    .task {
+      border-color: black;
+      animation: bordercolor;
+      animation-duration: 0.2s;
+      animation-direction: alternate;
     }
-  }
-  &__button {
   }
 }
 
 .container {
   max-width: 34em;
   margin: 0 auto;
-  padding: 2em;
   font-size: 24px;
   font-family: Baskerville, Georgia, serif;
   line-height: 1.6em;
+  flex-grow: 0;
 }
 
-.icon-button {
-  padding: 0;
-  background-color: transparent;
-  border-radius: 50%;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  width: 2rem;
-  justify-content: center;
-  color: #ccc;
-  height: 100%;
-  cursor: pointer;
-  &:hover {
-    color: #888;
-  }
+.dropped,
+.created {
+  animation: drop-animation cubic-bezier(0, 0.55, 0.45, 1);
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  animation-delay: 0;
 }
 
 .dropped {
-  animation: drop-animation cubic-bezier(0, 0.55, 0.45, 1);
-  animation-fill-mode: forwards;
-  animation-duration: 0.55s;
-  animation-delay: 0;
   & > * {
     animation: blank-animation ease-out;
     animation-fill-mode: forwards;
     animation-duration: 0.05s;
     animation-delay: 0;
   }
+}
+
+.created {
+  animation-direction: reverse;
+  animation-duration: 0.25s;
 }
 
 .blank {
@@ -270,10 +229,27 @@ export default {
   }
 }
 
+@keyframes bordercolor {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .drag-handle {
   /* Style your drag handle element here */
 }
 .dragging {
   /* Style the dragging element here */
+}
+
+.resolved {
+  text-decoration: line-through;
+  text-decoration-color: var(--lightsalmon) !important;
+  color: #ccc !important;
+  caret-color: var(--lightsalmon);
+  pointer-events: none;
 }
 </style>
