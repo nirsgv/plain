@@ -135,8 +135,6 @@ export default {
 
 <style lang="scss">
 .tasks {
-  max-height: 100vh;
-  overflow-y: auto;
   .task {
     display: block;
     height: 10rem;
@@ -162,12 +160,12 @@ export default {
        opacity: 1;
       }
       &:after {
-        height: 0.1rem;
+        height: 0.2rem;
       }
     }
     &:after {
       content: "";
-      height: 0.05rem;
+      height: 0.1rem;
       width: 100%;
       background-color: black;
       position: absolute;

@@ -28,6 +28,8 @@
 28. tooltip values
 29. fix breadcrumbs (should point to uid and not parent_uid)
 30. tooltip style
+31. remove redundant scrolls
+
 
 todo: 
 * create task component
@@ -36,4 +38,5 @@ todo:
 * main ease function specify
 * soft delete
 * fix registration ("Failed to submit register details")
-* remove redundant scrolls
+* sticky part
+* sorting

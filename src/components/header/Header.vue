@@ -38,8 +38,8 @@ export default {
   width: 100vw;
   background-color: #fff;
   border-bottom: 1px solid #9a9a9a;
-  position: fixed;
-  top: 0;
+  /* position: fixed; */
+  /* top: 0; */
   height: 3rem;
   padding: var(--header-padding);
   /* filter: contrast(80%) brightness(30%); */

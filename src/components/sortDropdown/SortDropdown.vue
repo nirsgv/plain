@@ -37,28 +37,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.Login-bar {
-  width: 100vw;
-  background-color: #fff;
-  border-bottom: 1px solid #9a9a9a;
-  position: fixed;
-  top: 0;
-  height: 3rem;
-  padding: var(--header-padding);
-  /* filter: contrast(80%) brightness(30%); */
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: inherit;
-    height: 100%;
-    /* outline: 4px dashed red; */
-  }
+.sort-dropdown {
 }
-.logo-type {
-  font-size: 100%;
-  font-weight: normal;
-  font-weight: 900;
-  color: #4a4a4a;
-}
+
 </style>

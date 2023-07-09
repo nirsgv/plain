@@ -26,9 +26,10 @@
   }
 }
 
-html { font-size: 62.5%; } 
+html { font-size: 62.5%; scroll-behavior: smooth; } 
 body {
   font-family: 'Martian Mono', monospace;
+  min-height: 100vh;
 }
 
 h6 {
@@ -139,4 +140,7 @@ dt, dd {
       oklch(78% 0.24 46) 0%, oklch(90% 0.50 115) 98% 98%
     )
   ;
+}
+.flex {
+  display: flex!important;
 }

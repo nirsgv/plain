@@ -1,9 +1,6 @@
 <template>
   <div class="home" v-if="user">
-    <section class="sticky-part">
-      <Breadcrumbs :uid="uid" />
-      <SortDropdown />
-    </section>
+    <StickyPart :uid="uid" />
     <Tasks :uid="uid" />
     <CreateTask :uid="uid" />
   </div>
@@ -13,16 +10,15 @@
 import { mapGetters, mapActions } from "vuex";
 import Tasks from "@/components/tasks/Tasks.vue";
 import CreateTask from "@/components/createTask/CreateTask.vue";
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs.vue";
-import SortDropdown from "@/components/sortDropdown/SortDropdown.vue";
+import StickyPart from "@/components/stickyPart/StickyPart.vue";
 
 export default {
   name: "Home",
   components: {
     Tasks,
-    Breadcrumbs,
     CreateTask,
-    SortDropdown,
+    StickyPart,
+
   },
   props: {
     uid: {
@@ -60,8 +56,8 @@ export default {
 
 <style lang="scss">
 .home {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex-grow: 1; */
 }
 </style>

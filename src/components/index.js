@@ -5,6 +5,7 @@ import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs.vue";
 import TaskActions from "@/components/taskActions/TaskActions.vue";
 import CreateTask from "@/components/createTask/CreateTask.vue";
 import SortDropdown from "@/components/sortDropdown/SortDropdown.vue";
+import StickyPart from "@/components/stickyPart/StickyPart.vue";
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   TaskActions,
   CreateTask,
   SortDropdown,
+  StickyPart,
 };
