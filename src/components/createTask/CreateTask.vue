@@ -4,7 +4,7 @@
     <b-button
       type="is-primary"
       native-type="submit"
-      :class="{ sticky }"
+      :class="{ sticky, 'modern-gradient': true }"
       @click.prevent="
         addToCurrent({
           userId: user.uid,
@@ -83,7 +83,7 @@ export default {
   &__button {
     width: 100%;
     height: 100% !important;
-    background-color: #ffa07a !important;
+    /* background-color: #ffa07a !important; */
     &.sticky {
       position: fixed;
       bottom: 0;

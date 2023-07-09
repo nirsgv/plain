@@ -204,7 +204,7 @@ export default {
   align-items: center;
   width: 2rem;
   justify-content: center;
-  color: var(--lightsalmon);
+  color: #bbb;
   height: 100%;
   cursor: pointer;
   &:hover {

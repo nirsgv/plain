@@ -80,6 +80,9 @@ export default {
   height: 4rem;
   width: 100%;
   flex-grow: 0;
+  a {
+    color: #222;
+   }
 }
 
 span {

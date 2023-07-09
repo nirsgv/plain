@@ -138,7 +138,6 @@ export default {
   max-height: 100vh;
   overflow-y: auto;
   .task {
-    border-bottom: 1px solid #00000022;
     display: block;
     height: 10rem;
     display: flex;
@@ -158,8 +157,28 @@ export default {
       text-decoration-color: transparent;
       transition: color 0.6s ease-in, text-decoration-color 0.3s ease-in 0.5s;
     }
-    &:hover .actions {
-      opacity: 1;
+    &:hover {
+      .actions {
+       opacity: 1;
+      }
+      &:after {
+        height: 0.1rem;
+      }
+    }
+    &:after {
+      content: "";
+      height: 0.05rem;
+      width: 100%;
+      background-color: black;
+      position: absolute;
+      bottom: 0;
+      background-attachment: fixed;
+      background-size: cover;
+      background-image: linear-gradient(
+        180deg in oklab,
+        oklch(78% 0.24 46) 0%,
+        oklch(90% 0.5 115) 98% 98%
+      );
     }
   }
   &--loading {
