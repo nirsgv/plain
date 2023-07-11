@@ -5,6 +5,7 @@ import store from "./store";
 import Buefy from "buefy";
 import "@/_variables.scss";
 import "@/main.scss";
+import "@/animations.scss";
 import "@/reset.scss";
 import "buefy/dist/buefy.css";
 

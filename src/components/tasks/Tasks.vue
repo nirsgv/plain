@@ -15,29 +15,29 @@
       class="task container"
       :class="{ dropped: dropGroup.includes(task.uid) }"
     >
-      <input
-        type="text"
-        v-model="task.title"
-        :ref="task.uid"
-        class="title task__title ellipsis"
-        :class="{ resolved: task.resolved }"
-        @keyup.enter="
-          editTask({
-            taskUid: task.uid,
-            userId: user.uid,
-            updates: { title: $event.target.value },
-          })
-        "
-        @change="
-          editTask({
-            taskUid: task.uid,
-            userId: user.uid,
-            updates: { title: $event.target.value },
-          })
-        "
-      />
-      <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
-      <TaskActions :task="task" @drop="drop" />
+      <Task :task="task" :user="user" @drop="(taskUid) => drop(taskUid)">
+        <input
+          type="text"
+          v-model="task.title"
+          :ref="task.uid"
+          class="title task__title ellipsis"
+          :class="{ resolved: task.resolved }"
+          @keyup.enter="
+            editTask({
+              taskUid: task.uid,
+              userId: user.uid,
+              updates: { title: $event.target.value },
+            })
+          "
+          @change="
+            editTask({
+              taskUid: task.uid,
+              userId: user.uid,
+              updates: { title: $event.target.value },
+            })
+          "
+        />
+      </Task>
     </li>
     <li class="task container created" v-if="adding">
       <b-skeleton
@@ -53,15 +53,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
-import ChildTasks from "@/components/childTasks/ChildTasks.vue";
-import TaskActions from "@/components/taskActions/TaskActions.vue";
+import Task from "@/components/task/Task.vue";
 import { calculateDraggedPosition } from "@/helpers.js";
 export default {
   name: "Tasks",
   components: {
     draggable,
-    ChildTasks,
-    TaskActions,
+    Task,
   },
   props: {
     uid: {
@@ -106,16 +104,14 @@ export default {
   methods: {
     ...mapActions("routerStore", ["routeToPath"]),
     ...mapActions("tasksStore", [
-      "announce",
-      "editTask",
-      "addTask",
-      "deleteTask",
       "updateTaskPositions",
       "persistTaskPosition",
       "focusTask",
+      "editTask",
     ]),
 
     drop({ taskUid }) {
+      console.log('drop', taskUid);
       this.dropGroup.push(taskUid);
     },
     async onDragEnd(event) {
@@ -134,62 +130,6 @@ export default {
 </script>
 
 <style lang="scss">
-.tasks {
-  --taskHeight: 14rem;
-  .task {
-    display: block;
-    height: var(--taskHeight);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-color: var(--lightsalmon);
-    background-color: var(--white);
-    padding: var(--content-padding);
-    &__title {
-      margin-bottom: 0 !important;
-      border: none;
-      text-align: center;
-      height: -webkit-fill-available;
-      font-size: var(--task-title-font-size);
-      outline: none !important;
-      width: 100%;
-      text-decoration-color: transparent;
-      transition: color 0.6s ease-in, text-decoration-color 0.3s ease-in 0.5s;
-    }
-    &:hover {
-      .actions {
-       opacity: 1;
-      }
-      &:after {
-        height: 0.2rem;
-      }
-    }
-    &:after {
-      content: "";
-      height: 0.1rem;
-      width: 100%;
-      background-color: black;
-      position: absolute;
-      bottom: 0;
-      background-attachment: fixed;
-      background-size: cover;
-      background-image: linear-gradient(
-        180deg in oklab,
-        oklch(78% 0.24 46) 0%,
-        oklch(90% 0.5 115) 98% 98%
-      );
-    }
-  }
-  &--loading {
-    .task {
-      border-color: black;
-      animation: bordercolor;
-      animation-duration: 0.2s;
-      animation-direction: alternate;
-    }
-  }
-}
-
 .container {
   max-width: 34em;
   margin: 0 auto;
@@ -224,36 +164,6 @@ export default {
 .blank {
   animation: blank-animation ease-out;
   animation-fill-mode: forwards;
-}
-
-@keyframes drop-animation {
-  from {
-    height: var(--taskHeight);
-    padding: 2rem;
-    opacity: 1;
-  }
-  to {
-    height: 0;
-    padding: 0;
-    opacity: 0;
-  }
-}
-@keyframes blank-animation {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes bordercolor {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
 }
 
 .drag-handle {

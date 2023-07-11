@@ -1,0 +1,53 @@
+@keyframes drop-animation {
+  from {
+    height: var(--taskHeight);
+    padding: 2rem;
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    padding: 0;
+    opacity: 0;
+  }
+}
+@keyframes blank-animation {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes bordercolor {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sticky {
+  from {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+  }
+  to {
+    bottom: 1rem;
+    right: 1rem;
+    width: 10rem;
+  }
+}
+
+@keyframes entrance {
+  from {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

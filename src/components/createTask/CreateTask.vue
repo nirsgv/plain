@@ -1,6 +1,5 @@
 <template>
   <form class="add-task" @submit.prevent="null" ref="add">
-    <!-- <b-input type="text" v-model="newTaskTitle" maxlength="30" /> -->
     <b-button
       type="is-primary"
       native-type="submit"
@@ -105,16 +104,5 @@ export default {
     }
   }
 }
-@keyframes sticky {
-  from {
-    bottom: 0;
-    right: 0;
-    width: 100%;
-  }
-  to {
-    bottom: 1rem;
-    right: 1rem;
-    width: 10rem;
-  }
-}
+
 </style>

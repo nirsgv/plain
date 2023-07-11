@@ -22,7 +22,7 @@
         <unicon name="arrow-left" fill="currentColor"></unicon>
       </div>
 
-      <ul class="child-tasks-list">
+      <ul class="child-tasks-list ellipsis">
         <li v-for="(title, key) in titlesMap" :key="key">
           <router-link :to="`/${parentUid}`"
             ><span>{{ title }}</span></router-link
@@ -144,17 +144,6 @@ export default {
   animation: entrance;
   animation-duration: 0.2s;
   animation-timing-function: ease-in-out;
-}
-
-@keyframes entrance {
-  from {
-    opacity: 0;
-    transform: translateX(-2rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 .loading-overlay.is-active {

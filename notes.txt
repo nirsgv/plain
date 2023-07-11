@@ -29,14 +29,16 @@
 29. fix breadcrumbs (should point to uid and not parent_uid)
 30. tooltip style
 31. remove redundant scrolls
-
+32. create task component
+33. sticky part
+34. remove redundant scrolls
+35. scss animations sheet
+36. badge component
 
 todo: 
-* create task component
 * spinner on main
 * header
 * main ease function specify
 * soft delete
 * fix registration ("Failed to submit register details")
-* sticky part
 * sorting
