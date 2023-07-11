@@ -26,14 +26,14 @@
   }
 }
 
-html { font-size: 62.5%; scroll-behavior: smooth; } 
+html { font-size: 62.5%!important; scroll-behavior: smooth; } 
 body {
   font-family: 'Martian Mono', monospace;
   min-height: 100vh;
 }
 
 h6 {
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 
 .ellipsis {

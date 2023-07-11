@@ -69,10 +69,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.breadcrumb {
-  font-size: 1rem;
-}
+<style lang="scss" scoped>
 
 .breadcrumb-wrap {
   position: relative;
@@ -80,6 +77,10 @@ export default {
   a {
     color: #222;
    }
+   .breadcrumb {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
 }
 
 span {

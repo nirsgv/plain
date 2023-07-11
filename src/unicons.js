@@ -18,6 +18,7 @@ import {
   uniPlus,
   uniHistory,
   uniFocusAdd,
+  uniListUl,
 } from "vue-unicons/dist/icons";
 
 Unicon.add([
@@ -39,6 +40,7 @@ Unicon.add([
   uniPlus,
   uniHistory,
   uniFocusAdd,
+  uniListUl,
 ]);
 
 export default Unicon;

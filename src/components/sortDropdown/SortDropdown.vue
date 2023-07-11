@@ -1,6 +1,6 @@
 <template>
   <section class="sort-dropdown">
-    <b-dropdown>
+    <b-dropdown :paddingless="true">
       <template #trigger="{ active }">
         <b-button
           label="Click me!"

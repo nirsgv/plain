@@ -2,7 +2,7 @@
   <header class="Login-bar">
     <div class="container">
       <h1 class="logo-type">TODO</h1>
-      <div v-if="authenticated" class="logout">
+      <div v-if="authenticated" class="status">
         Hello {{ user.name }}
         <button @click="deauthenticate">Sign out</button>
       </div>
@@ -37,19 +37,17 @@ export default {
 .Login-bar {
   width: 100vw;
   background-color: #fff;
-  border-bottom: 1px solid #9a9a9a;
-  /* position: fixed; */
-  /* top: 0; */
+  border-bottom: 1px solid #e4e4e4;
   height: 3rem;
   padding: var(--header-padding);
-  /* filter: contrast(80%) brightness(30%); */
+  z-index: 20;
+  position: relative;
   .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-family: inherit;
     height: 100%;
-    /* outline: 4px dashed red; */
   }
 }
 .logo-type {
@@ -57,5 +55,8 @@ export default {
   font-weight: normal;
   font-weight: 900;
   color: #4a4a4a;
+}
+.status {
+  font-size: 1.4rem;
 }
 </style>

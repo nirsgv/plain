@@ -17,7 +17,6 @@
     >
       <unicon name="plus" fill="currentColor"></unicon>
       Add Task
-      <!-- {{ sticky }} -->
     </b-button>
   </form>
 </template>

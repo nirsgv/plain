@@ -135,9 +135,10 @@ export default {
 
 <style lang="scss">
 .tasks {
+  --taskHeight: 14rem;
   .task {
     display: block;
-    height: 10rem;
+    height: var(--taskHeight);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,7 +228,7 @@ export default {
 
 @keyframes drop-animation {
   from {
-    height: 10rem;
+    height: var(--taskHeight);
     padding: 2rem;
     opacity: 1;
   }

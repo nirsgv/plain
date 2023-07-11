@@ -1,12 +1,13 @@
 <template>
-  <div class="child-tasks" :class="{'side-entrance': !titlesMap}">
-    <h6
+  <div class="child-tasks" :class="{ 'side-entrance': !titlesMap }">
+    <div
       class="subtask-amount"
       v-if="!!subTaskAmt && !titlesMap && !loading"
       @click="fetchTasks"
     >
-      {{ subTaskAmt }} subtasks
-    </h6>
+      <Badge :value="subTaskAmt" />
+      <unicon name="list-ul" fill="currentColor"></unicon>
+    </div>
     <!-- <b-skeleton size="is-small" :active="loading" v-if="loading"></b-skeleton> -->
     <b-loading
       size="is-small"
@@ -21,7 +22,7 @@
         <unicon name="arrow-left" fill="currentColor"></unicon>
       </div>
 
-      <ul>
+      <ul class="child-tasks-list">
         <li v-for="(title, key) in titlesMap" :key="key">
           <router-link :to="`/${parentUid}`"
             ><span>{{ title }}</span></router-link
@@ -34,8 +35,13 @@
 
 <script>
 import { getTitles } from "@/services/service.js";
+import Badge from "@/components/badge/Badge.vue";
+
 export default {
   name: "ChildTasks",
+  components: {
+    Badge,
+  },
   data() {
     return {
       titlesMap: null,
@@ -94,7 +100,6 @@ export default {
   width: 10rem;
   justify-content: center;
 }
-
 </style>
 
 <style lang="scss">
@@ -110,7 +115,8 @@ export default {
 .child-tasks {
   --margin: 0.5rem;
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
+  height: 4rem;
   li {
     display: inline-block;
     &:not(:first-child) {
@@ -125,7 +131,13 @@ export default {
 .spinner {
   left: 0;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.6rem;
+}
+
+.subtask-amount {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .side-entrance {
@@ -147,5 +159,12 @@ export default {
 
 .loading-overlay.is-active {
   justify-content: flex-start;
+}
+
+.child-tasks-list {
+  font-size: 1.6rem;
+  li a {
+    color: #333;
+  }
 }
 </style>

@@ -41,6 +41,7 @@ export default {
   z-index: 10;
   width: 100%;
   background-color: var(--white);
+  padding: 1rem 0;
   &.container {
     display: flex;
   }
