@@ -24,14 +24,18 @@ export default {
       if (state.sortBy === "position") {
         return [...state.tasks].sort((a, b) => a.position - b.position);
       } else if (state.sortBy === "created") {
+        console.log('screated')
         return [...state.tasks].sort((a, b) => a.created_at - b.created_at);
       } else if (state.sortBy === "edited") {
-        return [...state.tasks].sort(
-          (a, b) =>
-            a.last_updated_at || Date.now() - b.last_updated_at || Date.now()
-        );
+        console.log('sedited')
+
+        return [...state.tasks].sort((a, b) => {
+          const aTimestamp = a.last_updated_at ? new Date(a.last_updated_at).getTime() : Date.now();
+          const bTimestamp = b.last_updated_at ? new Date(b.last_updated_at).getTime() : Date.now();
+          return aTimestamp - bTimestamp;
+        });
       } else if (state.sortBy === "subtasks") {
-        return [...state.tasks].sort(
+          return [...state.tasks].sort(
           (a, b) => b.child_task_uids.length - a.child_task_uids.length
         );
       }
