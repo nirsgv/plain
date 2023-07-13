@@ -111,7 +111,6 @@ export default {
     ]),
 
     drop({ taskUid }) {
-      console.log('drop', taskUid);
       this.dropGroup.push(taskUid);
     },
     async onDragEnd(event) {
@@ -119,7 +118,6 @@ export default {
         event,
         tasks: this.sortedTasks,
       });
-      // Update the position of the dragged task in the database
       await this.persistTaskPosition({
         taskUid: draggedTask.uid,
         updates: { position: calcPosition },

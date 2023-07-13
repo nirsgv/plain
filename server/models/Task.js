@@ -17,7 +17,7 @@ const taskSchema = new mongoose.Schema({
   created_at: {
     type: Date,
   },
-  last_edited_at: {
+  last_updated_at: {
     type: Date,
   },
   status: {

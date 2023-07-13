@@ -68,7 +68,7 @@ exports.createTask = async (req, res) => {
     const task = new Task({
       title: title || "What do you need to do?",
       uid: uuidv4(),
-      created_At: new Date(),
+      created_at: new Date(),
       user_id: userId,
       position: Math.ceil(lastPosition + 100),
       parent_task_uid: parentTask || "",

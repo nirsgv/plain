@@ -36,9 +36,10 @@
 36. badge component
 
 todo: 
+* fonts close
+* sorting
 * spinner on main
 * header
 * main ease function specify
 * soft delete
 * fix registration ("Failed to submit register details")
-* sorting
