@@ -48,7 +48,7 @@ export default {
 }
 
 .shodow {
-  box-shadow: 0px 3px 7px 2px rgba(0, 0, 255, .2);
+  box-shadow: 0px 2px 7px 2px rgba(100, 100, 100, .2);
 }
 .sort-dropdown {
 }

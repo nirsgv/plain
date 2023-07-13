@@ -42,6 +42,7 @@ export default {
     ...mapGetters("tasksStore", ["tasks", "tasksLoading", "parentLevel"]),
     ...mapGetters({
       user: "userStore/user",
+      isSorting: "tasksStore/isSorting",
     }),
     actions() {
       return {
@@ -120,7 +121,7 @@ export default {
           name: "drag",
           icon: "grip-horizontal-line",
           tooltip: "",
-          disabled: false,
+          disabled: this.isSorting,
           className: "drag-handle",
           method: () => {},
         },

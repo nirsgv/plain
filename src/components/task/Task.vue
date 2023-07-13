@@ -1,6 +1,10 @@
 <template>
   <div class="wrapper">
     <slot></slot>
+    <div class="last-edited">
+      <h6>Created {{ task.created_at | timeAgo }}</h6>
+      <h6 v-if="task.last_updated_at">Edited {{ task.last_updated_at | timeAgo }}</h6>
+    </div>
     <ChildTasks :uids="task.child_task_uids" :parentUid="task.uid" />
     <TaskActions :task="task" @drop="(taskUid) => $emit('drop', taskUid)" />
   </div>
@@ -72,7 +76,7 @@ export default {
       outline: none !important;
       width: 100%;
       text-decoration-color: transparent;
-      transition: color 0.6s ease-in, text-decoration-color 0.3s ease-in 0.5s;
+      transition: color 0.1s ease-in, text-decoration-color 0.05s ease-in 0.5s;
     }
     &:hover {
       .actions {
@@ -105,6 +109,16 @@ export default {
       animation-duration: 0.2s;
       animation-direction: alternate;
     }
+  }
+
+  .last-edited {
+    font-size: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 1rem;
+    line-height: 1.4;
+    user-select: none;
   }
 }
 </style>

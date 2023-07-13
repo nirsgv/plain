@@ -5,8 +5,9 @@
       :max-height="maxHeight"
       v-model="currentMenu"
       aria-role="list"
+      @change="(sortOption) => setSortBy({sortBy: sortOption.id})"
     >
-      <template #trigger>
+      <template #trigger="{ active }">
         <b-button type="is-text" :icon-right="active ? 'menu-up' : 'menu-down'"
           >Sort</b-button
         >
@@ -26,22 +27,11 @@
         </div>
       </b-dropdown-item>
     </b-dropdown>
-
-    <!-- <b-dropdown :paddingless="true">
-      <template #trigger="{ active }">
-        <b-button type="is-text" :icon-right="active ? 'menu-up' : 'menu-down'"
-          >Sort</b-button
-        >
-      </template>
-
-      <b-dropdown-item>Action</b-dropdown-item>
-      <b-dropdown-item>Another action</b-dropdown-item>
-      <b-dropdown-item>Something else</b-dropdown-item>
-    </b-dropdown> -->
   </section>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "SortDropdown",
   props: {
@@ -51,17 +41,29 @@ export default {
     return {
       isScrollable: false,
       maxHeight: 200,
-      currentMenu: { icon: "account-group", text: "People" },
+      currentMenu: { icon: "account-group", text: "Position" },
       menus: [
-        { icon: "account-group", text: "People" },
-        { icon: "shopping-search", text: "Orders" },
-        { icon: "credit-card-multiple", text: "Payments" },
-        { icon: "dolly", text: "Logistics" },
-        { icon: "clock-check", text: "Jobs" },
-        { icon: "cart-arrow-right", text: "Cart" },
-        { icon: "settings", text: "Configuration" },
+        { icon: "account-group", text: "Position", id: "position" },
+        { icon: "account-group", text: "Created", id: "created" },
+        { icon: "shopping-search", text: "Edited", id: "edited" },
+        { icon: "credit-card-multiple", text: "Subtasks", id: "subtasks" },
       ],
     };
+  },
+  computed: {
+    ...mapGetters("tasksStore", ["sortBy"]),
+
+    sortByValue: {
+      get() {
+        return this.sortBy;
+      },
+      set(value) {
+        this.setSortBy(value);
+      },
+    },
+  },
+  methods: {
+    ...mapActions("tasksStore", ["setSortBy"]),
   },
 };
 </script>

@@ -17,9 +17,27 @@ export default {
     parentLevel: "",
     taskToFocus: null,
     adding: false,
+    sortBy: "position", // position,
   },
   getters: {
-    tasks: (state) => state.tasks.sort((a, b) => a.position - b.position),
+    tasks: (state) => {
+      if (state.sortBy === "position") {
+        return [...state.tasks].sort((a, b) => a.position - b.position);
+      } else if (state.sortBy === "created") {
+        return [...state.tasks].sort((a, b) => a.created_at - b.created_at);
+      } else if (state.sortBy === "edited") {
+        return [...state.tasks].sort(
+          (a, b) =>
+            a.last_updated_at || Date.now() - b.last_updated_at || Date.now()
+        );
+      } else if (state.sortBy === "subtasks") {
+        return [...state.tasks].sort(
+          (a, b) => b.child_task_uids.length - a.child_task_uids.length
+        );
+      }
+    },
+    isSorting: (state) => state.sortBy !== "position",
+    sortBy: (state) => state.sortBy,
     tasksLoading: (state) => state.tasksLoading,
     parentLevel: (state) => state.parentLevel,
     taskToFocus: (state) => state.taskToFocus,
@@ -33,7 +51,9 @@ export default {
       state.tasks = state.tasks.map((t) => (t.uid === task.uid ? task : t));
     },
     TOGGLE_RESOLVED: (state, { taskUid }) => {
-      state.tasks = state.tasks.map((t) => (t.uid === taskUid ? { ...t, resolved: !t.resolved } : t));
+      state.tasks = state.tasks.map((t) =>
+        t.uid === taskUid ? { ...t, resolved: !t.resolved } : t
+      );
     },
     ADD_TASK: (state, { task }) => {
       state.tasks = [...state.tasks, task];
@@ -58,6 +78,10 @@ export default {
     SET_ADDING: (state, { isAdding }) => {
       console.log(isAdding);
       state.adding = isAdding;
+    },
+    SET_SORT_BY: (state, { sortBy }) => {
+      console.log(sortBy);
+      state.sortBy = sortBy;
     },
   },
   actions: {
@@ -93,11 +117,15 @@ export default {
           childTaskUid: uid,
         });
       }
-      if (addToCurrent){
+      if (addToCurrent) {
         commit("ADD_TASK", { task: { ...response.data.task, title: t } });
         commit("SET_ADDING", { isAdding: false });
       } else {
-        dispatch("routerStore/routeToPath", { path: parentTask }, { root: true });
+        dispatch(
+          "routerStore/routeToPath",
+          { path: parentTask },
+          { root: true }
+        );
       }
       commit("NEXT_TO_FOCUS", { uid });
       return response.data.task;
@@ -130,6 +158,9 @@ export default {
         taskUid,
         updates,
       });
+    },
+    setSortBy: async ({ commit }, { sortBy }) => {
+      commit("SET_SORT_BY", { sortBy });
     },
   },
 };

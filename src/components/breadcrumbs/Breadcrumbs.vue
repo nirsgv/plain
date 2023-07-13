@@ -18,7 +18,6 @@
   </section>
 </template>
 
-
 <script>
 import { mapGetters } from "vuex";
 import { getBreadcrumbs } from "@/services/service.js";
@@ -44,7 +43,7 @@ export default {
   },
   methods: {
     async populateBreadcrumbs(to) {
-      if (!to) return this.breadcrumbs = [];
+      if (!to) return (this.breadcrumbs = []);
       else {
         try {
           this.loading = true;
@@ -70,16 +69,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .breadcrumb-wrap {
   position: relative;
   flex-grow: 1;
   a {
     color: #222;
-   }
-   .breadcrumb {
+  }
+  .breadcrumb {
     font-size: 1.4rem;
     margin-bottom: 0;
+    ::v-deep {
+      &:not(:first-of-type) a,
+      span {
+        padding-left: 1rem;
+      }
+      &:not(:last-of-type) a,
+      span {
+        padding-right: 1rem;
+      }
+    }
   }
 }
 

@@ -56,8 +56,6 @@ export default {
 
 <style lang="scss">
 .home {
-  /* display: flex;
-  flex-direction: column;
-  flex-grow: 1; */
+  width: 100vw;
 }
 </style>

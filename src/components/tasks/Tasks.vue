@@ -10,7 +10,7 @@
     handle=".drag-handle"
   >
     <li
-      v-for="task in sortedTasks"
+      v-for="task in tasks"
       :key="task.uid"
       class="task container"
       :class="{ dropped: dropGroup.includes(task.uid) }"
@@ -94,6 +94,7 @@ export default {
     },
     sortedTasks: {
       get() {
+        console.log(this.tasks);
         return this.tasks;
       },
       set(updatedTasks) {
@@ -173,9 +174,9 @@ export default {
 
 .resolved {
   text-decoration: line-through;
-  text-decoration-color: var(--lightsalmon) !important;
+  text-decoration-color: #bbb !important;
   color: #ccc !important;
-  caret-color: var(--lightsalmon);
+  /* caret-color: var(--lightsalmon); */
   pointer-events: none;
 }
 </style>

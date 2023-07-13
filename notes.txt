@@ -34,10 +34,13 @@
 34. remove redundant scrolls
 35. scss animations sheet
 36. badge component
+37. created at
+38. edited at
+39. sorting
 
 todo: 
 * fonts close
-* sorting
+
 * spinner on main
 * header
 * main ease function specify
