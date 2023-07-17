@@ -1,7 +1,7 @@
 <template>
   <header class="Login-bar">
     <div class="container">
-      <h1 class="logo-type">TODO</h1>
+      <h1 class="logo-type fixed-text-color">TODO</h1>
       <div v-if="authenticated" class="status">
         Hello {{ user.name }}
         <button @click="deauthenticate">Sign out</button>
@@ -46,15 +46,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: inherit;
     height: 100%;
   }
 }
 .logo-type {
-  font-size: 100%;
-  font-weight: normal;
-  font-weight: 900;
-  color: #4a4a4a;
+  font-size: 2rem;
+  font-weight: 400;
 }
 .status {
   font-size: 1.4rem;

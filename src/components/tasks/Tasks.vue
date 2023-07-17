@@ -20,7 +20,7 @@
           type="text"
           v-model="task.title"
           :ref="task.uid"
-          class="title task__title ellipsis"
+          class="title task__title fixed-text-color ellipsis"
           :class="{ resolved: task.resolved }"
           @keyup.enter="
             editTask({
@@ -133,7 +133,6 @@ export default {
   max-width: 34em;
   margin: 0 auto;
   font-size: 24px;
-  font-family: Baskerville, Georgia, serif;
   line-height: 1.6em;
   flex-grow: 0;
 }

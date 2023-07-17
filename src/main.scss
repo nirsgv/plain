@@ -1,7 +1,4 @@
-@font-face {
-  font-family: "MartianMono";
-  src: local("./assets/fonts//MartianMono-Regular.ttf"),format("truetype");
-}
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
 :root {
   --white: #fff;
   --black: #000;
@@ -15,6 +12,7 @@
   --header-padding: 0 1rem;
   --lightsalmon: oklch(79.38% 0.12483287411660951 42.42478683674435);
   --border-color: oklch(45% 0.26 264);
+  --font-family: 'Open Sans', sans-serif;
 }
 
 @media (min-width: 600px) {
@@ -28,7 +26,6 @@
 
 html { font-size: 62.5%!important; scroll-behavior: smooth; } 
 body {
-  font-family: 'Martian Mono', monospace;
   min-height: 100vh;
 }
 
@@ -121,7 +118,7 @@ dt, dd {
 }
 
 .title::selection {
-  background-color: #eee;
+  background-color: #eeeeee66;
   border: 1px solid #000;
 }
 
@@ -143,4 +140,17 @@ dt, dd {
 }
 .flex {
   display: flex!important;
+}
+
+.fixed-text-color {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent!important;
+  background-attachment: fixed;
+  background-size: cover;
+  background-image: 
+  linear-gradient(
+    180deg in oklch, 
+    oklch(32% 0.5 271) 0%, oklch(25% 0.35 192) 100% 97%
+    );
 }

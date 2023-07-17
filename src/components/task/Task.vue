@@ -55,6 +55,8 @@ export default {
 <style lang="scss">
 .tasks {
   --taskHeight: 14rem;
+  font-family: 'Open Sans', sans-serif;
+
   .wrapper {
     width: 100%;
   }
@@ -77,6 +79,9 @@ export default {
       width: 100%;
       text-decoration-color: transparent;
       transition: color 0.1s ease-in, text-decoration-color 0.05s ease-in 0.5s;
+      font-family: inherit;
+      font-weight: 100;
+      caret-color: #333;
     }
     &:hover {
       .actions {
@@ -90,16 +95,16 @@ export default {
       content: "";
       height: 0.1rem;
       width: 100%;
-      background-color: black;
+      background-color: #eee;
       position: absolute;
       bottom: 0;
-      background-attachment: fixed;
+      /*background-attachment: fixed;
       background-size: cover;
       background-image: linear-gradient(
         180deg in oklab,
         oklch(78% 0.24 46) 0%,
         oklch(90% 0.5 115) 98% 98%
-      );
+      ); */
     }
   }
   &--loading {

@@ -79,8 +79,9 @@ export default {
   justify-content: center;
   align-items: center;
   &__button {
-    width: 100%;
-    height: 100% !important;
+    width: 10rem;
+    height: 10rem !important;
+    border-radius: 50%;
     /* background-color: #ffa07a !important; */
     &.sticky {
       position: fixed;
@@ -104,5 +105,4 @@ export default {
     }
   }
 }
-
 </style>

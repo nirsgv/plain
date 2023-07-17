@@ -1,16 +1,18 @@
 <template>
   <section class="sort-dropdown">
+    <label for="sort-dropdown" class="sort-label"  @click="openDropdown">Sort By:</label>
     <b-dropdown
       :scrollable="isScrollable"
       :max-height="maxHeight"
       v-model="currentMenu"
       aria-role="list"
-      @change="(sortOption) => setSortBy({sortBy: sortOption.id})"
+      ref="dropdown"
+      @change="(sortOption) => setSortBy({ sortBy: sortOption.id })"
     >
       <template #trigger="{ active }">
-        <b-button type="is-text" :icon-right="active ? 'menu-up' : 'menu-down'"
-          >Sort</b-button
-        >
+        <b-button type="is-text" :icon-right="active ? 'menu-up' : 'menu-down'">
+          {{ currentMenu ? currentMenu.text : '' }}
+        </b-button>
       </template>
 
       <b-dropdown-item
@@ -64,12 +66,22 @@ export default {
   },
   methods: {
     ...mapActions("tasksStore", ["setSortBy"]),
+    toggleDropdown() {
+      this.dropdownActive = !this.dropdownActive;
+    },
+    openDropdown() {
+      this.$refs.dropdown.isActive = true;
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
+.sort-label {
+  font-size: 1.4rem;
+}
 .sort-dropdown {
+  display: flex;
   button {
     background-color: transparent;
     &:hover {
