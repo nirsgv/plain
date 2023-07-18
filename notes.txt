@@ -37,9 +37,12 @@
 37. created at
 38. edited at
 39. sorting
+40. define grey tone variables
 
 todo: 
 * fonts close
+* log in / logout
+* markdown format readme
 
 * spinner on main
 * header

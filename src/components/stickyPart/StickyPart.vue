@@ -1,5 +1,5 @@
 <template>
-  <section class="sticky-part shodow">
+  <section class="sticky-part">
     <div class="container flex">
       <Breadcrumbs :uid="uid" />
       <SortDropdown />
@@ -40,7 +40,7 @@ export default {
   top: 0;
   z-index: 10;
   width: 100%;
-  background-color: var(--white);
+  background-color: var(--silver-1);
   padding: 1rem 0;
   &.container {
     display: flex;

@@ -1,10 +1,12 @@
 <template>
   <header class="Login-bar">
     <div class="container">
-      <h1 class="logo-type fixed-text-color">TODO</h1>
+      <h1 class="logo-type selection-disabled fixed-text-color">TODO</h1>
       <div v-if="authenticated" class="status">
         Hello {{ user.name }}
-        <button @click="deauthenticate">Sign out</button>
+        <b-button type="is-text" @click="deauthenticate">
+          Sign out
+        </b-button>
       </div>
       <div v-else class="login">
         <router-link to="/login">Login</router-link>
@@ -36,8 +38,8 @@ export default {
 <style scoped lang="scss">
 .Login-bar {
   width: 100vw;
-  background-color: #fff;
-  border-bottom: 1px solid #e4e4e4;
+  background-color: var(--silver-1);
+  border-bottom: 1px solid var(--silver-3);
   height: 3rem;
   padding: var(--header-padding);
   z-index: 20;
@@ -55,5 +57,7 @@ export default {
 }
 .status {
   font-size: 1.4rem;
+  display: flex;
+  align-items: center;
 }
 </style>
