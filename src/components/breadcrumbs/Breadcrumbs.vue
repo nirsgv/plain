@@ -1,5 +1,5 @@
 <template>
-  <section class="breadcrumb-wrap">
+  <section class="breadcrumb-wrap" v-if="user">
     <b-breadcrumb align="is-left" v-if="!loading">
       <b-breadcrumb-item class="breadcrumb" tag="router-link" :to="`/`">
         Hello {{ user.name }}

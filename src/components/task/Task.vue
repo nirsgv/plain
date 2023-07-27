@@ -56,7 +56,7 @@ export default {
 .tasks {
   --taskHeight: 14rem;
   font-family: 'Open Sans', sans-serif;
-
+  padding-top: 3.4rem;
   .wrapper {
     width: 100%;
   }

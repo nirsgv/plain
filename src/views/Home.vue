@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-if="user">
+  <div class="home">
     <StickyPart :uid="uid" />
     <Tasks :uid="uid" />
     <CreateTask :uid="uid" />
@@ -38,6 +38,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['isLoginModalOpen']),
     ...mapGetters({
       authenticated: "userStore/authenticated",
       user: "userStore/user",

@@ -10,6 +10,7 @@ import "@/reset.scss";
 import "buefy/dist/buefy.css";
 import { filters } from "./filters.js";
 import Unicon from "./unicons.js";
+
 Vue.use(Unicon);
 
 for (const [key, value] of Object.entries(filters)) {

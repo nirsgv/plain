@@ -22,7 +22,8 @@ export default {
       state.authenticated = false;
     },
     SET_USER: (state, user) => {
-      state.user = { ...user.data };
+      if (!user) state.user = null;
+      else state.user = { ...user.data };
     },
   },
   actions: {

@@ -4,7 +4,7 @@
       <h1 class="logo-type selection-disabled fixed-text-color">TODO</h1>
       <div v-if="authenticated" class="status">
         Hello {{ user.name }}
-        <b-button type="is-text" @click="deauthenticate">
+        <b-button type="is-text" @click="logout">
           Sign out
         </b-button>
       </div>
@@ -30,7 +30,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions("userStore", ["deauthenticate"]),
+    ...mapActions("userStore", ["logout"]),
   },
 };
 </script>
