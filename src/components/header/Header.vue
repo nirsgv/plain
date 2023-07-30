@@ -1,7 +1,7 @@
 <template>
   <header class="Login-bar">
     <div class="container">
-      <h1 class="logo-type selection-disabled fixed-text-color">TODO</h1>
+      <h1 class="logo-type selection-disabled emphasis-text">TODO</h1>
       <div v-if="authenticated" class="status">
         Hello {{ user.name }}
         <b-button type="is-text" @click="logout">
@@ -39,11 +39,20 @@ export default {
 .Login-bar {
   width: 100vw;
   background-color: var(--silver-1);
-  border-bottom: 1px solid var(--silver-3);
+  /*border-bottom: 1px solid var(--silver-3);*/
+  height: 6rem;
+  padding: var(--header-padding);
+  z-index: 20;
+  position: relative;
+
+  width: 100vw;
+  background-color: var(--silver-1);
+  /* border-bottom: 3px solid var(--silver-3); */
   height: 3rem;
   padding: var(--header-padding);
   z-index: 20;
   position: relative;
+
   .container {
     display: flex;
     justify-content: space-between;

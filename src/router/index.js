@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
-// import Register from "@/views/Register.vue";
+import Register from "@/views/Register.vue";
 import About from "@/views/About.vue";
 
 Vue.use(VueRouter);
@@ -24,7 +24,7 @@ const routes = [
     path: "/register",
     name: "Register",
     props: route => ({ isRegister: route.name === 'Register' }),
-    component: Home,
+    component: Register,
   },
   {
     path: "/:uid?",

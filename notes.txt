@@ -38,13 +38,14 @@
 38. edited at
 39. sorting
 40. define grey tone variables
+41 fonts close
+42. spinner on main (main loader)
 
 todo: 
-* fonts close
 * log in / logout
 * markdown format readme
-
-* spinner on main
+* align sort position
+* shorten subtasks text
 * header
 * main ease function specify
 * soft delete

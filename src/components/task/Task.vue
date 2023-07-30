@@ -55,20 +55,24 @@ export default {
 <style lang="scss">
 .tasks {
   --taskHeight: 14rem;
-  font-family: 'Open Sans', sans-serif;
+  font-family: var(--font-family);
   padding-top: 3.4rem;
   .wrapper {
     width: 100%;
   }
   .task {
-    display: block;
     height: var(--taskHeight);
     display: flex;
     align-items: center;
     justify-content: center;
     border-color: var(--lightsalmon);
-    background-color: var(--white);
     padding: var(--content-padding);
+    border-radius: 1.5rem;
+    border: none!important;
+    padding: 1rem;
+    background: var(--white);
+    margin-bottom: 1rem;
+    background-color: var(--main-bkg);
     &__title {
       margin-bottom: 0 !important;
       border: none;
@@ -80,8 +84,8 @@ export default {
       text-decoration-color: transparent;
       transition: color 0.1s ease-in, text-decoration-color 0.05s ease-in 0.5s;
       font-family: inherit;
-      font-weight: 100;
       caret-color: #333;
+      font-weight: 400;
     }
     &:hover {
       .actions {

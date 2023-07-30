@@ -8,6 +8,7 @@ import CreateTask from "@/components/createTask/CreateTask.vue";
 import SortDropdown from "@/components/sortDropdown/SortDropdown.vue";
 import StickyPart from "@/components/stickyPart/StickyPart.vue";
 import Badge from "@/components/badge/Badge.vue";
+import Spinner from "@/components/spinner/Spinner.vue";
 
 export {
   Header,
@@ -20,4 +21,5 @@ export {
   SortDropdown,
   StickyPart,
   Badge,
+  Spinner,
 };

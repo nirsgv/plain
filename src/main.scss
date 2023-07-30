@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=REM:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root {
+  --emphasis-legacy:#5b00ff;
+  --emphasis: oklch(49.4% 0.2949714155671861 281.8215740003715);
+  --emphasis2: oklch(49.4% 0.2949714155671861 303.6);
+  
   --white: #fff;
   --black: #000;
   --bkg1: #00bbb4;
@@ -12,15 +17,21 @@
   --header-padding: 0 1rem;
   --lightsalmon: oklch(79.38% 0.12483287411660951 42.42478683674435);
   --border-color: oklch(45% 0.26 264);
-  --font-family: 'Open Sans', sans-serif;
+  --font-family-ui: 'open-sans', sans-serif;
+  --font-family: 'REM', sans-serif;
   --main-gradient: 
     linear-gradient(180deg, #5b00ff 0%, #003c4c 100%),     
     linear-gradient(
       180deg in oklch, 
       oklch(32% 0.5 271) 0%, oklch(25% 0.35 192) 100%
     );
-  --silver-1: #fcfcfc;
-  --silver-2: #efefef;
+  --main-gradient2: 
+    linear-gradient(
+      180deg in oklch, 
+      oklch(49.4% 0.2949714155671861 281.8215740003715) 0%, oklch(49.4% 0.2949714155671861 303.6) 100%
+    );
+  --silver-1: #fcfcfc; 
+  --silver-2: #efefef; 
   --silver-3: #e4e4e4;
   --silver-4: #c0c0c0;
   --silver-5: #A9A9A9;
@@ -29,6 +40,22 @@
   --silver-8: #646464;
   --silver-9: #4D4D4D;
   --silver-10: #363636;
+  --silver-11: #2B1331;
+  --silver-12: #002723;
+  --main-bkg: hsla(210,60%,98%,1);
+  --new-gradient: linear-gradient(
+    45deg,
+    hsl(240deg 100% 20%) 0%,
+    hsl(289deg 100% 21%) 11%,
+    hsl(315deg 100% 27%) 22%,
+    hsl(329deg 100% 36%) 33%,
+    hsl(337deg 100% 43%) 44%,
+    hsl(357deg 91% 59%) 56%,
+    hsl(17deg 100% 59%) 67%,
+    hsl(34deg 100% 53%) 78%,
+    hsl(45deg 100% 50%) 89%,
+    hsl(55deg 100% 50%) 100%
+  );
 }
 
 @media (min-width: 600px) {
@@ -144,6 +171,11 @@ dt, dd {
   white-space: nowrap;
 }
 
+.emphasis-text {
+  color: var(--emphasis-legacys);
+  color: var(--emphasis);
+}
+
 .fixed-background-color {
   background-attachment: fixed;
   background-size: cover;
@@ -163,5 +195,5 @@ dt, dd {
   color: transparent!important;
   background-attachment: fixed;
   background-size: cover;
-  background-image: var(--main-gradient);
+  background-image: var(--main-gradient2);
 }

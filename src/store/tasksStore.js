@@ -97,6 +97,7 @@ export default {
       commit("SET_TASKS_LOADING", { isLoading: true });
       const tasks = await getUserTasks({ userId, taskUid });
       const level = await getTask({ userId, taskUid });
+      // await new Promise(r => setTimeout(r, 120000));
       const parentLevel = level?.parent_task_uid;
       commit("SET_PARENT_LEVEL", { parentLevel });
       commit("SET_TASKS", { tasks });

@@ -20,7 +20,7 @@
           type="text"
           v-model="task.title"
           :ref="task.uid"
-          class="title task__title fixed-text-color ellipsis"
+          class="title task__title fixed-text-color emphasis-text ellipsis"
           :class="{ resolved: task.resolved }"
           @keyup.enter="
             editTask({
