@@ -64,7 +64,7 @@ export default {
   props: {
     uid: {
       type: String,
-      required: true,
+      default: "",
     },
   },
   data() {
@@ -103,7 +103,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions("routerStore", ["routeToPath"]),
     ...mapActions("tasksStore", [
       "updateTaskPositions",
       "persistTaskPosition",

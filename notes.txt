@@ -40,12 +40,14 @@
 40. define grey tone variables
 41 fonts close
 42. spinner on main (main loader)
+43. shorten subtasks text
+44. navigation guards for Home
+45. treat Tasks required prop error
 
 todo: 
 * log in / logout
 * markdown format readme
 * align sort position
-* shorten subtasks text
 * header
 * main ease function specify
 * soft delete

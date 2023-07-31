@@ -2,9 +2,8 @@
   <div id="app">
     <Header />
     <router-view />
-    <Login v-if="isLoginModalOpen"/>
-    <Register v-if="isRegisterModalOpen"/>
-
+    <Login v-if="isLoginModalOpen" />
+    <Register v-if="isRegisterModalOpen" />
   </div>
 </template>
 

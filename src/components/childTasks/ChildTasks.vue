@@ -23,7 +23,7 @@
       </div>
 
       <ul class="child-tasks-list ellipsis">
-        <li v-for="(title, key) in titlesMap" :key="key">
+        <li v-for="(title, key) in titlesMap" :key="key" class="child-tasks-list-item ellipsis">
           <router-link :to="`/${parentUid}`"
             ><span>{{ title }}</span></router-link
           >
@@ -124,6 +124,9 @@ export default {
     }
     &:not(:last-child) {
       margin-right: var(--margin);
+    }
+    &.child-tasks-list-item {
+      max-width: 5rem;
     }
   }
 }

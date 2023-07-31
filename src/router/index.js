@@ -4,6 +4,7 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import About from "@/views/About.vue";
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -31,10 +32,15 @@ const routes = [
     name: "Home",
     props: true,
     component: Home,
+    beforeEnter: (to, from, next) => {
+      if (!isUserAuthenticated()) {
+        next({ name: "Login" });
+      } else {
+        next();
+      }
+    },
   },
 ];
-
-
 
 const router = new VueRouter({
   mode: "history",
@@ -42,4 +48,8 @@ const router = new VueRouter({
   routes,
 });
 console.log({ VUE_APP_VUE_ROUTER_BASE: process.env.VUE_APP_VUE_ROUTER_BASE });
+
+function isUserAuthenticated() {
+  return store.getters['userStore/authenticated'];
+}
 export default router;

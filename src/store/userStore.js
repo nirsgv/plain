@@ -25,6 +25,12 @@ export default {
       if (!user) state.user = null;
       else state.user = { ...user.data };
     },
+    ROUTE_TO_HOME_PAGE: () => {
+      router.push({ path: "/" });
+    },
+    ROUTE_TO_LOGIN_PAGE: () => {
+      router.push({ path: "/login" });
+    },
   },
   actions: {
     register: async ({ commit, dispatch }, details) => {
@@ -54,9 +60,10 @@ export default {
     logout: ({ commit }) => {
       commit("DEAUTHENTICATE");
       commit("SET_USER", null);
+      commit("ROUTE_TO_LOGIN_PAGE");
     },
-    routeToHomePage: () => {
-      router.push({ path: "/" });
+    routeToHomePage: ({ commit }) => {
+      commit("ROUTE_TO_HOME_PAGE");
     },
   },
 };
