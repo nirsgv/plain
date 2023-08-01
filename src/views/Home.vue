@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <Spinner :active="tasksLoading" :isFullPage="true" />
     <StickyPart :uid="uid" />
     <Tasks :uid="uid" />
     <CreateTask :uid="uid" />
@@ -12,7 +11,6 @@ import { mapGetters, mapActions } from "vuex";
 import Tasks from "@/components/tasks/Tasks.vue";
 import CreateTask from "@/components/createTask/CreateTask.vue";
 import StickyPart from "@/components/stickyPart/StickyPart.vue";
-import Spinner from "@/components/spinner/Spinner.vue";
 
 export default {
   name: "Home",
@@ -20,7 +18,6 @@ export default {
     Tasks,
     CreateTask,
     StickyPart,
-    Spinner,
   },
   props: {
     uid: {

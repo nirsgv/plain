@@ -197,3 +197,9 @@ dt, dd {
   background-size: cover;
   background-image: var(--main-gradient2);
 }
+
+.flex-center-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

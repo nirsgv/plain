@@ -4,14 +4,15 @@
     <router-view />
     <Login v-if="isLoginModalOpen" />
     <Register v-if="isRegisterModalOpen" />
+    <Spinner :active="loading" :isFullPage="false" />
   </div>
 </template>
 
 <script>
-import { Header } from "@/components/index";
+import { Header, Spinner } from "@/components/index";
 import { mapGetters } from "vuex";
-import Login from '@/views/Login.vue';
-import Register from '@/views/Register.vue';
+import Login from "@/views/Login.vue";
+import Register from "@/views/Register.vue";
 
 export default {
   name: "App",
@@ -19,9 +20,15 @@ export default {
     Header,
     Login,
     Register,
+    Spinner,
   },
   computed: {
-    ...mapGetters(['isLoginModalOpen', "isRegisterModalOpen"]),
+    ...mapGetters(["isLoginModalOpen", "isRegisterModalOpen"]),
+    ...mapGetters("userStore", ["authenticating"]),
+    ...mapGetters("tasksStore", ["tasksLoading"]),
+    loading() {
+      return this.authenticating || this.tasksLoading;
+    }
   },
 };
 </script>

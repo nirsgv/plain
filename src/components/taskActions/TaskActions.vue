@@ -9,7 +9,7 @@
       :active="!!action.tooltip.length"
     >
       <div
-        class="icon-button"
+        class="icon-button flex-center-all"
         @click="action.method"
         :class="{
           'drag-handle': action.name === 'drag',
@@ -201,10 +201,7 @@ export default {
   background-color: transparent;
   border-radius: 50%;
   height: 2rem;
-  display: flex;
-  align-items: center;
   width: 2rem;
-  justify-content: center;
   color: #bbb;
   height: 100%;
   cursor: pointer;

@@ -9,7 +9,7 @@ import SortDropdown from "@/components/sortDropdown/SortDropdown.vue";
 import StickyPart from "@/components/stickyPart/StickyPart.vue";
 import Badge from "@/components/badge/Badge.vue";
 import Spinner from "@/components/spinner/Spinner.vue";
-
+import AnimatedBkg from "@/components/animatedBkg/AnimatedBkg.vue";
 export {
   Header,
   Tasks,
@@ -22,4 +22,5 @@ export {
   StickyPart,
   Badge,
   Spinner,
+  AnimatedBkg,
 };

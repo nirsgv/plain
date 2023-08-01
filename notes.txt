@@ -45,6 +45,8 @@
 45. treat Tasks required prop error
 
 todo: 
+* log in spinner
+* move spinner upside Home component
 * log in / logout
 * markdown format readme
 * align sort position

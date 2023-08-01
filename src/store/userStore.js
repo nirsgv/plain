@@ -9,10 +9,12 @@ export default {
   state: {
     authenticated: false,
     user: null,
+    authenticating: false,
   },
   getters: {
     authenticated: (state) => state.authenticated,
     user: (state) => state.user,
+    authenticating: (state) => state.authenticating,
   },
   mutations: {
     SET_AUTHENTICATED: (state) => {
@@ -20,6 +22,9 @@ export default {
     },
     DEAUTHENTICATE: (state) => {
       state.authenticated = false;
+    },
+    SET_AUTHENTICATING: (state, { authenticating = false }) => {
+      state.authenticating = authenticating;
     },
     SET_USER: (state, user) => {
       if (!user) state.user = null;

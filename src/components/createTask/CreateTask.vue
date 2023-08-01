@@ -11,7 +11,7 @@
         addToCurrent: true,
       })
     "
-    class="add-task__button fixed-background-color"
+    class="add-task__button flex-center-all fixed-background-color"
   >
     <unicon name="plus" fill="currentColor"></unicon>
   </b-button>
@@ -72,9 +72,6 @@ export default {
 .add-task {
   flex-grow: 1;
   min-height: 0.1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   &__button {
     width: 7rem !important;
     height: 7rem !important;
