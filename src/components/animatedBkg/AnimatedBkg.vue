@@ -1,6 +1,6 @@
 <template>
   <section class="animated-bkg flex-center-all">
-    <div v-html="spriter(5)" class="svg-wrap" />
+    <div v-html="spriter(displayedIcon)" class="svg-wrap" @animationiteration="go"/>
   </section>
 </template>
 
@@ -8,25 +8,17 @@
 import { spriter } from "./spriter.js";
 export default {
   name: "AnimativeBkg",
-  props: {
-    difference: {
-      type: Number,
-      default: 8,
-    },
-    value: {
-      type: Number,
-      default: 50,
-    },
-  },
-  computed: {
-    position() {
-      return `bottom: calc(100% - ${this.difference}px); left: calc(100% -  ${this.difference}px)`;
-    },
-  },
   data() {
     return {
       spriter,
+      displayedIcon: 5,
     };
+  },
+  methods: {
+    go() {
+      console.log('go');
+      this.displayedIcon = Math.floor(Math.random() * 30) + 1;
+    }
   },
 };
 </script>
@@ -37,5 +29,15 @@ export default {
   height: 100%;
   background: var(--emphasis);
   position: absolute;
+  .svg-wrap {
+    animation: beat 10s ease-in-out infinite;
+    height: 10rem;
+    width: 10rem;
+
+    svg {
+      height: inherit;
+      width: inherit;
+    }
+  }
 }
 </style>

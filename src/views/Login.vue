@@ -39,8 +39,9 @@
           ></b-input>
         </b-field>
         <b-button native-type="submit" class="submit-btn">Login</b-button>
+        <div class="divider-text">OR</div>
+        <b-button native-type="submit" class="register-btn" @click="routeToRegister">Register</b-button>
       </form>
-      <router-link to="/register">Register</router-link>
     </section>
   </div>
 </template>
@@ -80,12 +81,26 @@ export default {
   },
   methods: {
     ...mapActions("userStore", ["login"]),
+    ...mapActions("routerStore", ["routeToRegister"]),
   },
 };
 </script>
 <style scoped lang="scss">
 a {
   position: relative;
+}
+.divider-text {
+  display: flex;
+  align-items: center;
+  color: var(--silver-5);
+  margin: .4rem 0;
+  &:before, &:after {
+    flex: 1;
+    content: '';
+    padding: 1px;
+    background-color: var(--silver-3);
+    margin: 5px;
+  }
 }
 .login-wrap {
   min-height: inherit;
@@ -100,19 +115,13 @@ a {
   .field-label {
     text-align: left;
   }
-  .animated-bkg {
-    .svg-wrap {
-      height: 10rem;
-      width: 10rem;
 
-      svg {
-        height: inherit;
-        width: inherit;
-      }
-    }
-  }
 }
 
+.register-btn {
+  background: white;
+  color: var(--emphasis);
+}
 .animated-wrap,
 .login {
   flex-basis: 50%;
@@ -130,10 +139,11 @@ a {
   padding: 2rem;
   border-radius: 1rem;
   margin-bottom: 1rem;
+  width: 100%;
+  max-width: 40rem;
 }
 
 button {
-  margin-top: 1.4rem;
   background-color: var(--emphasis);
   color: #fff;
 }

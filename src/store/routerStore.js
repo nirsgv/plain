@@ -9,6 +9,9 @@ export default {
     routeToHomePage: () => {
       router.push({ path: "/" });
     },
+    routeToRegister: () => {
+      router.push({ path: "/register" });
+    },
     routeToPath: ({ commit }, { path }) => {
       console.log(commit, path);
       router.push({ path: `/${path}` });
