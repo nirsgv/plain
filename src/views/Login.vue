@@ -40,7 +40,12 @@
         </b-field>
         <b-button native-type="submit" class="submit-btn">Login</b-button>
         <div class="divider-text">OR</div>
-        <b-button native-type="submit" class="register-btn" @click="routeToRegister">Register</b-button>
+        <b-button
+          native-type="submit"
+          class="register-btn"
+          @click="routeToRegister"
+          >Register</b-button
+        >
       </form>
     </section>
   </div>
@@ -58,25 +63,6 @@ export default {
     return {
       email: "",
       password: "",
-      tasksDemo: {
-        tasks: [
-          {
-            tags: [],
-            parent_task_uid: "2987bcf1-6d11-4baf-9250-67589235d7c6",
-            child_task_uids: ["01372a00-587b-451b-a36e-7750a529edc3"],
-            resolved: false,
-            archived: false,
-            user_id: "3e8a29e2-1619-43b5-8bec-370c65e20d36",
-            _id: "64b6a8cae42f5113afd44d25",
-            title: "You have Some Todos",
-            uid: "ba14a1c3-645d-46fb-8249-e7767748ee84",
-            created_at: "2023-07-18T14:59:22.603Z",
-            position: 16609,
-            __v: 1,
-            last_updated_at: "2023-07-27T10:55:35.088Z",
-          },
-        ],
-      },
     };
   },
   methods: {
@@ -93,10 +79,11 @@ a {
   display: flex;
   align-items: center;
   color: var(--silver-5);
-  margin: .4rem 0;
-  &:before, &:after {
+  margin: 0.4rem 0;
+  &:before,
+  &:after {
     flex: 1;
-    content: '';
+    content: "";
     padding: 1px;
     background-color: var(--silver-3);
     margin: 5px;
@@ -115,7 +102,6 @@ a {
   .field-label {
     text-align: left;
   }
-
 }
 
 .register-btn {
