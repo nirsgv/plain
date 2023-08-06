@@ -1,6 +1,7 @@
 <template>
-  <header class="Login-bar">
-    <div class="container">
+  <header>
+
+  <div class="login-bar" :class="{'container': authenticated}">
       <h1 class="logo-type selection-disabled emphasis-text">TODO</h1>
       <div v-if="authenticated" class="status">
         Hello {{ user.name }}
@@ -8,11 +9,12 @@
           Sign out
         </b-button>
       </div>
-      <div v-else class="login">
+      <div v-else class="">
         <router-link to="/login">Login</router-link>
-      </div>
     </div>
-  </header>
+  </div>
+</header>
+
 </template>
 
 <script>
@@ -20,9 +22,6 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Header",
-  props: {
-    msg: String,
-  },
   computed: {
     ...mapGetters({
       authenticated: "userStore/authenticated",
@@ -36,29 +35,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.Login-bar {
-  width: 100vw;
+header {
   background-color: var(--silver-1);
-  /*border-bottom: 1px solid var(--silver-3);*/
-  height: 6rem;
+  width: 100vw;
+  height: var(--header-height);
   padding: var(--header-padding);
   z-index: 20;
   position: relative;
-
-  width: 100vw;
-  background-color: var(--silver-1);
-  /* border-bottom: 3px solid var(--silver-3); */
-  height: 3rem;
-  padding: var(--header-padding);
-  z-index: 20;
-  position: relative;
-
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-  }
+}
+.login-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .logo-type {
   font-size: 2rem;

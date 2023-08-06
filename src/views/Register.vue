@@ -1,44 +1,54 @@
 <template>
-  <dialog class="register" open>
-    <form
-      action="/register"
-      method="POST"
-      @submit.prevent="submitRegisterDetails({ name, email, password })"
-    >
-      <b-field label="Email" horizontal>
-        <b-input
-          native-type="text"
-          maxlength="30"
-          name="name"
-          v-model="name"
-          required
+  <div class="login-wrap">
+    <div class="animated-wrap flex-center-all">
+      <AnimatedBkg />
+    </div>
+    <section class="login flex-center-all">
+      <form
+        action="/login"
+        method="POST"
+        @submit.prevent="login({ email, password })"
+        class="form"
+      >
+        <b-field
+          label="Email"
+          label-position="on-border"
+          label-for="email"
+          message=""
         >
-        </b-input>
-      </b-field>
-      <b-field label="Name" horizontal>
-        <b-input
-          native-type="text"
-          maxlength="30"
-          name="name"
-          v-model="name"
-          required
+          <b-input
+            value="johnsilver"
+            maxlength="30"
+            name="email"
+            v-model="email"
+            required
+          ></b-input>
+        </b-field>
+        <b-field
+          label="Password"
+          label-position="on-border"
+          label-for="password"
+          message=""
         >
-        </b-input>
-      </b-field>
-      <b-field label="Password" horizontal>
-        <b-input
-          native-type="text"
-          maxlength="30"
-          name="password"
-          v-model="password"
-          required
+          <b-input
+            value="johnsilver"
+            maxlength="30"
+            name="password"
+            v-model="password"
+            required
+          ></b-input>
+        </b-field>
+        <b-button native-type="submit" class="submit-btn">Login</b-button>
+        <div class="divider-text">OR</div>
+        <b-button
+          native-type="submit"
+          class="register-btn"
+          @click="routeToRegister"
+          >Login</b-button
         >
-        </b-input>
-      </b-field>
-      <button type="submit">Register</button>
-    </form>
-    <a href="/login">Login</a>
-  </dialog>
+      </form>
+    </section>
+  </div>
 </template>
 
 <script>
