@@ -264,7 +264,9 @@ dt, dd {
     max-width: 40rem;
   }
   
-  button {
+  .submit-btn.button {
     background-color: var(--emphasis);
     color: #fff;
+    font-size: 1.2rem;
+    font-weight: 800;
   }

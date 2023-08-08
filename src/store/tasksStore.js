@@ -51,6 +51,9 @@ export default {
     SET_TASKS: (state, { tasks }) => {
       state.tasks = tasks;
     },
+    CLEAR_TASKS: (state) => {
+      state.tasks = [];
+    },
     UPDATE_TASK: (state, { task }) => {
       state.tasks = state.tasks.map((t) => (t.uid === task.uid ? task : t));
     },
@@ -60,6 +63,7 @@ export default {
       );
     },
     ADD_TASK: (state, { task }) => {
+      console.log('set')
       state.tasks = [...state.tasks, task];
     },
     REMOVE_TASK: (state, { taskUid }) => {
@@ -91,6 +95,10 @@ export default {
     setTasks: ({ commit }, { tasks }) => {
       commit("SET_TASKS", { tasks });
     },
+    clearTasks: ({ commit }) => {
+      console.log('clear');
+      commit("CLEAR_TASKS");
+    },
     loadTasks: async ({ commit }, { userId, taskUid = "" }) => {
       commit("SET_TASKS_LOADING", { isLoading: true });
       // await new Promise(r => setTimeout(r, 120000));
@@ -109,8 +117,9 @@ export default {
       { commit, dispatch },
       { userId, title, parentTask, addToCurrent = false }
     ) => {
+      console.log(title);
       addToCurrent && commit("SET_ADDING", { isAdding: true });
-      const t = getRandomTaskTitle();
+      const t = title || getRandomTaskTitle();
       const response = await addTask({ userId, title: title || t, parentTask });
       const { uid } = response.data.task;
       if (parentTask) {
@@ -164,6 +173,13 @@ export default {
     },
     setSortBy: async ({ commit }, { sortBy }) => {
       commit("SET_SORT_BY", { sortBy });
+    },
+    uncoverWelcomeTasks: async ({ dispatch }, { userUid = "" }) => {
+      dispatch("addTask", { userId: userUid, title: "Welcome! Your example list is sete45@e45 up", parentTask: null, addToCurrent: true });
+      await new Promise((res) => setTimeout(res, 1000));
+      dispatch("addTask", { userId: userUid, title: "Every item can have sub-items!", parentTask: null, addToCurrent: true });
+      await new Promise((res) => setTimeout(res, 1000));
+      dispatch("addTask", { userId: userUid, title: "Like this Grocery list", parentTask: null, addToCurrent: true });
     },
   },
 };

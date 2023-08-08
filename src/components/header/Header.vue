@@ -1,6 +1,5 @@
 <template>
   <header>
-
   <div class="login-bar" :class="{'container': authenticated}">
       <h1 class="logo-type selection-disabled emphasis-text">TODO</h1>
       <div v-if="authenticated" class="status">
@@ -42,6 +41,9 @@ header {
   padding: var(--header-padding);
   z-index: 20;
   position: relative;
+  & > div {
+    height: inherit;
+  }
 }
 .login-bar {
   display: flex;
@@ -49,8 +51,10 @@ header {
   align-items: center;
 }
 .logo-type {
-  font-size: 2rem;
-  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--silver-6);
+  letter-spacing: 0.6rem;
+  font-weight: 700;
 }
 .status {
   font-size: 1.4rem;

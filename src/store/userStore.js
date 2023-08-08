@@ -2,7 +2,6 @@ import {
   submitRegisterDetails,
   submitLoginDetails,
 } from "@/services/service.js";
-import router from "@/router";
 
 export default {
   namespaced: true,
@@ -30,21 +29,18 @@ export default {
       if (!user) state.user = null;
       else state.user = { ...user.data };
     },
-    ROUTE_TO_HOME_PAGE: () => {
-      router.push({ path: "/" });
-    },
-    ROUTE_TO_LOGIN_PAGE: () => {
-      router.push({ path: "/login" });
-    },
   },
   actions: {
     register: async ({ commit, dispatch }, details) => {
-      const user = await submitRegisterDetails(details);
-      if (user.announce) {
-        dispatch("announce", {
-          message: user.announce.message,
-          type: user.announce.type,
-        });
+      const response = await submitRegisterDetails(details);
+      console.log(response);
+      if (response.type === "success") {
+
+        commit("SET_AUTHENTICATED");
+        console.log({ response });
+        await commit("SET_USER", { data: response.user });
+        dispatch("routerStore/routeToHomePage", {}, { root: true });
+        dispatch("tasksStore/uncoverWelcomeTasks", { userUid: response.user.uid }, { root: true });
       }
       commit("");
     },
@@ -62,13 +58,11 @@ export default {
         dispatch("routerStore/routeToHomePage", {}, { root: true });
       }
     },
-    logout: ({ commit }) => {
+    logout: ({ commit, dispatch }) => {
       commit("DEAUTHENTICATE");
       commit("SET_USER", null);
-      commit("ROUTE_TO_LOGIN_PAGE");
-    },
-    routeToHomePage: ({ commit }) => {
-      commit("ROUTE_TO_HOME_PAGE");
+      dispatch("tasksStore/clearTasks", {}, { root: true });
+      dispatch("routerStore/routeToLoginPage", {}, { root: true });
     },
   },
 };

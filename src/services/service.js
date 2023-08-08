@@ -44,7 +44,10 @@ const getUserTasks = async ({ userId, taskUid }) => {
 
 const submitRegisterDetails = async (details) => {
   try {
+    console.log('service submitRegisterDetails')
     const { data } = await axi.post(`${baseURL}/register`, details);
+    console.log({ data })
+
     return data;
   } catch (error) {
     console.error("Error submitting register details:", error);

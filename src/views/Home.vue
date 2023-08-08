@@ -49,7 +49,7 @@ export default {
   methods: {
     ...mapActions("tasksStore", ["loadTasks"]),
     fetchTasks() {
-      if (this.authenticated && this.user) {
+      if (this.authenticated && this.user && this.user.uid) {
         this.loadTasks({ userId: this.user.uid, taskUid: this.uid });
       }
     },

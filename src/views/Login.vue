@@ -42,6 +42,7 @@
         <div class="divider-text">OR</div>
         <b-button
           native-type="submit"
+          type="is-text"
           class="register-btn"
           @click="routeToRegister"
           >Register</b-button

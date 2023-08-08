@@ -44,7 +44,7 @@ exports.register = async (req, res) => {
   try {
     const existing = await getUserByEmail({ email });
     if (existing) {
-      return res.send({announce: {message: 'There is a user with this email', type: 'success'}})
+      return res.send({message: 'There is a user with this email', type: 'error'})
     }
   } catch (error) {
     console.error(error);
@@ -59,8 +59,10 @@ exports.register = async (req, res) => {
       crated_at: Date.now(),
     });
     const stat = await user.save();
+    const loggedUser = { name: stat?.name, email: stat?.email, uid: stat?.uid };
+
     console.log({ stat });
-    res.send(201);
+    res.send({ message: 'Very well', type: 'success', user: loggedUser });
   } catch (error) {
     console.error(error);
     res.sendStatus(500).json({ error: "Internal server error" });

@@ -128,6 +128,7 @@ export default {
     top: 1rem;
     line-height: 1.4;
     user-select: none;
+    color: var(--silver-4)
   }
 }
 </style>

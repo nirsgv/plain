@@ -7,9 +7,23 @@
       <form
         action="/login"
         method="POST"
-        @submit.prevent="login({ email, password })"
+        @submit.prevent="register({ name, email, password })"
         class="form"
       >
+      <b-field
+        label="User name"
+        label-position="on-border"
+        label-for="name"
+        message=""
+      >
+        <b-input
+          value="johnsilver"
+          maxlength="30"
+          name="email"
+          v-model="name"
+          required
+        ></b-input>
+      </b-field>
         <b-field
           label="Email"
           label-position="on-border"
@@ -38,12 +52,13 @@
             required
           ></b-input>
         </b-field>
-        <b-button native-type="submit" class="submit-btn">Login</b-button>
+        <b-button native-type="submit" class="submit-btn" type="">Register</b-button>
         <div class="divider-text">OR</div>
         <b-button
           native-type="submit"
+          type="is-text"
           class="register-btn"
-          @click="routeToRegister"
+          @click="routeToLoginPage"
           >Login</b-button
         >
       </form>
@@ -53,9 +68,14 @@
 
 <script>
 import { mapActions } from "vuex";
+import { AnimatedBkg } from "@/components";
 
 export default {
   name: "Register",
+  components: {
+    AnimatedBkg,
+  },
+
   data() {
     return {
       name: "",
@@ -64,7 +84,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["submitRegisterDetails"]),
+    ...mapActions("userStore", ["register"]),
+    ...mapActions("routerStore", ["routeToLoginPage"]),
   },
 };
 </script>
