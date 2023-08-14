@@ -43,14 +43,18 @@
 43. shorten subtasks text
 44. navigation guards for Home
 45. treat Tasks required prop error
+46. log in spinner
+47. log in / logout
+48. fix registration ("Failed to submit register details")
+49. handle success register notification
+50. header
+51. move spinner upside Home component
+52. form fields to be binded using v-for
 
 todo: 
-* log in spinner
-* move spinner upside Home component
-* log in / logout
+* ease in background color
+* handle error register notification
 * markdown format readme
 * align sort position
-* header
 * main ease function specify
 * soft delete
-* fix registration ("Failed to submit register details")

@@ -27,8 +27,8 @@ export default {
   },
   watch: {
     uid: {
-      handler: 'fetchTasks', // Call fetchTasks whenever uid prop changes
-      immediate: true // Call fetchTasks immediately on component creation as well
+      handler: "fetchTasks", // Call fetchTasks whenever uid prop changes
+      immediate: true, // Call fetchTasks immediately on component creation as well
     },
   },
   data() {
@@ -37,14 +37,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['isLoginModalOpen']),
+    ...mapGetters(["isLoginModalOpen"]),
     ...mapGetters({
       authenticated: "userStore/authenticated",
       user: "userStore/user",
     }),
-    ...mapGetters("tasksStore", [
-      "tasksLoading",
-    ]),
+    ...mapGetters("tasksStore", ["tasksLoading"]),
   },
   methods: {
     ...mapActions("tasksStore", ["loadTasks"]),

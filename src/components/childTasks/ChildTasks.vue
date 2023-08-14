@@ -159,4 +159,7 @@ export default {
     color: #333;
   }
 }
+.unicon svg {
+  color: var(--emphasis2);
+}
 </style>

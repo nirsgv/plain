@@ -1,43 +1,33 @@
 <template>
   <div class="login-wrap">
-    <div class="animated-wrap flex-center-all">
-      <AnimatedBkg />
-    </div>
     <section class="login flex-center-all">
+      <section class="welcome">
+        <h1>{{ fields[0].value }}</h1>
+        <h3>{{ fields[1].value }}</h3>
+      </section>
       <form
         action="/login"
         method="POST"
-        @submit.prevent="login({ email, password })"
+        @submit.prevent="login({ email: fields[0].value, password: fields[1].value })"
         class="form"
       >
         <b-field
-          label="Email"
-          label-position="on-border"
-          label-for="email"
-          message=""
+          v-for="(field, idx) in fields"
+          :key="field.name"
+          :label="field.label"
+          :label-position="field.labelPosition"
+          :label-for="field.name"
+          :message="field.message"
         >
           <b-input
-            value="johnsilver"
-            maxlength="30"
-            name="email"
-            v-model="email"
+            :maxlength="field.maxLength"
+            :name="field.name"
+            :value="field.value"
+            @input="updateFieldValue(idx, $event)"
             required
-          ></b-input>
+          />
         </b-field>
-        <b-field
-          label="Password"
-          label-position="on-border"
-          label-for="password"
-          message=""
-        >
-          <b-input
-            value="johnsilver"
-            maxlength="30"
-            name="password"
-            v-model="password"
-            required
-          ></b-input>
-        </b-field>
+
         <b-button native-type="submit" class="submit-btn">Login</b-button>
         <div class="divider-text">OR</div>
         <b-button
@@ -54,21 +44,38 @@
 
 <script>
 import { mapActions } from "vuex";
-import { AnimatedBkg } from "@/components";
 export default {
   name: "Login",
   components: {
-    AnimatedBkg,
   },
   data() {
     return {
-      email: "",
-      password: "",
+      fields: [
+        {
+          label: "Email",
+          labelPosition: "on-border",
+          name: "email",
+          message: "",
+          maxLength: 30,
+          value: "",
+        },
+       {
+          label: "Password",
+          labelPosition: "on-border",
+          name: "password",
+          message: "",
+          maxLength: 30,
+          value: "",
+        },
+      ],
     };
   },
   methods: {
     ...mapActions("userStore", ["login"]),
     ...mapActions("routerStore", ["routeToRegister"]),
+    updateFieldValue(idx, value) {
+      this.fields[idx].value = value;
+    },
   },
 };
 </script>

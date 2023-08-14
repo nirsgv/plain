@@ -1,5 +1,5 @@
 <template>
-  <section class="sticky-part">
+  <section class="sticky-part shadow-light" ref="sticky" :class="{ 'shadow': isSticky }">
     <div class="container flex">
       <Breadcrumbs :uid="uid" />
       <SortDropdown />
@@ -22,6 +22,18 @@ export default {
   props: {
     uid: String,
   },
+  data() {
+    return {
+      isSticky: false
+    };
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+
   computed: {
     ...mapGetters({
       authenticated: "userStore/authenticated",
@@ -30,6 +42,11 @@ export default {
   },
   methods: {
     ...mapActions("userStore", ["deauthenticate"]),
+    handleScroll() {
+      const stickyElement = this.$refs.sticky;
+      const stickyPosition = stickyElement.getBoundingClientRect().top;
+      this.isSticky = stickyPosition <= 0;
+    },
   },
 };
 </script>
@@ -42,14 +59,12 @@ export default {
   width: 100%;
   background-color: var(--silver-1);
   padding: 1rem 0;
+  transition: 0.1s ease-in-out;
   &.container {
     display: flex;
   }
 }
 
-.shodow {
-  box-shadow: 0px 2px 7px 2px rgba(100, 100, 100, .2);
-}
 .sort-dropdown {
 }
 

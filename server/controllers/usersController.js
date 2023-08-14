@@ -61,7 +61,6 @@ exports.register = async (req, res) => {
     const stat = await user.save();
     const loggedUser = { name: stat?.name, email: stat?.email, uid: stat?.uid };
 
-    console.log({ stat });
     res.send({ message: 'Very well', type: 'success', user: loggedUser });
   } catch (error) {
     console.error(error);

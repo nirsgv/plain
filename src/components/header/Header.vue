@@ -35,7 +35,7 @@ export default {
 
 <style scoped lang="scss">
 header {
-  background-color: var(--silver-1);
+  background-color: var(--silver-3);
   width: 100vw;
   height: var(--header-height);
   padding: var(--header-padding);
@@ -52,7 +52,7 @@ header {
 }
 .logo-type {
   font-size: 1.5rem;
-  color: var(--silver-6);
+  color: var(--white);
   letter-spacing: 0.6rem;
   font-weight: 700;
 }

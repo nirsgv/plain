@@ -14,6 +14,7 @@
   --vertical-margin: 2rem;
   --highlight: #eee;
   --task-title-font-size: 2rem;
+  --task-border-radius: 1.5rem;
   --content-padding: 0 2rem;
   --lightsalmon: oklch(79.38% 0.12483287411660951 42.42478683674435);
   --border-color: oklch(45% 0.26 264);
@@ -245,9 +246,10 @@ dt, dd {
   }
   .animated-wrap,
   .login {
-    flex-basis: 50%;
+    flex-basis: 100%;
   }
   .login {
+    background: var(--main-gradient2);
     padding: 0 8rem;
   }
   .form {
@@ -270,3 +272,19 @@ dt, dd {
     font-size: 1.2rem;
     font-weight: 800;
   }
+
+
+  .shadow-light {
+    box-shadow: 0 -6px 10px 5px rgba(0,0,0,0.3);
+  }
+
+  .shadow {
+    box-shadow: 0 -6px 10px 5px rgba(0,0,0,0.2);
+  }
+
+  body .notices .toast {
+    color: #fff;
+    padding: 1.1rem 3rem;
+    font-size: 1.7rem;  
+  }
+

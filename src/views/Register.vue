@@ -1,58 +1,37 @@
 <template>
   <div class="login-wrap">
-    <div class="animated-wrap flex-center-all">
-      <AnimatedBkg />
-    </div>
     <section class="login flex-center-all">
       <form
         action="/login"
         method="POST"
-        @submit.prevent="register({ name, email, password })"
+        @submit.prevent="
+          register({
+            name: fields[0].value,
+            email: fields[1].value,
+            password: fields[2].value,
+          })
+        "
         class="form"
       >
-      <b-field
-        label="User name"
-        label-position="on-border"
-        label-for="name"
-        message=""
-      >
-        <b-input
-          value="johnsilver"
-          maxlength="30"
-          name="email"
-          v-model="name"
-          required
-        ></b-input>
-      </b-field>
         <b-field
-          label="Email"
-          label-position="on-border"
-          label-for="email"
-          message=""
+          v-for="(field, idx) in fields"
+          :key="field.name"
+          :label="field.label"
+          :label-position="field.labelPosition"
+          :label-for="field.name"
+          :message="field.message"
         >
           <b-input
-            value="johnsilver"
-            maxlength="30"
-            name="email"
-            v-model="email"
+            :maxlength="field.maxLength"
+            :name="field.name"
+            :value="field.value"
+            @input="updateFieldValue(idx, $event)"
             required
-          ></b-input>
+          />
         </b-field>
-        <b-field
-          label="Password"
-          label-position="on-border"
-          label-for="password"
-          message=""
+        <b-button native-type="submit" class="submit-btn" type=""
+          >Register</b-button
         >
-          <b-input
-            value="johnsilver"
-            maxlength="30"
-            name="password"
-            v-model="password"
-            required
-          ></b-input>
-        </b-field>
-        <b-button native-type="submit" class="submit-btn" type="">Register</b-button>
         <div class="divider-text">OR</div>
         <b-button
           native-type="submit"
@@ -68,19 +47,38 @@
 
 <script>
 import { mapActions } from "vuex";
-import { AnimatedBkg } from "@/components";
 
 export default {
   name: "Register",
-  components: {
-    AnimatedBkg,
-  },
-
+  components: {},
   data() {
     return {
-      name: "",
-      email: "",
-      password: "",
+      fields: [
+        {
+          label: "Name",
+          labelPosition: "on-border",
+          name: "name",
+          message: "",
+          maxLength: 30,
+          value: "",
+        },
+        {
+          label: "Email",
+          labelPosition: "on-border",
+          name: "email",
+          message: "",
+          maxLength: 30,
+          value: "",
+        },
+        {
+          label: "Password",
+          labelPosition: "on-border",
+          name: "password",
+          message: "",
+          maxLength: 30,
+          value: "",
+        },
+      ],
     };
   },
   methods: {

@@ -56,7 +56,7 @@ export default {
 .tasks {
   --taskHeight: 14rem;
   font-family: var(--font-family);
-  padding-top: 3.4rem;
+  padding: 3.4rem 0 3rem;
   .wrapper {
     width: 100%;
   }
@@ -67,7 +67,7 @@ export default {
     justify-content: center;
     border-color: var(--lightsalmon);
     padding: var(--content-padding);
-    border-radius: 1.5rem;
+    border-radius: var(--task-border-radius);
     border: none!important;
     padding: 1rem;
     background: var(--white);
@@ -97,18 +97,11 @@ export default {
     }
     &:after {
       content: "";
-      height: 0.1rem;
-      width: 100%;
+      height: 0;
+      width: calc(100% - var(--task-border-radius));
       background-color: #eee;
       position: absolute;
       bottom: 0;
-      /*background-attachment: fixed;
-      background-size: cover;
-      background-image: linear-gradient(
-        180deg in oklab,
-        oklch(78% 0.24 46) 0%,
-        oklch(90% 0.5 115) 98% 98%
-      ); */
     }
   }
   &--loading {

@@ -41,6 +41,10 @@ export default {
         await commit("SET_USER", { data: response.user });
         dispatch("routerStore/routeToHomePage", {}, { root: true });
         dispatch("tasksStore/uncoverWelcomeTasks", { userUid: response.user.uid }, { root: true });
+        dispatch("toastStore/registerWelcome", {}, { root: true });
+
+
+
       }
       commit("");
     },
