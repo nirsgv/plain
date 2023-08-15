@@ -5,11 +5,10 @@
         <h1>Register now and enjoy the benefits of streamlined <span class="app-title">TODO</span>.</h1>
         <ul class="bullets">
           <li>Explore endless organization with lists within lists within lists.</li>
-          <li>Unlock the power of TODO to supercharge your daily efficiency.</li>
         </ul>
       </header>
       <form
-        action="/login"
+        action="/register"
         method="POST"
         @submit.prevent="
           register({
@@ -91,6 +90,9 @@ export default {
   methods: {
     ...mapActions("userStore", ["register"]),
     ...mapActions("routerStore", ["routeToLoginPage"]),
+    updateFieldValue(idx, value) {
+      this.fields[idx].value = value;
+    },
   },
 };
 </script>
