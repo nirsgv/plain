@@ -1,7 +1,7 @@
 <template>
   <header>
-  <div class="login-bar" :class="{'container': authenticated}">
-      <h1 class="logo-type selection-disabled emphasis-text">TODO</h1>
+    <div class="login-bar" :class="{'container': authenticated}">
+      <h2 class="logo-type selection-disabled emphasis-text">TODOAPP</h2>
       <div v-if="authenticated" class="status">
         Hello {{ user.name }}
         <b-button type="is-text" @click="logout">

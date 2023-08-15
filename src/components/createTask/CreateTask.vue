@@ -1,6 +1,5 @@
 <template>
   <b-button
-    type="is-primary"
     native-type="submit"
     :class="{ sticky }"
     @click.prevent="
@@ -11,7 +10,7 @@
         addToCurrent: true,
       })
     "
-    class="add-task__button flex-center-all fixed-background-color"
+    class="add-task__button flex-center-all shadow-light emphasis-text"
   >
     <unicon name="plus" fill="currentColor"></unicon>
   </b-button>
@@ -73,24 +72,31 @@ export default {
   flex-grow: 1;
   min-height: 0.1rem;
   &__button {
-    width: 7rem !important;
-    height: 7rem !important;
+    width: var(--add-button-size) !important;
+    height: var(--add-button-size) !important;
     border-radius: 50%!important;
-    /* background-color: #ffa07a !important; */
-
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.05)!important;
     & > span {
       display: flex;
       flex-direction: column;
     }
+
     &.sticky {
       position: fixed;
       bottom: 2rem;
       right: 2rem;
     }
+    .unicon svg {
+      transition: transform 0.1s ease-in-out;
+    }
     &:hover {
       color: white;
     }
-
+    &:active {
+      .unicon svg {
+        transform: rotate(-180deg);
+      }
+    }
     span {
       display: flex;
       align-items: center;

@@ -50,6 +50,8 @@
 50. header
 51. move spinner upside Home component
 52. form fields to be binded using v-for
+53. login welcome text header with bullets
+54. register welcome text header with bullets
 
 todo: 
 * ease in background color

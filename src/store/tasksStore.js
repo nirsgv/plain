@@ -7,7 +7,6 @@ import {
   getTask,
 } from "@/services/service.js";
 import { getRandomTaskTitle } from "@/helpers.js";
-import "vue-toast-notification/dist/theme-bootstrap.css";
 
 export default {
   namespaced: true,

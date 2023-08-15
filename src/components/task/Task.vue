@@ -85,7 +85,7 @@ export default {
       transition: color 0.1s ease-in, text-decoration-color 0.05s ease-in 0.5s;
       font-family: inherit;
       caret-color: #333;
-      font-weight: 400;
+      font-weight: 300;
     }
     &:hover {
       .actions {

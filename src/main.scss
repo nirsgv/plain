@@ -57,6 +57,7 @@
     hsl(45deg 100% 50%) 89%,
     hsl(55deg 100% 50%) 100%
   );
+  --add-button-size: 7rem;
 }
 
 @media (min-width: 600px) {
@@ -179,7 +180,7 @@ dt, dd {
 .fixed-background-color {
   background-attachment: fixed;
   background-size: cover;
-  background-image: var(--main-gradient);
+  background-image: var(--main-gradient2);
 }
 .flex {
   display: flex!important;
@@ -200,6 +201,10 @@ dt, dd {
 
 .flex {
   display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .flex-center-all {
@@ -253,7 +258,7 @@ dt, dd {
     padding: 0 8rem;
   }
   .form {
-    background-color: #ffffff;
+    background-color: var(--white);
     position: relative;
     width: 100%;
     display: flex;
@@ -271,6 +276,9 @@ dt, dd {
     color: #fff;
     font-size: 1.2rem;
     font-weight: 800;
+    &:hover {
+      color: var(--white);
+    }
   }
 
 

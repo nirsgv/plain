@@ -1,6 +1,13 @@
 <template>
   <div class="login-wrap">
-    <section class="login flex-center-all">
+    <section class="login flex-center-all flex-column">
+      <header class="welcome">
+        <h1>Register now and enjoy the benefits of streamlined <span class="app-title">TODO</span>.</h1>
+        <ul class="bullets">
+          <li>Explore endless organization with lists within lists within lists.</li>
+          <li>Unlock the power of TODO to supercharge your daily efficiency.</li>
+        </ul>
+      </header>
       <form
         action="/login"
         method="POST"
