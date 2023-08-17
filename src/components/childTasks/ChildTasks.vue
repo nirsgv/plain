@@ -116,7 +116,13 @@ export default {
   --margin: 0.5rem;
   width: 100%;
   font-size: 1.6rem;
-  height: 4rem;
+  height: 3rem;
+  gap: 1rem;
+  &-list {
+    height: inherit;
+    display: flex;
+    align-items: center;
+  }
   li {
     display: inline-block;
     &:not(:first-child) {
@@ -126,7 +132,7 @@ export default {
       margin-right: var(--margin);
     }
     &.child-tasks-list-item {
-      max-width: 5rem;
+      max-width: var(--child-taks-max-width);
     }
   }
 }

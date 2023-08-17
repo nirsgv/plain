@@ -135,7 +135,6 @@ export default {
         this.task.child_task_uids.length
           ? this.actions.visitChildren
           : this.actions.addChild,
-        this.actions.drag,
       ];
     },
   },
@@ -169,9 +168,9 @@ export default {
 .actions {
   transition: all 0.1s ease-in-out;
   position: absolute;
-  right: 0;
+  right: var(--actions-padding);
   display: flex !important;
-  gap: 0.2rem;
+  gap: 1rem;
   height: 100%;
   top: 0;
   align-items: flex-end;
@@ -184,14 +183,16 @@ export default {
   }
 
   .b-tooltip.is-primary .tooltip-content {
-    background: var(--white) !important;
-    color: var(--black) !important;
+    background: var(--emphasis) !important;
+    color: var(--white) !important;
     border-width: 0.1rem;
-    border-color: var(--lightsalmon);
+    border-color: transparent;
     border-style: solid;
     box-shadow: none;
+    font-size: 1.4rem;
+    padding: 0rem 1.4rem;
     &:before {
-      border-bottom-color: var(--lightsalmon)!important;
+      border-bottom-color: var(--emphasis) !important;
     }
   }
 }

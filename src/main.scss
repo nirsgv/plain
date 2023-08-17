@@ -14,8 +14,9 @@
   --vertical-margin: 2rem;
   --highlight: #eee;
   --task-title-font-size: 2rem;
-  --task-border-radius: 1.5rem;
+  --task-border-radius: 3rem;
   --content-padding: 0 2rem;
+  --actions-padding: 0.8rem;
   --lightsalmon: oklch(79.38% 0.12483287411660951 42.42478683674435);
   --border-color: oklch(45% 0.26 264);
   --font-family-ui: 'open-sans', sans-serif;
@@ -58,11 +59,12 @@
     hsl(55deg 100% 50%) 100%
   );
   --add-button-size: 7rem;
+  --child-taks-max-width: 14rem;
 }
 
 @media (min-width: 600px) {
   :root {
-    --task-title-font-size: 3rem;
+    --task-title-font-size: 2.3rem;
     --content-padding: 0;
     // --header-padding: 0;
   }
@@ -181,9 +183,6 @@ dt, dd {
   background-attachment: fixed;
   background-size: cover;
   background-image: var(--main-gradient2);
-}
-.flex {
-  display: flex!important;
 }
 
 .selection-disabled {

@@ -52,6 +52,10 @@
 52. form fields to be binded using v-for
 53. login welcome text header with bullets
 54. register welcome text header with bullets
+55. resolve style
+56. drag by wrapper
+57. tooltip style
+58. task wrapper style
 
 todo: 
 * ease in background color

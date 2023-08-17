@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper flex">
     <slot></slot>
     <div class="last-edited">
       <h6>Created {{ task.created_at | timeAgo }}</h6>
@@ -59,6 +59,11 @@ export default {
   padding: 3.4rem 0 3rem;
   .wrapper {
     width: 100%;
+    height: 100%;
+    padding: 0 1rem;
+    position: relative;
+    align-items: center;
+    cursor: pointer;
   }
   .task {
     height: var(--taskHeight);
@@ -77,7 +82,7 @@ export default {
       margin-bottom: 0 !important;
       border: none;
       text-align: center;
-      height: -webkit-fill-available;
+      height: fit-content;
       font-size: var(--task-title-font-size);
       outline: none !important;
       width: 100%;
@@ -86,9 +91,12 @@ export default {
       font-family: inherit;
       caret-color: #333;
       font-weight: 300;
+      background-color: transparent;
+      padding: 1rem 0;
     }
     &:hover {
-      .actions {
+      .actions,
+      .last-edited {
         opacity: 1;
       }
       &:after {
@@ -121,7 +129,13 @@ export default {
     top: 1rem;
     line-height: 1.4;
     user-select: none;
-    color: var(--silver-4)
+    color: var(--silver-5);
+    font-weight: 200;
+    opacity: 0.4;
+    transition: opacity 0.2s ease-in-out;
+    h6 {
+      font-weight: inherit;
+    }
   }
 }
 </style>

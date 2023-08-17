@@ -7,7 +7,6 @@
     v-model="sortedTasks"
     @end="onDragEnd"
     group="taskGroup"
-    handle=".drag-handle"
   >
     <li
       v-for="task in tasks"
@@ -20,8 +19,8 @@
           type="text"
           v-model="task.title"
           :ref="task.uid"
-          class="title task__title fixed-text-color emphasis-text ellipsis"
-          :class="{ resolved: task.resolved }"
+          class="title task__title emphasis-text ellipsis"
+          :class="{ resolved: task.resolved, 'fixed-text-color': !task.resolved }"
           @keyup.enter="
             editTask({
               taskUid: task.uid,
@@ -164,17 +163,14 @@ export default {
 }
 
 .drag-handle {
-  /* Style your drag handle element here */
 }
 .dragging {
-  /* Style the dragging element here */
 }
 
 .resolved {
   text-decoration: line-through;
-  text-decoration-color: #bbb !important;
-  color: #ccc !important;
-  /* caret-color: var(--lightsalmon); */
+  text-decoration-color: var(--white) !important;
+  color: var(--silver-3) !important;
   pointer-events: none;
 }
 </style>
