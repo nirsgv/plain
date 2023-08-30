@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const DATABASE = process.env.DATABASE;
 const { DB_USER, DB_PSWD, CLUSTER_ADDRESS, DB } = process.env;
-mongoose.Promise = global.Promise; // Tells Mongoose to use ES6 promises
 const fixieData = process.env.FIXIE_SOCKS_HOST.split(new RegExp('[/(:\\/@/]+'));
 const CONNECTION_STRING = `mongodb+srv://${DB_USER}:${DB_PSWD}@${CLUSTER_ADDRESS}/${DB}`;
 
